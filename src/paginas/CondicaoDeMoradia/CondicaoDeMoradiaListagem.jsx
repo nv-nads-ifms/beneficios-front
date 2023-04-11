@@ -8,7 +8,7 @@ export default function CondicaoDeMoradiaListagem() {
             url={"/condicoes-de-moradia-ficha"}
             remotePath={'/condicoes-de-moradia'}
             formTitle="Listagem de Condições de Moradia"
-            addButtonLabel="Criar Nova Condição de Moradia"
+            addButtonLabel="Cadastrar Condição de Moradia"
             onRowRemoveButton={CondicaoDeMoradiaService.deleteCondicaoDeMoradia}
             retrieveDataFunction={CondicaoDeMoradiaService.getCondicoesDeMoradia}
             columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}

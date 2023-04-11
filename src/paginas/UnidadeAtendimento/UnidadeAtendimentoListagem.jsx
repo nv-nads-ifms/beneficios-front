@@ -80,7 +80,7 @@ export default function UnidadeAtendimentoListagem() {
                         perfil.escrever && (
                             <React.Fragment>
                                 <NewButton
-                                    label="Criar Nova Unidade de Atendimento"
+                                    label="Cadastrar unidade de atendimento"
                                     onClick={() => handleAction(0, 'edit')} />
                             </React.Fragment>
                         )

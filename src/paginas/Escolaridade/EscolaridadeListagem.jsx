@@ -8,7 +8,7 @@ export default function EscolaridadeListagem() {
             url={"/escolaridades-ficha"}
             remotePath={'/escolaridades'}
             formTitle="Listagem de Escolaridades"
-            addButtonLabel="Criar Nova Escolaridade"
+            addButtonLabel="Cadastrar condição de Escolaridade"
             onRowRemoveButton={EscolaridadeService.deleteEscolaridade}
             retrieveDataFunction={EscolaridadeService.getEscolaridades}
             columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}

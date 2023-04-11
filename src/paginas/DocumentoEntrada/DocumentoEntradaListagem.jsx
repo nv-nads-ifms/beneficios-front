@@ -124,7 +124,7 @@ export default function DocumentoEntradaListagem() {
                             />
                             {perfil.escrever && (
                                 <NewButton
-                                    label="Criar Documento de Entrada"
+                                    label="Cadastrar Documento de Entrada"
                                     onClick={() => handleAction(0, 'edit')} />
                             )}
                         </React.Fragment>

@@ -9,7 +9,7 @@ export default function FuncaoListagem() {
             url={"/funcao-ficha"}
             remotePath={"/funcoes"}
             formTitle="Listagem de Funções"
-            addButtonLabel="Criar Nova Função"
+            addButtonLabel="Cadastrar Função"
             onRowRemoveButton={FuncaoService.deleteFuncao}
             retrieveDataFunction={FuncaoService.getFuncoes}
             columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}

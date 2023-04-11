@@ -8,7 +8,7 @@ export default function ProgramaDeGovernoListagem() {
             url={"/programas-de-governo-ficha"}
             remotePath={"/programas-de-governo"}
             formTitle="Listagem de Programas de Governo"
-            addButtonLabel="Criar Novo Programa de Governo"
+            addButtonLabel="Cadastrar Programa de Governo"
             onRowRemoveButton={ProgramaDeGovernoService.deleteProgramaDeGoverno}
             retrieveDataFunction={ProgramaDeGovernoService.getProgramasDeGoverno}
             columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}

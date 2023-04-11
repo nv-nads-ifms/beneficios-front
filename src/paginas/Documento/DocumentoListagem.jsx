@@ -8,7 +8,7 @@ export default function DocumentoListagem() {
             url={"/documentos-ficha"}
             remotePath={'/documentos'}
             formTitle="Listagem de Tipos de Documentos"
-            addButtonLabel="Criar Novo Tipo de Documento"
+            addButtonLabel="Cadastrar Tipo de Documento"
             onRowRemoveButton={DocumentoService.deleteDocumento}
             retrieveDataFunction={DocumentoService.getDocumentos}
             columns={[

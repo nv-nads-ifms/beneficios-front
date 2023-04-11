@@ -8,7 +8,7 @@ export default function GrupoSocioeducativoListagem() {
             url={"/grupo-socioeducativo-ficha"}
             remotePath={'/grupo-socioeducativo'}
             formTitle="Listagem de Grupos Socioeducativos"
-            addButtonLabel="Criar Novo Grupo Socioeducativo"
+            addButtonLabel="Cadastrar Grupo Socioeducativo"
             onRowRemoveButton={GrupoSocioeducativoService.deleteGrupoSocioeducativo}
             retrieveDataFunction={GrupoSocioeducativoService.getGruposSocioeducativos}
             columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}

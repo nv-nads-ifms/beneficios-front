@@ -79,7 +79,7 @@ export default function FornecedorListagem() {
                         perfil.escrever && (
                             <React.Fragment>
                                 <NewButton
-                                    label="Criar Novo Fornecedor"
+                                    label="Cadastrar Fornecedor"
                                     onClick={() => handleAction(0, 'edit')} />
                             </React.Fragment>
                         )

@@ -8,7 +8,7 @@ export default function CondicaoDeTrabalhoListagem() {
             url={"/condicoes-de-trabalho-ficha"}
             remotePath={"/condicoes-de-trabalho"}
             formTitle="Listagem de Condições de Trabalho"
-            addButtonLabel="Criar Nova Condição de Trabalho"
+            addButtonLabel="Cadastrar Condição de Trabalho"
             onRowRemoveButton={CondicaoDeTrabalhoService.deleteCondicaoDeTrabalho}
             retrieveDataFunction={CondicaoDeTrabalhoService.getCondicoesDeTrabalho}
             columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}

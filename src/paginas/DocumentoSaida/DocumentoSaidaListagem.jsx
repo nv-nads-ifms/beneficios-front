@@ -110,7 +110,7 @@ export default function DocumentoSaidaListagem() {
                             />
                             {perfil.escrever && (
                                 <NewButton
-                                    label="Criar Documento de Saída"
+                                    label="Cadastrar Documento de Saída"
                                     onClick={() => handleAction(0, 'edit')} />
                             )}
                         </React.Fragment>

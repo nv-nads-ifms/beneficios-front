@@ -76,7 +76,7 @@ export default function TipoMoradiaListagem() {
                         perfil.escrever && (
                             <React.Fragment>
                                 <NewButton
-                                    label="Criar Novo Tipo de Moradia"
+                                    label="Cadastrar Tipo de Moradia"
                                     onClick={() => handleAction(0, 'edit')} />
                             </React.Fragment>
                         )

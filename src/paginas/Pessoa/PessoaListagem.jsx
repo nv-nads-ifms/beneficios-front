@@ -139,7 +139,7 @@ export default function PessoaListagem() {
                             />
                             {perfil.escrever && (
                                 <NewButton
-                                    label="Criar Pessoa"
+                                    label="Cadastrar Pessoa"
                                     onClick={() => handleAction(0, 'edit')} />
                             )}
                         </React.Fragment>

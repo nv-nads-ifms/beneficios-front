@@ -105,7 +105,7 @@ export default function FuncionarioListagem() {
                             />
                             {perfil.escrever && (
                                 <NewButton
-                                    label="Adicionar Funcionario"
+                                    label="Cadastrar Funcionario"
                                     onClick={() => handleAction(0, 'edit')}
                                     className={classes.button} />
                             )}

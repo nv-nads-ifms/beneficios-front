@@ -8,7 +8,7 @@ export default function ContatoListagem() {
             url={"/contato-ficha"}
             remotePath={'/contato'}
             formTitle="Listagem de Tipos de Contato"
-            addButtonLabel="Criar Novo Tipo de Contato"
+            addButtonLabel="Cadastrar Tipo de Contato"
             onRowRemoveButton={ContatoService.deleteContato}
             retrieveDataFunction={ContatoService.getContato}
             columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' },{ id: 'tipoContato', label: 'Tipo do Contato' }]}

@@ -130,7 +130,7 @@ function UsuarioListagem() {
                             />
                             {perfil.escrever && (
                                 <NewButton
-                                    label="Criar Usuário"
+                                    label="Cadastrar Usuário"
                                     onClick={() => handleAction(0, 'edit')}
                                     className={classes.button} />
                             )}

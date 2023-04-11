@@ -8,7 +8,7 @@ export default function ParentescoListagem() {
             url={"/parentescos-ficha"}
             remotePath={'/parentescos'}
             formTitle="Listagem de Parentescos"
-            addButtonLabel="Criar Novo Parentesco"
+            addButtonLabel="Cadastrar Parentesco"
             onRowRemoveButton={ParentescoService.deleteParentesco}
             retrieveDataFunction={ParentescoService.getParentescos}
             columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}
