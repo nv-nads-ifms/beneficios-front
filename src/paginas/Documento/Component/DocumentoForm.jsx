@@ -4,7 +4,7 @@ import CustomTextField from '../../../components/CustomFields/CustomTextField';
 
 export default function DocumentoForm(props) {
     const { documento, onChange, status } = props;
-    const enabledFields = status != null && status === 'edit';
+    //const enabledFields = status != null && status === 'edit';
 
     return (
         <React.Fragment>
@@ -17,7 +17,7 @@ export default function DocumentoForm(props) {
                         placeholder="Digite a descrição do Tipo de Documento"
                         autoFocus={true}
                         onChangeHandler={onChange}
-                        disabled={!enabledFields}
+                        //disabled={!enabledFields}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -32,7 +32,7 @@ export default function DocumentoForm(props) {
                             />
                         }
                         label="Exige órgão expedidor?"
-                        disabled={!enabledFields}
+                        //disabled={!enabledFields}
                     />
                 </Grid>
             </Grid>
