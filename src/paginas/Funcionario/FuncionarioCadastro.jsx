@@ -124,7 +124,7 @@ export default function FuncionarioCadastro() {
                         onChangeHandler={(event, newValue) => onChange(event, newValue)}
                         getOptionSelected={(option, value) => option.id === value.id}
                         getOptionLabel={(option) => option.numeroDaUnidade + " - " + option.nome}
-                        disabled={!enabledFields}
+                        disabled={status === 'view' || id > 0}
                     />
                 </Grid>
             </Grid>

@@ -1,10 +1,11 @@
 import React from 'react';
 import { FormControlLabel, Grid, Switch } from '@material-ui/core';
 import CustomTextField from '../../../components/CustomFields/CustomTextField';
+import MuiAlert from '@material-ui/lab/Alert';
 
 export default function DocumentoForm(props) {
     const { documento, onChange, status } = props;
-    const enabledFields = status != null && status === 'edit';
+    //const enabledFields = status != null && status === 'edit';
 
     return (
         <React.Fragment>
@@ -17,7 +18,8 @@ export default function DocumentoForm(props) {
                         placeholder="Digite a descrição do Tipo de Documento"
                         autoFocus={true}
                         onChangeHandler={onChange}
-                        disabled={!enabledFields}
+                        //disabled={!enabledFields}
+                     
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -30,10 +32,14 @@ export default function DocumentoForm(props) {
                                 color="primary"
                                 size="medium"
                             />
+                           
                         }
+                        
                         label="Exige órgão expedidor?"
-                        disabled={!enabledFields}
+                        
+                       //disabled={!enabledFields}
                     />
+                   
                 </Grid>
             </Grid>
         </React.Fragment>
