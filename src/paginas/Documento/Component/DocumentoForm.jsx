@@ -19,7 +19,6 @@ export default function DocumentoForm(props) {
                         autoFocus={true}
                         onChangeHandler={onChange}
                         //disabled={!enabledFields}
-                     
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -36,8 +35,7 @@ export default function DocumentoForm(props) {
                         }
                         
                         label="Exige órgão expedidor?"
-                        
-                       //disabled={!enabledFields}
+                        //disabled={!enabledFields}
                     />
                    
                 </Grid>
