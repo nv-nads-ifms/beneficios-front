@@ -1,10 +1,9 @@
 import React from "react";
 import { useParams, useHistory } from 'react-router-dom';
-
 import { FormControlLabel, Grid, Switch } from "@material-ui/core";
 import UnidadeAtendimentoService from "../../services/UnidadeAtendimentoService";
 import TipoUnidadeDeAtendimentoService from "../../services/TipoUnidadeDeAtendimentoService";
-
+import BairroService from "../../services/BairroService";
 import CustomTextField from "../../components/CustomFields/CustomTextField";
 import CustomAutoComplete from "../../components/CustomFields/CustomAutoComplete";
 import Logradouro from "../../components/Endereco/Logradouro";
@@ -101,11 +100,28 @@ export default function UnidadeAtendimentoCadastro() {
                         onChangeHandler={onChange} />
                 </Grid>
                 <Grid item xs={12}>
-                    <Logradouro 
+                    <Logradouro
                         disabled={!enabledFields}
-                        obj={unidadeAtendimento.endereco} 
+                        obj={unidadeAtendimento.endereco}
                         callback={(value) => setData("endereco", value)} />
                 </Grid>
+
+                <Grid item xs={12}>
+                    <CustomAutoComplete
+                        id="bairrosAtendidos"
+                        value={unidadeAtendimento.endereco}
+                        retrieveDataFunction={BairroService.getListaBairros}
+                        label="Bairros Atendidos"
+                        placeholder="<< Selecione os Bairros Atendidos pela Unidade >>"
+                        disabled={!enabledFields}
+                        onChangeHandler={onChange}
+                        //getOptionSelected={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => option.nome}
+                        multiple
+                    />
+
+                </Grid>
+
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={
