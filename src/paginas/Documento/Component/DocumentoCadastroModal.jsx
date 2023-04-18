@@ -5,6 +5,7 @@ import DocumentoForm from './../Component/DocumentoForm';
 import CustomAlert from '../../../components/CustomAlert/CustomAlert';
 import useErros from '../../../hooks/useErros';
 import DialogForms from '../../../components/CustomForms/DialogForms';
+import { saveModalMessage } from '../../../api/utils/modalMessages';
 
 export default function DocumentoCadastroModal(props) {
     const { openModal, onClose, callback } = props;
@@ -32,19 +33,28 @@ export default function DocumentoCadastroModal(props) {
     const handlePost = (event) => {
         event.preventDefault();
 
-        DocumentoService.saveDocumento(0, documento)
-            .then(r => r.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    validarCampos(data);
 
-                    setRequestMessage("Alguns campos não foram informados!");
-                    setOpen(true);
-                } else {
-                    callback(data);
-                    onClose();
-                }
-            });
+        saveModalMessage(
+            () => DocumentoService.saveDocumento(0, documento),
+            (data) => {
+                callback(data);
+                onClose();
+            }
+        );
+
+        /* DocumentoService.saveDocumento(0, documento)
+             .then(r => r.json())
+             .then(data => {
+                 if (Array.isArray(data)) {
+                     validarCampos(data);
+ 
+                     setRequestMessage("Alguns campos não foram informados!");
+                     setOpen(true);
+                 } else {
+                     callback(data);
+                     onClose();
+                 }
+             });*/
     }
     return (
         <DialogForms
@@ -58,7 +68,7 @@ export default function DocumentoCadastroModal(props) {
                 documento={documento}
                 erros={erros}
                 onChange={onChange} />
-                
+
             <CustomAlert open={open} setOpen={setOpen}
                 requestMessage={requestMessage} messageType="warning" />
         </DialogForms>
