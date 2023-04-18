@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormControlLabel, Grid, Switch } from '@material-ui/core';
 import CustomTextField from '../../../components/CustomFields/CustomTextField';
+import MuiAlert from '@material-ui/lab/Alert';
 
 export default function DocumentoForm(props) {
     const { documento, onChange, status } = props;
@@ -30,10 +31,13 @@ export default function DocumentoForm(props) {
                                 color="primary"
                                 size="medium"
                             />
+                           
                         }
+                        
                         label="Exige órgão expedidor?"
                         //disabled={!enabledFields}
                     />
+                   
                 </Grid>
             </Grid>
         </React.Fragment>

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper, Divider, InputBase, makeStyles } from '@material-ui/core';
 import CustomTable from '../../components/CustomTable/CustomTable';
 import SearchIcon from '@material-ui/icons/Search';
-import { Paper, Divider, InputBase, makeStyles } from '@material-ui/core';
 import DialogForms from '../../components/CustomForms/DialogForms';
 import BairroTableRow from './BairroTableRow';
 import BairroService from '../../services/BairroService';

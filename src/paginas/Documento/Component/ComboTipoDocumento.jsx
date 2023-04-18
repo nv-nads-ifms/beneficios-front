@@ -25,6 +25,8 @@ export default function ComboTipoDocumento(props) {
         setLength(length+1);
         setTipoDocumento(value);
         callback(value);
+        handleClose();
+        
     }
 
     return (
