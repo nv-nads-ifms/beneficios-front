@@ -13,7 +13,7 @@ import useErros from '../../hooks/useErros';
 import { validarCampo } from '../../models/validaCampos';
 import { closeMessageAlert, emptyMessageAlert, sendMessageAlert } from '../../api/utils/customMessages';
 import { Message } from '../../api/utils/constants';
-import { login, setCurrentUser } from '../../api/services/auth';
+import { login } from '../../api/services/auth';
 
 const useStyles = makeStyles((theme) => ({
     messages: {
@@ -79,7 +79,6 @@ export default function Autenticacao() {
                     sendMessage(Message.WARNING, "Falha na autenticação!");
                 } else {
                     login(resp.token);
-                    setCurrentUser(credentials.email);
                     history.push('/home');
                 }
             })

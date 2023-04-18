@@ -14,7 +14,7 @@ class UsuarioService {
     }
 
     getUsuarioByEmail(email) {
-        return getData(USUARIO_API_BASE_URL+'/email/'+email);
+        return getData(USUARIO_API_BASE_URL+'/email',{email: email});
     }
     
     getUsuarioById(id) {

@@ -18,7 +18,7 @@ import { List } from '@material-ui/core';
 import ListItemLink from '../../components/ListItemLink/ListItemLink';
 import MenuComponent from '../../components/Menu/MenuComponent';
 import UserView from './UserView';
-import { getCurrentUser, getUserContent, logout, setUserContent } from '../../api/services/auth';
+import { getCurrentUser, logout } from '../../api/services/auth';
 import UsuarioService from '../../services/UsuarioService';
 
 const drawerWidth = 240;
@@ -78,23 +78,21 @@ function Menus(props) {
 
   const [usuario, setUsuario] = React.useState({});
   const localUserData = getCurrentUser();
-  const content = getUserContent();
   
   React.useEffect(() => {
-    if (localUserData !== null && content == null) {
+    if (localUserData !== null) {
       UsuarioService.getUsuarioByEmail(localUserData)
         .then(response => {
-          setUserContent(JSON.stringify(response.data));
           setUsuario(response.data);
         })
         .catch(error => {
           logout();
           history.push('/login');
         });
-    } else if (content != null) {
-      setUsuario(JSON.parse(content));
+    } else {
+      logout();
     }
-  }, [localUserData, content, history]);
+  }, [localUserData, history]);
   
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

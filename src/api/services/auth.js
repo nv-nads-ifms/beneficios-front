@@ -1,6 +1,4 @@
 export const TOKEN_KEY = "@beneficios-eventuais-Token";
-export const LOCAL_USER_DATA_KEY = '@localUserData';
-export const LOCAL_USER_CONTENT = '@localUserContent';
 
 export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
@@ -11,28 +9,20 @@ export const login = token => {
 
 export const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(LOCAL_USER_CONTENT);
     localStorage.removeItem("REACT_TOKEN_AUTH_KEY");
-    localStorage.removeItem("localUserData");
-    removeCurrentUser();
 };
-
-export const getUserContent = () => {
-    return localStorage.getItem(LOCAL_USER_CONTENT);
-}
-
-export const setUserContent = (value) => {
-    localStorage.setItem(LOCAL_USER_CONTENT, value);
-}
 
 export const getCurrentUser = () => {
-    return localStorage.getItem(LOCAL_USER_DATA_KEY);
+    const jsonToken = parseJwt(getToken());
+    return jsonToken.sub;
 };
 
-export const setCurrentUser = (user) => {
-    localStorage.setItem(LOCAL_USER_DATA_KEY, user);
-};
+export function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
-export const removeCurrentUser = () => {
-    localStorage.removeItem(LOCAL_USER_DATA_KEY);
-};
+    return JSON.parse(jsonPayload);
+}

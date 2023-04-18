@@ -1,5 +1,5 @@
 import React from 'react';
-import { isAuthenticated, removeCurrentUser } from './api/services/auth';
+import { isAuthenticated } from './api/services/auth';
 
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 
@@ -84,12 +84,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     />
 )
 
-const Routes = () => {
-    const autenticated = isAuthenticated();
-    if (!autenticated) {
-        removeCurrentUser();
-    }
-    
+const Routes = () => {    
     return (
         <HashRouter>
             <Switch>

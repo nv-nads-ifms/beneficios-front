@@ -32,33 +32,19 @@ export const createApiTokenFunctions = () => {
             localUrl.search = new URLSearchParams(params).toString();
         }
         return api.get(localUrl);
-
-        // return authFetch(localUrl);
     };
 
     const postData = (url, params) => {
 
         return api.post(API_BASE_URL + url, params);
-        // return authFetch(API_BASE_URL + url, {
-        //     method: 'POST',
-        //     body: JSON.stringify(params)
-        // });
     };
 
     const putData = (url, id, params) => {
         return api.put(API_BASE_URL + url + '/' + id, params);
-        // return authFetch(API_BASE_URL + url + '/' + id, {
-        //     method: 'PUT',
-        //     body: JSON.stringify(params)
-        // });
     };
 
     const deleteData = (url, params) => {
         return api.delete(API_BASE_URL + url, params);
-        // return authFetch(API_BASE_URL + url, {
-        //     method: 'DELETE',
-        //     body: JSON.stringify(params)
-        // });
     };
 
     const postImage = (url, params) => {
@@ -67,11 +53,6 @@ export const createApiTokenFunctions = () => {
         }
 
         return api.post(API_BASE_URL + url, params, config);
-
-        // return authFileFetch(API_BASE_URL + url, {
-        //     method: 'POST',
-        //     body: params
-        // });
     }
 
     const putImage = (url, params) => {
@@ -80,10 +61,6 @@ export const createApiTokenFunctions = () => {
         }
 
         return api.put(API_BASE_URL + url, params, config);
-        // return authFileFetch(API_BASE_URL + url, {
-        //     method: 'PUT',
-        //     body: params
-        // });
     }
 
     const getImage = (url) => {
@@ -92,9 +69,6 @@ export const createApiTokenFunctions = () => {
         }
 
         return api.get(API_BASE_URL + url, config);
-        // return authFileFetch(API_BASE_URL + url, {
-        //     method: 'GET'
-        // });
     }
 
     return {

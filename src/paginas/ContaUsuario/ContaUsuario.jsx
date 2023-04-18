@@ -14,7 +14,6 @@ import { userContext } from '../../hooks/userContext';
 import UsuarioService from "../../services/UsuarioService";
 
 import noImageAvailable from "../../img/noImageAvailable.png";
-import { setUserContent } from "../../api/services/auth";
 import { Message } from "../../api/utils/constants";
 
 export default function ContaUsuario() {
@@ -83,7 +82,6 @@ export default function ContaUsuario() {
                 } else {
                     sendMessage(Message.SUCCESS, "Imagem salva com sucesso!");
                     setUsuario(data);
-                    setUserContent(JSON.stringify(data));
                 }
             })
             .catch(error => {
