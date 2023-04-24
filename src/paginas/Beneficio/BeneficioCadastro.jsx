@@ -18,7 +18,7 @@ const columnsNames = [
 ];
 
 const emptyBeneficio = {
-    descricao: '',
+    nome: '',
     outraConcessao: false,
     estoque: [],
 }
@@ -91,10 +91,10 @@ export default function BeneficioCadastro() {
             <Grid container spacing={1} direction="column">
                 <Grid item xs={12}>
                     <CustomTextField
-                        id="descricao"
-                        label="Descrição"
-                        value={beneficio.descricao}
-                        placeholder="Digite a descrição do Benefício Eventual"
+                        id="nome"
+                        label="Nome"
+                        value={beneficio.nome}
+                        placeholder="Digite o nome do Benefício Eventual"
                         autoFocus={true}
                         onChangeHandler={onChange}
                         disabled={!enabledFields}

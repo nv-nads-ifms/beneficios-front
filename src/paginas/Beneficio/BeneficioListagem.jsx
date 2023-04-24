@@ -13,7 +13,7 @@ import BeneficioService from '../../services/BeneficioService';
 import BeneficioTableRow from './Components/BeneficioTableRow';
 
 const columnsNames = [
-    { id: 'descricao', label: 'Descrição' },
+    { id: 'nome', label: 'Nome' },
     { id: 'tipoConcessao', label: 'Tipo de Concessão' },
     { id: 'disponivel', label: 'Disponível' }];
 
@@ -87,7 +87,7 @@ export default function BeneficioListagem() {
                         perfil.escrever && (
                             <React.Fragment>
                                 <NewButton
-                                    label="Criar Novo Benefício Eventual"
+                                    label="Cadastrar Novo Benefício Eventual"
                                     onClick={() => handleAction(0, 'edit')} />
                             </React.Fragment>
                         )
