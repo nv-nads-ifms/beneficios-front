@@ -13,7 +13,7 @@ import SettingsCellIcon from '@material-ui/icons/SettingsCell';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 
 const emptyContato = {
-    descricao: '',
+    nome: '',
     contato: '',
 };
 
@@ -54,12 +54,12 @@ export default function ContatoForm(props) {
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12}>
                     <CustomTextField
-                        id="descricao"
-                        label="Descrição"
-                        value={contato.descricao}
-                        placeholder="Informe a descrição do Tipo de Contato"
+                        id="nome"
+                        label="Nome"
+                        value={contato.nome}
+                        placeholder="Informe o nome do Tipo de Contato"
                         autoFocus={true}
-                        onChangeHandler={(e) => setValue('descricao', e.target.value)}
+                        onChangeHandler={(e) => setValue('nome', e.target.value)}
                         disabled={!enabledFields}
                     />
                 </Grid>

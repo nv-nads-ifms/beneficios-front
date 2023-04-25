@@ -13,12 +13,12 @@ export default function ContatoCadastroModal(props) {
     const [messageAlert, setMessageAlert] = React.useState(emptyMessageAlert);
 
     const [contato, setContato] = React.useState({
-        descricao: '',
+        nome: '',
         tipoContato: '',
     });
 
     const [erros, validarCampos] = useErros({
-        descricao: validarCampo,
+        nome: validarCampo,
         tipoContato: validarCampo,
     });
 

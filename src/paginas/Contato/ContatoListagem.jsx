@@ -11,7 +11,7 @@ export default function ContatoListagem() {
             addButtonLabel="Cadastrar Tipo de Contato"
             onRowRemoveButton={ContatoService.deleteContato}
             retrieveDataFunction={ContatoService.getContato}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' },{ id: 'tipoContato', label: 'Tipo do Contato' }]}
+            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' },{ id: 'tipoContato', label: 'Tipo do Contato' }]}
             idColumnName={'id'}
         />
     );
