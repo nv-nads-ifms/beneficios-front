@@ -4,10 +4,12 @@ import {
     Card, CardActions, CardContent, CardHeader,
     Grid, Tab, Tabs, Typography
 } from '@material-ui/core';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import CardPessoaComponent from '../../Prontuario/Components/CardPessoaComponent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { yellow } from '@material-ui/core/colors';
 import AtendimentoService from '../../../services/AtendimentoService';
+import ProntuarioService from '../../../services/ProntuarioService'
 import AnaliseFicha from '../AnaliseFicha';
 import TabPanel, { a11yProps } from '../../../components/CustomTabs/TabPanel';
 import CustomTextField from '../../../components/CustomFields/CustomTextField';
@@ -15,18 +17,29 @@ import ImportButton from '../../../components/CustomButtons/ImportButton';
 import { emptyProntuario } from '../../../models/Prontuario';
 import AnaliseHistoricoSolicitacoesView from './AnaliseHistoricoSolicitacoesView';
 import { importModalMessage } from '../../../api/utils/modalMessages';
+import NewButton from '../../../components/CustomButtons/NewButton';
+import ProntuarioFormGeralComponent from '../../Prontuario/Components/ProntuarioFormGeralComponent';
+import { useHistory } from 'react-router-dom';
+
 
 export default function AnaliseSolicitacaoView(props) {
     const { atendimento, callback } = props;
     const prontuario = atendimento.prontuario;
     const [tabIndex, setTabIndex] = React.useState(0);
-    
+    let history = useHistory();
+
     const handleImportarProntuario = () => {
         importModalMessage(
             () => AtendimentoService.importarAtendimento(atendimento.id),
             (value) => callback(value)
         );
     }
+
+    const buscarProntuario = () => {
+        history.push('/prontuarios-ficha/0/edit');
+    }
+
+    
 
     return (
         <Grid container spacing={2} direction="column">
@@ -58,6 +71,10 @@ export default function AnaliseSolicitacaoView(props) {
                                     tooltip="Clique aqui para importar o Prontuário da pessoa 
                                     assim que ele estiver ATIVO."
                                     onClick={handleImportarProntuario} />
+
+                                <NewButton
+                                    label="Cadastrar um novo prontuário"
+                                   onClick={buscarProntuario}/>
                             </CardActions>
                         </Card>
                     </React.Fragment>
