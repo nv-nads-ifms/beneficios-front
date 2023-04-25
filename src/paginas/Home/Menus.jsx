@@ -103,6 +103,7 @@ function Menus(props) {
   const menuCadastro = getMenus('CADASTRO', usuario);
   const menuAnalise = getMenus('ANALISE', usuario);
   const menuEstoque = getMenus('ESTOQUE', usuario);
+  const menuLocalizacao = getMenus('LOCALIZACAO', usuario);
 
   const drawer = (
     <div>
@@ -139,6 +140,11 @@ function Menus(props) {
       {menuCadastro.length > 0 && (
         <div>
           <MenuComponent menus={menuCadastro} description="Cadastros" />
+        </div>
+      )}
+      {menuLocalizacao.length > 0 && (
+        <div>
+          <MenuComponent menus={menuLocalizacao} description="Localização" />
         </div>
       )}
     </div>

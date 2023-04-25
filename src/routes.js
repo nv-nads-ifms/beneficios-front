@@ -66,6 +66,8 @@ import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEnt
 import DocumentoSaidaListagem from './paginas/DocumentoSaida/DocumentoSaidaListagem';
 import DocumentoSaidaCadastro from './paginas/DocumentoSaida/DocumentoSaidaCadastro';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
+import CidadeListagem from './paginas/Cidade/CidadeListagem';
+import CidadeForm from './paginas/Cidade/CidadeForm';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -117,6 +119,10 @@ const Routes = () => {
                 <PrivateRoute path='/tipos-de-moradia-ficha/:id/:status' component={TipoMoradiaCadastro} />
                 <PrivateRoute path='/grupo-socioeducativo' component={GrupoSocioeducativoListagem} />
                 <PrivateRoute path='/grupo-socioeducativo-ficha/:id/:status' component={GrupoSocioeducativoCadastro} />
+
+                {/* Localização */}
+                <PrivateRoute path='/cidades' component={CidadeListagem} />
+                <PrivateRoute path='/cidades-ficha/:id/:status' component={CidadeForm} />
 
                 {/* Telas de Administração */}
                 <PrivateRoute path='/funcoes' component={FuncaoListagem} />

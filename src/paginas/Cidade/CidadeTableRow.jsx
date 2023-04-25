@@ -1,11 +1,19 @@
 import React from 'react';
-import { IconButton } from "@material-ui/core";
-import { CheckOutlined } from "@material-ui/icons";
 import { StyledTableCell, StyledTableRow } from "../../components/CustomTable/AutoLoadTable";
+import ListButton, { ButtonType } from '../../components/CustomButtons/ListButtons';
 
 export default function CidadeTableRow(props) {
 
-    const { row, onSelectRow } = props;
+    const { row, onSelectRow, onView, onEdit, onRemove } = props;
+
+    const buttons = [];
+    if (onSelectRow != null) {
+        buttons.push({ label: 'Selecionar', type: ButtonType.SELECT, action: () => onSelectRow(row) });
+    } else {
+        buttons.push({ label: 'Ver', type: ButtonType.VIEW, action: () => onView(row) });
+        buttons.push({ label: 'Alterar', type: ButtonType.EDIT, action: () => onEdit(row) });
+        buttons.push({ label: 'Excluir', type: ButtonType.DELETE, action: () => onRemove(row) });
+    }
 
     return (
         <StyledTableRow hover tabIndex={-1}>
@@ -13,19 +21,13 @@ export default function CidadeTableRow(props) {
                 {row.nome}
             </StyledTableCell>
             <StyledTableCell>
-                {row.uf.nome + (row.uf.sigla !== '' ? " ("+row.uf.sigla+")" : '')}
+                {row.uf.nome + (row.uf.sigla !== '' ? " (" + row.uf.sigla + ")" : '')}
             </StyledTableCell>
             <StyledTableCell>
                 {row.uf.pais.nome}
             </StyledTableCell>
             <StyledTableCell align="center" >
-                {onSelectRow != null && (
-                    <IconButton
-                        onClick={() => onSelectRow(row)}
-                        aria-label="selecionar">
-                        <CheckOutlined />
-                    </IconButton>
-                )}
+                <ListButton buttons={buttons} />
             </StyledTableCell>
         </StyledTableRow>
     );
