@@ -12,10 +12,10 @@ export default function DocumentoForm(props) {
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <CustomTextField
-                        id="descricao"
-                        label="Descrição"
-                        value={documento.descricao}
-                        placeholder="Digite a descrição do Tipo de Documento"
+                        id="nome"
+                        label="Nome"
+                        value={documento.nome}
+                        placeholder="Digite o nome do Tipo de Documento"
                         autoFocus={true}
                         onChangeHandler={onChange}
                         //disabled={!enabledFields}

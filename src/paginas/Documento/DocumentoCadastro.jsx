@@ -16,7 +16,7 @@ export default function DocumentoCadastro() {
     let history = useHistory();
 
     const [documento, setDocumento] = React.useState({
-        descricao: '',
+        nome: '',
         exigeOrgaoExpedidor: '',
     });
 

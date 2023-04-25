@@ -13,12 +13,12 @@ export default function DocumentoCadastroModal(props) {
     const [open, setOpen] = React.useState(false);
 
     const [documento, setDocumento] = React.useState({
-        descricao: '',
+        nome: '',
         exigeOrgaoExpedidor: '',
     });
 
     const [erros, validarCampos] = useErros({
-        descricao: validarCampo,
+        nome: validarCampo,
     });
 
     const onChange = (event) => {
@@ -41,21 +41,8 @@ export default function DocumentoCadastroModal(props) {
                 onClose();
             }
         );
-
-        /* DocumentoService.saveDocumento(0, documento)
-             .then(r => r.json())
-             .then(data => {
-                 if (Array.isArray(data)) {
-                     validarCampos(data);
- 
-                     setRequestMessage("Alguns campos não foram informados!");
-                     setOpen(true);
-                 } else {
-                     callback(data);
-                     onClose();
-                 }
-             });*/
     }
+    
     return (
         <DialogForms
             title="Cadastro de Tipo de Documento"

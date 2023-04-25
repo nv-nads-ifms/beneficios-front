@@ -12,7 +12,7 @@ export default function DocumentoListagem() {
             onRowRemoveButton={DocumentoService.deleteDocumento}
             retrieveDataFunction={DocumentoService.getDocumentos}
             columns={[
-                { id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' },
+                { id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' },
             ]}
             idColumnName={'id'}
         />
