@@ -11,7 +11,7 @@ export default function ParentescoListagem() {
             addButtonLabel="Cadastrar Parentesco"
             onRowRemoveButton={ParentescoService.deleteParentesco}
             retrieveDataFunction={ParentescoService.getParentescos}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}
+            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
             idColumnName={'id'}
         />
     );

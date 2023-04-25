@@ -12,11 +12,11 @@ export default function ParentescoCadastroModal(props) {
     const [messageAlert, setMessageAlert] = React.useState(emptyMessageAlert);
 
     const [parentesco, setParentesco] = React.useState({
-        descricao: '',
+        nome: '',
     });
 
     const [erros, validarCampos] = useErros({
-        descricao: validarCampo,
+        nome: validarCampo,
     });
 
     const onChange = (event) => {
@@ -59,7 +59,7 @@ export default function ParentescoCadastroModal(props) {
             messageAlert={messageAlert}
         >
             <CustomTextField
-                id="descricao"
+                id="nome"
                 label="Nome"
                 value={parentesco.descricao}
                 placeholder="Informe o nome do Parentesco"

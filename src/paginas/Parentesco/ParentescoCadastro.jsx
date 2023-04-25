@@ -10,9 +10,9 @@ export default function ParentescoCadastro() {
             id={id}
             title="Cadastro de Parentesco"
             retrieveData={ParentescoService.getParentescoById}
-            fieldname="descricao"
-            label="Descrição"
-            placeholder={"Digite a descrição do Parentesco"}
+            fieldname="nome"
+            label="Nome"
+            placeholder={"Digite o nome do Parentesco"}
             saveFunction={ParentescoService.saveParentesco}
             returnUrl={'/parentescos'}
             read={status === 'view'}
