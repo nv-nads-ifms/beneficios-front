@@ -11,7 +11,7 @@ export default function CondicaoDeMoradiaListagem() {
             addButtonLabel="Cadastrar Condição de Moradia"
             onRowRemoveButton={CondicaoDeMoradiaService.deleteCondicaoDeMoradia}
             retrieveDataFunction={CondicaoDeMoradiaService.getCondicoesDeMoradia}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}
+            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
             idColumnName={'id'}
         />
     );

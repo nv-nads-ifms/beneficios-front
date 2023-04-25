@@ -11,8 +11,8 @@ export default function CondicaoDeMoradiaCadastro() {
             id={id}
             title="Cadastro de Condição de Moradia"
             retrieveData={CondicaoDeMoradiaService.getCondicaoDeMoradiaById}
-            fieldname="descricao"
-            label="Descrição"
+            fieldname="nome"
+            label="Nome"
             placeholder={"Digite a condição de moradia"}
             saveFunction={CondicaoDeMoradiaService.saveCondicaoDeMoradia}
             returnUrl={'/condicoes-de-moradia'}
