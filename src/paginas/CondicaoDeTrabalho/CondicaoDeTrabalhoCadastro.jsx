@@ -10,8 +10,8 @@ export default function CondicaoDeTrabalhoCadastro() {
             id={id}
             title="Cadastro de Condições de Trabalho"
             retrieveData={CondicaoDeTrabalhoService.getCondicaoDeTrabalhoById}
-            fieldname="descricao"
-            label="Descrição"
+            fieldname="nome"
+            label="Nome"
             placeholder={"Digite a descrição da condição de trabalho"}
             saveFunction={CondicaoDeTrabalhoService.saveCondicaoDeTrabalho}
             returnUrl={'/condicoes-de-trabalho'}

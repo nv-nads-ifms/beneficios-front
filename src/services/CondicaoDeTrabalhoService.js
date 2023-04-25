@@ -17,7 +17,7 @@ class CondicaoDeTrabalhoService {
     }
     
     saveCondicaoDeTrabalho(id, value) {
-        const params = {"descricao": value}
+        const params = {"nome": value}
         if (id > 0) {
             return putData(CONDICAO_DE_TRABALHO_API_BASE_URL, id, params);
         }

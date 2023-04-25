@@ -11,7 +11,7 @@ export default function CondicaoDeTrabalhoListagem() {
             addButtonLabel="Cadastrar Condição de Trabalho"
             onRowRemoveButton={CondicaoDeTrabalhoService.deleteCondicaoDeTrabalho}
             retrieveDataFunction={CondicaoDeTrabalhoService.getCondicoesDeTrabalho}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}
+            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
             idColumnName={'id'}
         />
     );
