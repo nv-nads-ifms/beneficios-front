@@ -5,6 +5,7 @@ import CustomAlert from '../../../components/CustomAlert/CustomAlert';
 import useErros from '../../../hooks/useErros';
 import DialogForms from '../../../components/CustomForms/DialogForms';
 import CustomTextField from '../../../components/CustomFields/CustomTextField';
+import { saveModalMessage } from '../../../api/utils/modalMessages';
 
 export default function OrgaoExpedidorCadastroModal(props) {
     const { openModal, onClose, callback } = props;
@@ -15,7 +16,7 @@ export default function OrgaoExpedidorCadastroModal(props) {
         descricao: '',
     });
 
-    const [erros, validarCampos] = useErros({
+    const [documento, erros, validarCampos] = useErros({
         descricao: validarCampo,
     });
 
@@ -30,9 +31,18 @@ export default function OrgaoExpedidorCadastroModal(props) {
 
     const handlePost = (event) => {
         event.preventDefault();
-
-        OrgaoExpedidorService.saveOrgaoExpedidor(0, orgaoExpedidor.descricao)
-            .then(r => r.json())
+          
+        saveModalMessage(
+            () => OrgaoExpedidorService.saveDocumento(0, documento),
+            (data) => {
+                callback(data);
+                onClose();
+            }
+        );
+        
+        
+        
+        /* .then(r => r.json())
             .then(data => {
                 if (Array.isArray(data)) {
                     validarCampos(data);
@@ -44,6 +54,7 @@ export default function OrgaoExpedidorCadastroModal(props) {
                     onClose();
                 }
             });
+            */
     }
     return (
         <DialogForms
