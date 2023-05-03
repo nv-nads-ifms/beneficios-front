@@ -78,7 +78,7 @@ function Menus(props) {
 
   const [usuario, setUsuario] = React.useState({});
   const localUserData = getCurrentUser();
-  
+
   React.useEffect(() => {
     if (localUserData !== null) {
       UsuarioService.getUsuarioByEmail(localUserData)
