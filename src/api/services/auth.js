@@ -14,7 +14,6 @@ export const logout = () => {
 
 export const getCurrentUser = () => {
     const parsedToken = getParsedToken();
-    console.log(parsedToken);
     if (!isTokenExpired(parsedToken)) {
         return parsedToken.sub;
     }
