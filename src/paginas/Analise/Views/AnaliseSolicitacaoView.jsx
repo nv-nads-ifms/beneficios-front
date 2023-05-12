@@ -15,18 +15,28 @@ import ImportButton from '../../../components/CustomButtons/ImportButton';
 import { emptyProntuario } from '../../../models/Prontuario';
 import AnaliseHistoricoSolicitacoesView from './AnaliseHistoricoSolicitacoesView';
 import { importModalMessage } from '../../../api/utils/modalMessages';
+import NewButton from '../../../components/CustomButtons/NewButton';
+import { useHistory } from 'react-router-dom';
+
 
 export default function AnaliseSolicitacaoView(props) {
     const { atendimento, callback } = props;
     const prontuario = atendimento.prontuario;
     const [tabIndex, setTabIndex] = React.useState(0);
-    
+    let history = useHistory();
+
     const handleImportarProntuario = () => {
         importModalMessage(
             () => AtendimentoService.importarAtendimento(atendimento.id),
             (value) => callback(value)
         );
     }
+
+    const buscarProntuario = () => {
+        history.push('/prontuarios-ficha/0/edit');
+    }
+
+    
 
     return (
         <Grid container spacing={2} direction="column">
@@ -58,6 +68,10 @@ export default function AnaliseSolicitacaoView(props) {
                                     tooltip="Clique aqui para importar o Prontuário da pessoa 
                                     assim que ele estiver ATIVO."
                                     onClick={handleImportarProntuario} />
+
+                                <NewButton
+                                    label="Cadastrar um novo prontuário"
+                                   onClick={buscarProntuario}/>
                             </CardActions>
                         </Card>
                     </React.Fragment>

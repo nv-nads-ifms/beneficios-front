@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import UsuarioTableRow from './UsuarioTableRow';
 import UsuarioService from '../../services/UsuarioService';
 import CustomTable from '../../components/CustomTable/CustomTable';
-import { emptyData } from '../../api/utils/constants';
+import { Status, emptyData } from '../../api/utils/constants';
 import BaseForm from '../../components/CustomForms/BaseForm';
 import { Card, CardHeader, Collapse, CardContent } from '@material-ui/core';
 import NewButton from '../../components/CustomButtons/NewButton';
@@ -16,6 +16,14 @@ import { emptyFuncionario } from '../../models/Funcionario';
 import { deleteModalMessage, saveModalMessage } from '../../api/utils/modalMessages';
 import { userContext } from '../../hooks/userContext';
 import { getMenuPerfilByUrl } from '../../api/utils/menuUtils';
+import { Grid } from '@mui/material';
+import ComboPerfil from '../Perfil/ComboPerfil';
+
+const emptyPerfil = {
+    id: '',
+    nome: '',
+    status: Status.ATIVO
+};
 
 const columnsNames = [
     { id: 'id', label: 'ID' },
@@ -26,17 +34,24 @@ const columnsNames = [
     { id: 'enabled', label: 'Autorização' },
 ];
 
-const getRequestParams = (funcionario, page, pageSize) => {
+const getRequestParams = (perfil, funcionario, page, pageSize) => {
     let params = {};
     if (page) {
         params["page"] = page;
     }
+
     if (pageSize) {
         params["size"] = pageSize;
     }
+
+    if (perfil != null && perfil.id !== '') {
+        params["perfilId"] = perfil.id;
+    }
+
     if (funcionario != null && funcionario.id !== '') {
         params["funcionarioId"] = funcionario.id;
     }
+
     return params;
 };
 
@@ -49,7 +64,9 @@ function UsuarioListagem() {
     const classes = fichaStyles();
     const [expanded, setExpanded] = React.useState(false);
 
-    const [funcionario, setFuncionario] = React.useState(emptyFuncionario)
+    const [funcionario, setFuncionario] = React.useState(emptyFuncionario);
+    const [perfilSearch, setPerfilSearch] = React.useState(emptyPerfil);
+
     const [tamanho, setTamanho] = React.useState(0);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -58,7 +75,7 @@ function UsuarioListagem() {
 
     React.useEffect(() => {
         setDataFetched(false);
-        const params = getRequestParams(funcionario, page, rowsPerPage);
+        const params = getRequestParams(perfilSearch, funcionario, page, rowsPerPage);
         UsuarioService.getUsuarios(params)
             .then((resp) => {
                 setDataFetched(true);
@@ -66,7 +83,7 @@ function UsuarioListagem() {
                 setRowsPerPage(resp.data.pageable.pageSize);
                 setPage(resp.data.number);
             });
-    }, [funcionario, setRowsPerPage, setPage, page, rowsPerPage, tamanho]);
+    }, [perfilSearch, funcionario, setRowsPerPage, setPage, page, rowsPerPage, tamanho]);
 
     const handleAction = (id, action) => {
         history.push(`/usuarios-ficha/${id}/${action}`);
@@ -140,11 +157,22 @@ function UsuarioListagem() {
                 />
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <ComboFuncionario
-                            id="funcionario"
-                            value={funcionario}
-                            callback={(value) => setFuncionario(value)}
-                            label="Funcionário" />
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <ComboFuncionario
+                                    id="funcionario"
+                                    value={funcionario}
+                                    callback={(value) => setFuncionario(value)}
+                                    label="Funcionário" />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ComboPerfil
+                                    id="perfilSearch"
+                                    value={perfilSearch}
+                                    callback={(value) => setPerfilSearch(value)}
+                                    label="Perfil do Usuário" />
+                            </Grid>
+                        </Grid>
                     </CardContent>
                 </Collapse>
             </Card>
