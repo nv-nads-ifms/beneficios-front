@@ -90,7 +90,8 @@ function Menus(props) {
           history.push('/login');
         });
     } else {
-      logout();
+      UsuarioService.logout()
+        .then(response => logout());
     }
   }, [localUserData, history]);
   

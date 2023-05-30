@@ -52,7 +52,7 @@ export default function FieldBeneficioComponent(props) {
                 <FormControl fullWidth>
                     <InputBase
                         fullWidth={true}
-                        value={beneficio != null ? beneficio.descricao : ""}
+                        value={beneficio != null ? beneficio.nome : ""}
                         readOnly={true}
                         className={classes.input}
                         error={error != null ? !error.valido : false}

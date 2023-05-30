@@ -60,6 +60,10 @@ class UsuarioService {
     downloadFoto(id) {
         return getImage(USUARIO_API_BASE_URL+"/load-photo/"+id);
     }
+
+    logout() {
+        return getData("/auth/logout");
+    }
 }
 
 export default new UsuarioService();

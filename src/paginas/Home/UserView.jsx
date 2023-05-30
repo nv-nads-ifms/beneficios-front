@@ -10,6 +10,7 @@ import noImageAvailable from "../../img/noImageAvailable.png";
 import jwt_decode from "jwt-decode";
 import Moment, { utc } from 'moment';
 import RestoreIconButton from "../../components/CustomIconButtons/RestoreIconButton";
+import UsuarioService from '../../services/UsuarioService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,8 +74,11 @@ export default function UserView(props) {
     }, [usuario.funcionario]);
 
     const handleClick = () => {
-        logout();
-        history.push('/login');
+        UsuarioService.logout()
+            .then(response => {
+                logout();
+                history.push('/login');
+            });
     }
 
     const accountHandlerClick = () => {

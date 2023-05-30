@@ -13,7 +13,7 @@ export default function ItemDocumentoEntradaListagemTableRow(props) {
                 {row.numero}
             </StyledTableCell>
             <StyledTableCell>
-                {row.beneficioEventual.descricao}
+                {row.beneficioEventual.nome}
             </StyledTableCell>
             <StyledTableCell>
                 {row.quantidade}
