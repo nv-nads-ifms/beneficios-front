@@ -12,7 +12,7 @@ export default function ComboPais(props) {
     React.useEffect(() => {
         setPais(value);
     }, [value]);
-
+ 
     const handleClose = () => {
         setOpenModal(false);
     };
@@ -33,12 +33,12 @@ export default function ComboPais(props) {
                 id={id}
                 length={length}
                 value={pais}
-                retrieveDataFunction={PaisService.getPaises}
+                retrieveDataFunction={PaisService.getListaPaises}
                 label="Pais"
                 placeholder="<< Selecione um Pais >>"
                 error={erros}
                 onChangeHandler={(event, newValue) => callback(newValue)}
-                getOptionSelected={(option, value) => option.id === value.id}
+                getOptionSelected={(option, value) => value != null && option.id === value.id}
                 getOptionLabel={(option) => option.nome}
                 onShowInputModal={onShowCadastro}
             />

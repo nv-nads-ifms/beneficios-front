@@ -9,9 +9,8 @@ import { Grid } from "@material-ui/core";
 import CustomTextField from "../../components/CustomFields/CustomTextField";
 import DialogForms from "../../components/CustomForms/DialogForms";
 import { Message } from "../../api/utils/constants";
-import ComboPais from "./Components/ComboPais";
 import ComboUf from "./Components/ComboUf";
-import { emptyPais, emptyUf } from "../../models/Uf";
+import { emptyPais } from "../../models/Uf";
 
 const emptyErros = {
     nome: validarCampo,
@@ -24,7 +23,6 @@ export default function CidadeCadastro(props) {
 
     const [title, setTitle] = React.useState('');
     const [cidade, setCidade] = React.useState(emptyCidade);
-    const [pais, setPais] = React.useState(emptyPais);
     const [erros, validarCampos] = useErros(emptyErros);
 
     const sendMessage = (type, message) => {
@@ -32,7 +30,6 @@ export default function CidadeCadastro(props) {
     }
 
     React.useEffect(() => {
-        setPais(emptyPais);
         if (id > 0) {
             setTitle('Alteração de dados da Cidade');
         } else {
@@ -47,11 +44,6 @@ export default function CidadeCadastro(props) {
             ...cidade,
             [fieldname]: value,
         });
-    }
-
-    const paisHandler = (value) => {
-        setPais(value);
-        setValue(emptyUf, 'uf');
     }
 
     const onChange = (event) => {
@@ -96,18 +88,11 @@ export default function CidadeCadastro(props) {
                         onChangeHandler={onChange}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <ComboPais
-                        id="pais"
-                        value={pais}
-                        callback={paisHandler}
-                    />
-                </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <ComboUf
                         id='uf'
                         value={cidade.uf}
-                        parentValue={pais != null ? pais.id : 0}
+                        parentValue={0}
                         erros={erros.uf}
                         callback={(value) => setValue(value, 'uf')}
                     />

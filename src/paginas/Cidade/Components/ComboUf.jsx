@@ -25,10 +25,6 @@ export default function ComboUf(props) {
         setLength(length+1);
         setUf(value);
     }
-
-    const listaUfs = () => {
-        return UfService.getUfs(parentValue);
-    }
     
     return (
         <React.Fragment>
@@ -36,12 +32,12 @@ export default function ComboUf(props) {
                 id={id}
                 length={length}
                 value={uf}
-                retrieveDataFunction={listaUfs}
+                retrieveDataFunction={UfService.getListaUfs}
                 label="Uf"
                 placeholder="<< Selecione um Uf >>"
                 error={erros}
                 onChangeHandler={(event, newValue) => callback(newValue)}
-                getOptionSelected={(option, value) => option.id === value.id}
+                getOptionSelected={(option, value) => value != null && option.id === value.id}
                 getOptionLabel={(option) => option.nome}
                 onShowInputModal={onShowCadastro}
             />
