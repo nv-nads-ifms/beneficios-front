@@ -14,6 +14,7 @@ import { emptyFuncionario } from "../../models/Funcionario";
 import { saveModalMessage } from "../../api/utils/modalMessages";
 import { userContext } from "../../hooks/userContext";
 import { getMenuPerfilByUrl } from "../../api/utils/menuUtils";
+import PerfilService from "../../services/PerfilService";
 
 export default function FuncionarioCadastro() {
     let history = useHistory();
@@ -28,7 +29,14 @@ export default function FuncionarioCadastro() {
     React.useEffect(() => {
         if (id > 0) {
             FuncionarioService.getFuncionarioById(id)
-                .then(r => setFuncionario(r.data))
+                .then(r => {
+                    const data = r.data;
+                    const perfis = data.perfis.length > 0 ? data.perfis[0] : null;
+                    setFuncionario({
+                        ...data,
+                        perfil: perfis
+                    })
+                })
                 .catch(() => {
                     history.push('/404');
                 });
@@ -59,7 +67,7 @@ export default function FuncionarioCadastro() {
             backButton
             onSave={perfil.escrever && status !== 'view' ? handlePost : null}>
             <Grid container spacing={1}>
-                <Grid item xs={8}>
+                <Grid item md={8} xs={12}>
                     <CustomTextField
                         id="nome"
                         label="Nome"
@@ -70,7 +78,7 @@ export default function FuncionarioCadastro() {
                         disabled={!enabledFields}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item md={4} xs={12}>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Sexo</FormLabel>
                         <RadioGroup
@@ -92,7 +100,28 @@ export default function FuncionarioCadastro() {
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item md={8} xs={12}>
+                    <CustomTextField
+                        id="email"
+                        label="E-mail"
+                        type="email"
+                        value={funcionario.email}
+                        placeholder={"Digite o e-mail do funcionário"}
+                        autoFocus={true}
+                        onChangeHandler={(event) => onChange(event)}
+                        disabled={!enabledFields}
+                    />
+                </Grid>
+                <Grid item md={4} xs={12}>
+                    <CustomTextField
+                        id="nascimento"
+                        label="Data de Nascimento"
+                        value={Moment(funcionario.nascimento).format('Y-MM-DD')}
+                        type="date"
+                        onChangeHandler={(event) => onChange(event)}
+                        disabled={!enabledFields} />
+                </Grid>
+                <Grid item md={6} xs={12}>
                     <CustomAutoComplete
                         id="funcao"
                         value={funcionario.funcao}
@@ -105,14 +134,18 @@ export default function FuncionarioCadastro() {
                         disabled={!enabledFields}
                     />
                 </Grid>
-                <Grid item xs={4}>
-                    <CustomTextField
-                        id="nascimento"
-                        label="Data de Nascimento"
-                        value={Moment(funcionario.nascimento).format('Y-MM-DD')}
-                        type="date"
-                        onChangeHandler={(event) => onChange(event)}
-                        disabled={!enabledFields} />
+                <Grid item md={6} xs={12}>
+                    <CustomAutoComplete
+                        id="perfil"
+                        value={funcionario.perfil}
+                        retrieveDataFunction={PerfilService.getListaPerfis}
+                        label="Perfil de Acesso ao Sistema"
+                        placeholder="<< Selecione um Perfil de Acesso >>"
+                        onChangeHandler={(event, newValue) => onChange(event, newValue)}
+                        getOptionSelected={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => option.nome}
+                        disabled={status === 'view' || id > 0}
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <CustomAutoComplete

@@ -17,18 +17,10 @@ class FuncionarioService {
     }
     
     saveFuncionario(id, funcionario) {
-        const params = {
-            nome: funcionario.nome,
-            nascimento: funcionario.nascimento,
-            funcao: funcionario.funcao,
-            unidadeAtendimento: funcionario.unidadeAtendimento,
-            sexo: funcionario.sexo,
-        };
-        
         if (id > 0) {
-            return this.updateFuncionario(params, id);
+            return this.updateFuncionario(funcionario, id);
         }
-        return this.createFuncionario(params);
+        return this.createFuncionario(funcionario);
     }
     
     createFuncionario(params) {
