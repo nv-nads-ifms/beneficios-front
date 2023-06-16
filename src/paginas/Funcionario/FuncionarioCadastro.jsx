@@ -116,7 +116,7 @@ export default function FuncionarioCadastro() {
                     <CustomTextField
                         id="nascimento"
                         label="Data de Nascimento"
-                        value={Moment(funcionario.nascimento).format('Y-MM-DD')}
+                        value={funcionario.nascimento}
                         type="date"
                         onChangeHandler={(event) => onChange(event)}
                         disabled={!enabledFields} />

@@ -73,6 +73,7 @@ export default function ListButton(props) {
                 }
                 return (
                     <IconButton
+                        key={button.type}
                         color={color}
                         onClick={button.action}
                     >
