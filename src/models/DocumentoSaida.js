@@ -11,7 +11,7 @@ const emptyDocumentoSaida = {
 
 const emptyItemDocumentoSaida = {
     documentoSaidaId: '',
-    numero: '',
+    numero: 0,
     quantidade: '',
     quantidadeConferida: '',
     quantidadePendente: '',

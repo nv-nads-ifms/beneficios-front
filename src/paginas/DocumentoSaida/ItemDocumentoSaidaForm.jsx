@@ -22,18 +22,26 @@ export default function ItemDocumentoSaidaForm(props) {
     const { value, disabled, callback } = props;
     const [item, setItem] = React.useState(emptyItemDocumentoSaida);
     const [itens, setItens] = React.useState([]);
+    const [sequencia, setSequencia] = React.useState(0);
 
     React.useEffect(() => {
         if (value == null) {
             setItens([]);
+            setSequencia(0);
         } else {
             setItens(value.itens);
+            setSequencia(Math.max(value.itens
+                .map(o => o.numero === '' ? 0 : o.numero)) + 1);
         }
     }, [value]);
 
     const validarCampos = (value) => {
         showErrorMessages(value);
     }
+
+    const increment = () => {
+        setSequencia(sequencia + 1);
+    };
 
     const setValue = (value, fieldname) => {
         setItem({
@@ -77,11 +85,16 @@ export default function ItemDocumentoSaidaForm(props) {
             if (index !== -1) {
                 itens[index] = item;
             } else {
-                itens.push(item);
+                itens.push({
+                    ...item,
+                    numero: sequencia
+                });
+                
+                increment();
             }
             setItens(itens);
             callback(itens);
-            
+
             setItem(emptyItemDocumentoSaida);
         }
     }
