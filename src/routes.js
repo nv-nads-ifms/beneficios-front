@@ -68,6 +68,7 @@ import DocumentoSaidaCadastro from './paginas/DocumentoSaida/DocumentoSaidaCadas
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
 import CidadeListagem from './paginas/Cidade/CidadeListagem';
 import CidadeForm from './paginas/Cidade/CidadeForm';
+import PaisConsulta from './paginas/Pais/PaisConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -123,6 +124,7 @@ const Routes = () => {
                 {/* Localização */}
                 <PrivateRoute path='/cidades' component={CidadeListagem} />
                 <PrivateRoute path='/cidades-ficha/:id/:status' component={CidadeForm} />
+                <PrivateRoute path='/pais' component={PaisConsulta} />
 
                 {/* Telas de Administração */}
                 <PrivateRoute path='/funcoes' component={FuncaoListagem} />
