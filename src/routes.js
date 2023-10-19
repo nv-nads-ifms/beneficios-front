@@ -1,7 +1,7 @@
 import React from 'react';
 import { isAuthenticated } from './api/services/auth';
 
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Autenticacao from './paginas/Autenticacao/Autenticacao';
 import Home from './paginas/Home/Home';
@@ -88,7 +88,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const Routes = () => {    
     return (
-        <HashRouter>
+        <BrowserRouter>
             <Switch>
                 {/* <Route exact path="/" component={Autenticacao} /> */}
                 <Route path="/login" component={Autenticacao} />
@@ -177,7 +177,7 @@ const Routes = () => {
 
             </Switch>
             {/* </div>} */}
-        </HashRouter>
+        </BrowserRouter>
     );
 }
 
