@@ -1,18 +1,13 @@
 import React from 'react';
-import ContatoService from '../../services/ContatoService';
-import DefaultListForm from '../../components/CustomForms/DefaultListForm';
+import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
+
 
 export default function ContatoListagem() {
     return (
-        <DefaultListForm
-            url={"/contato-ficha"}
-            remotePath={'/contato'}
-            formTitle="Listagem de Tipos de Contato"
-            addButtonLabel="Cadastrar Tipo de Contato"
-            onRowRemoveButton={ContatoService.deleteContato}
-            retrieveDataFunction={ContatoService.getContato}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' },{ id: 'tipoContato', label: 'Tipo do Contato' }]}
-            idColumnName={'id'}
+        <DNABaseDialogListForm
+            datasourceUrl="contato"
+            formtitle='Listagem de Tipos de Contato'
+            dialog_form_title='Cadastrar Cadastrar Tipo de Contato'
         />
     );
 }
