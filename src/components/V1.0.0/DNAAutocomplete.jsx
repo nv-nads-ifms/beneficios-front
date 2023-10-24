@@ -1,6 +1,6 @@
-import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import React from "react";
-import DataService from "../api/services/DataServices";
+import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import DataService from "../../api/services/DataServices";
 
 export default function DNAAutocomplete(props) {
     const { path, input_label } = props;
@@ -8,6 +8,7 @@ export default function DNAAutocomplete(props) {
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const loading = open && options.length === 0;
+    
     const dataService = React.useMemo(() => {
         return new DataService(`/${path}`);
     }, [path]);

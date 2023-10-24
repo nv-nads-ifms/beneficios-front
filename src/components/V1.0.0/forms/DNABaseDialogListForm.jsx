@@ -8,14 +8,17 @@ import DNADefaultDialogListForm from "./DNADefaultDialogListForm";
 
 const columns = [
   {
+    field: "id",
+    headerName: "ID",
+    width: 80,
+    editable: false,
+  },
+  {
     field: "nome",
     headerName: "Nome",
     flex: 1,
     minWidth: 100,
     editable: false,
-    renderCell: (param) => (
-      <Typography>{`[${param.id}] ${param.value}`}</Typography>
-    ),
   },
 ];
 
