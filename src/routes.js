@@ -23,7 +23,7 @@ import OrgaoExpedidorListagem from './paginas/OrgaoExpedidor/OrgaoExpedidorLista
 import OrgaoExpedidorCadastro from './paginas/OrgaoExpedidor/OrgaoExpedidorCadastro';
 import ParentescoListagem from './paginas/Parentesco/ParentescoListagem';
 import ParentescoCadastro from './paginas/Parentesco/ParentescoCadastro';
-import DocumentoListagem from './paginas/Documento/DocumentoListagem';
+import DocumentoConsulta from './paginas/Documento/DocumentoConsulta';
 import DocumentoCadastro from './paginas/Documento/DocumentoCadastro';
 import EscolaridadeListagem from './paginas/Escolaridade/EscolaridadeListagem';
 import EscolaridadeCadastro from './paginas/Escolaridade/EscolaridadeCadastro';
@@ -113,7 +113,7 @@ const Routes = () => {
                 <PrivateRoute path='/orgaos-expedidores-ficha/:id/:status' component={OrgaoExpedidorCadastro} />
                 <PrivateRoute path='/parentescos' component={ParentescoListagem} />
                 <PrivateRoute path='/parentescos-ficha/:id/:status' component={ParentescoCadastro} />
-                <PrivateRoute path='/documentos' component={DocumentoListagem} />
+                <PrivateRoute path='/documentos' component={DocumentoConsulta} />
                 <PrivateRoute path='/documentos-ficha/:id/:status' component={DocumentoCadastro} />
                 <PrivateRoute path='/escolaridades' component={EscolaridadeListagem} />
                 <PrivateRoute path='/escolaridades-ficha/:id/:status' component={EscolaridadeCadastro} />
