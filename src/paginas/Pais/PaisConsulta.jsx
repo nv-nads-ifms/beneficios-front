@@ -1,5 +1,4 @@
 import React from 'react';
-import DNABaseDialogForm from '../../components/V1.0.0/forms/DNABaseDialogForm';
 import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
 function PaisConsulta () {

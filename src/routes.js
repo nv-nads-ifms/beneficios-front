@@ -69,6 +69,9 @@ import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaCo
 import CidadeListagem from './paginas/Cidade/CidadeListagem';
 import CidadeForm from './paginas/Cidade/CidadeForm';
 import PaisConsulta from './paginas/Pais/PaisConsulta';
+import UfConsulta from './paginas/Uf/UfConsulta';
+import BairroConsulta from './paginas/Bairro/BairroConsuta';
+import LogradouroConsulta from './paginas/Logradouro/LogradouroConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -125,6 +128,10 @@ const Routes = () => {
                 <PrivateRoute path='/cidades' component={CidadeListagem} />
                 <PrivateRoute path='/cidades-ficha/:id/:status' component={CidadeForm} />
                 <PrivateRoute path='/pais' component={PaisConsulta} />
+                <PrivateRoute path='/uf' component={UfConsulta} />
+                <PrivateRoute path='/bairro' component={BairroConsulta} />
+                <PrivateRoute path='/logradouro' component={LogradouroConsulta} />
+                
 
                 {/* Telas de Administração */}
                 <PrivateRoute path='/funcoes' component={FuncaoListagem} />
