@@ -1,18 +1,12 @@
 import React from 'react';
-import DefaultListForm from '../../components/CustomForms/DefaultListForm';
-import ProgramaDeGovernoService from '../../services/ProgramaDeGovernoService';
+import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
 export default function ProgramaDeGovernoListagem() {
     return (
-        <DefaultListForm
-            url={"/programas-de-governo-ficha"}
-            remotePath={"/programas-de-governo"}
-            formTitle="Listagem de Programas de Governo"
-            addButtonLabel="Cadastrar Programa de Governo"
-            onRowRemoveButton={ProgramaDeGovernoService.deleteProgramaDeGoverno}
-            retrieveDataFunction={ProgramaDeGovernoService.getProgramasDeGoverno}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'descricao', label: 'Descrição' }]}
-            idColumnName={'id'}
+        <DNABaseDialogListForm
+            datasourceUrl="programas-de-governo"
+            formtitle='Listagem de Programas de Governo'
+            dialog_form_title='Cadastrar Programa de Governo'
         />
     );
 }
