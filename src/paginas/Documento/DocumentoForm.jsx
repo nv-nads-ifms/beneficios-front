@@ -60,6 +60,7 @@ function DocumentoForm(props) {
 
                     <Grid item xs={12} md={4}>
                         <FormControlLabel
+                            label="Exige órgão expedidor?"
                             control={
                                 <Switch
                                     checked={documento.exigeOrgaoExpedidor}
@@ -71,8 +72,6 @@ function DocumentoForm(props) {
 
                             }
 
-                            label="Exige órgão expedidor?"
-                        //disabled={!enabledFields}
                         />
                     </Grid>
 

@@ -7,7 +7,7 @@ import Autenticacao from './paginas/Autenticacao/Autenticacao';
 import Home from './paginas/Home/Home';
 import Pagina404 from './paginas/Home/Pagina404';
 import Menus from './paginas/Home/Menus';
-import UsuarioListagem from './paginas/Usuario/UsuarioListagem';
+import UsuarioConsulta from './paginas/Usuario/UsuarioConsulta';
 import UsuarioCadastro from './paginas/Usuario/UsuarioCadastro';
 import PerfilListagem from './paginas/Perfil/PerfilListagem';
 import PerfilCadastro from './paginas/Perfil/PerfilCadastro';
@@ -143,7 +143,7 @@ const Routes = () => {
                 <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoListagem} />
                 <PrivateRoute path='/unidade-de-atendimento-ficha/:id/:status' component={UnidadeAtendimentoCadastro} />
 
-                <PrivateRoute path="/usuarios" component={UsuarioListagem} />
+                <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
                 <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />
                 <PrivateRoute path='/conta-usuario' component={ContaUsuario} />
 
