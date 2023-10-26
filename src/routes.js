@@ -17,7 +17,7 @@ import CondicaoDeTrabalhoListagem from './paginas/CondicaoDeTrabalho/CondicaoDeT
 import CondicaoDeTrabalhoCadastro from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoCadastro';
 import ProgramaDeGovernoListagem from './paginas/ProgramaDeGoverno/ProgramaDeGovernoListagem';
 import ProgramaDeGovernoCadastro from './paginas/ProgramaDeGoverno/ProgramaDeGovernoCadastro';
-import ContatoListagem from './paginas/Contato/ContatoListagem';
+import ContatoConsulta from './paginas/Contato/ContatoConsulta';
 import ContatoCadastro from './paginas/Contato/ContatoCadastro';
 import OrgaoExpedidorListagem from './paginas/OrgaoExpedidor/OrgaoExpedidorListagem';
 import OrgaoExpedidorCadastro from './paginas/OrgaoExpedidor/OrgaoExpedidorCadastro';
@@ -40,7 +40,7 @@ import TipoUnidadeDeAtendimentoCadastro from './paginas/TipoUnidadeDeAtendimento
 import TipoUnidadeDeAtendimentoListagem from './paginas/TipoUnidadeDeAtendimento/TipoUnidadeDeAtendimentoListagem';
 import UnidadeAtendimentoListagem from './paginas/UnidadeAtendimento/UnidadeAtendimentoListagem';
 import UnidadeAtendimentoCadastro from './paginas/UnidadeAtendimento/UnidadeAtendimentoCadastro';
-import TipoMoradiaListagem from './paginas/TipoMoradia/TipoMoradiaListagem';
+import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
 import TipoMoradiaCadastro from './paginas/TipoMoradia/TipoMoradiaCadastro';
 import GrupoSocioeducativoListagem from './paginas/GrupoSocioeducativo/GrupoSocioeducativoListagem';
 import GrupoSocioeducativoCadastro from './paginas/GrupoSocioeducativo/GrupoSocioeducativoCadastro';
@@ -107,7 +107,7 @@ const Routes = () => {
                 <PrivateRoute path='/condicoes-de-trabalho-ficha/:id/:status' component={CondicaoDeTrabalhoCadastro} />
                 <PrivateRoute path='/programas-de-governo' component={ProgramaDeGovernoListagem} />
                 <PrivateRoute path='/programas-de-governo-ficha/:id/:status' component={ProgramaDeGovernoCadastro} />
-                <PrivateRoute path='/contato' component={ContatoListagem} />
+                <PrivateRoute path='/contato' component={ContatoConsulta} />
                 <PrivateRoute path='/contato-ficha/:id/:status' component={ContatoCadastro} />
                 <PrivateRoute path='/orgaos-expedidores' component={OrgaoExpedidorListagem} />
                 <PrivateRoute path='/orgaos-expedidores-ficha/:id/:status' component={OrgaoExpedidorCadastro} />
@@ -119,7 +119,7 @@ const Routes = () => {
                 <PrivateRoute path='/escolaridades-ficha/:id/:status' component={EscolaridadeCadastro} />
                 <PrivateRoute path='/condicoes-de-moradia' component={CondicaoDeMoradiaListagem} />
                 <PrivateRoute path='/condicoes-de-moradia-ficha/:id/:status' component={CondicaoDeMoradiaCadastro} />
-                <PrivateRoute path='/tipos-de-moradia' component={TipoMoradiaListagem} />
+                <PrivateRoute path='/tipos-de-moradia' component={TipoMoradiaConsulta} />
                 <PrivateRoute path='/tipos-de-moradia-ficha/:id/:status' component={TipoMoradiaCadastro} />
                 <PrivateRoute path='/grupo-socioeducativo' component={GrupoSocioeducativoListagem} />
                 <PrivateRoute path='/grupo-socioeducativo-ficha/:id/:status' component={GrupoSocioeducativoCadastro} />
