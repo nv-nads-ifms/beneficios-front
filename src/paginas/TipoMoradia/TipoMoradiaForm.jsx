@@ -6,7 +6,6 @@ import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { FormControlLabel, Grid, ListItemText, Switch, TextField } from '@mui/material';
 import DNAStatusComponent from '../../components/V1.0.0/DNAStatusComponent';
 import { handleChangeInputComponent } from '../../api/utils/util';
-import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
 const emptyMoradia = {
     ...emptyBaseObject,

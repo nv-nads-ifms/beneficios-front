@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { objectContext } from '../../contexts/objectContext';
-import { DNAStatus, emptyBaseObject, TipoContato } from '../../api/utils/constants';
+import { DNAStatus, emptyBaseObject } from '../../api/utils/constants';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { Grid, ListItemText, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import DNAStatusComponent from '../../components/V1.0.0/DNAStatusComponent';
