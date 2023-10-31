@@ -1,19 +1,12 @@
-import React from 'react';
-import FuncaoService from '../../services/FuncaoService';
-import DefaultListForm from "../../components/CustomForms/DefaultListForm";
+import React from "react";
+import DNABaseDialogListForm from "../../components/V1.0.0/forms/DNABaseDialogListForm";
 
 export default function FuncaoListagem() {
-
     return (
-        <DefaultListForm 
-            url={"/funcao-ficha"}
-            remotePath={"/funcoes"}
-            formTitle="Listagem de Funções"
-            addButtonLabel="Cadastrar Função"
-            onRowRemoveButton={FuncaoService.deleteFuncao}
-            retrieveDataFunction={FuncaoService.getFuncoes}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
-            idColumnName={'id'}
+        <DNABaseDialogListForm
+            datasourceUrl="funcoes"
+            formtitle="Listagem de Funções"
+            dialog_form_title="Dados da Listagem de Funções"
         />
     );
 }
