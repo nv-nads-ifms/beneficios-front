@@ -17,7 +17,7 @@ import { deleteModalMessage, saveModalMessage } from '../../api/utils/modalMessa
 import { userContext } from '../../hooks/userContext';
 import { getMenuPerfilByUrl } from '../../api/utils/menuUtils';
 import { Grid } from '@mui/material';
-import ComboPerfil from '../Perfil/ComboPerfil';
+import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
 const emptyPerfil = {
     id: '',
@@ -166,11 +166,15 @@ function UsuarioListagem() {
                                     label="Funcionário" />
                             </Grid>
                             <Grid item xs={12}>
-                                <ComboPerfil
+                                <DNAAutocomplete
                                     id="perfilSearch"
+                                    path="perfis"
+                                    input_label="Perfil do Usuário"
                                     value={perfilSearch}
-                                    callback={(value) => setPerfilSearch(value)}
-                                    label="Perfil do Usuário" />
+                                    onChange={(event, newValue) => setPerfilSearch(newValue)}
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                    getOptionLabel={(option) => option.nome}
+                                />
                             </Grid>
                         </Grid>
                     </CardContent>
