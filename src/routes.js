@@ -9,8 +9,6 @@ import Pagina404 from './paginas/Home/Pagina404';
 import Menus from './paginas/Home/Menus';
 import UsuarioListagem from './paginas/Usuario/UsuarioListagem';
 import UsuarioCadastro from './paginas/Usuario/UsuarioCadastro';
-import PerfilListagem from './paginas/Perfil/PerfilListagem';
-import PerfilCadastro from './paginas/Perfil/PerfilCadastro';
 import BeneficioListagem from './paginas/Beneficio/BeneficioListagem';
 import BeneficioCadastro from './paginas/Beneficio/BeneficioCadastro';
 import CondicaoDeTrabalhoListagem from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoListagem';
@@ -72,6 +70,7 @@ import PaisConsulta from './paginas/Pais/PaisConsulta';
 import UfConsulta from './paginas/Uf/UfConsulta';
 import BairroConsulta from './paginas/Bairro/BairroConsuta';
 import LogradouroConsulta from './paginas/Logradouro/LogradouroConsulta';
+import PerfilConsulta from './paginas/Perfil/PerfilConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -147,8 +146,7 @@ const Routes = () => {
                 <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />
                 <PrivateRoute path='/conta-usuario' component={ContaUsuario} />
 
-                <PrivateRoute path="/perfis" component={PerfilListagem} />
-                <PrivateRoute path='/perfis-ficha/:id/:status' component={PerfilCadastro} />
+                <PrivateRoute path="/perfis" component={PerfilConsulta} />
                 <PrivateRoute path='/alterar-senha' component={AlterarSenha} />
                 <PrivateRoute path="/config-moradia" component={MoradiaComponent} />
 
