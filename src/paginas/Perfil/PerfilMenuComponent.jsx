@@ -124,7 +124,7 @@ export default function PerfilMenuComponent(props) {
         setRows(data);
     };
 
-    const handleToggle = React.useCallback((value) => () => {
+    const handleToggle = React.useCallback((value) => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
 
@@ -136,9 +136,9 @@ export default function PerfilMenuComponent(props) {
         setChecked(newChecked);
     }, [checked]);
 
-    const numberOfChecked = React.useCallback((items) => () => intersection(checked, items).length, [checked]);
+    const numberOfChecked = React.useCallback((items) => intersection(checked, items).length, [checked]);
 
-    const handleToggleAll = React.useCallback((items) => () => {
+    const handleToggleAll = React.useCallback((items) => {
         if (numberOfChecked(items) === items.length) {
             setChecked(not(checked, items));
         } else {
@@ -200,7 +200,7 @@ export default function PerfilMenuComponent(props) {
             />
         );
     }
-console.log(numberOfChecked(menuItens));
+    
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} container direction='row' justifyContent='center'>
