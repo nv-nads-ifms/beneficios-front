@@ -28,8 +28,6 @@ import CondicaoDeMoradiaListagem from './paginas/CondicaoDeMoradia/CondicaoDeMor
 import CondicaoDeMoradiaCadastro from './paginas/CondicaoDeMoradia/CondicaoDeMoradiaCadastro';
 
 import AtendimentoListagem from './paginas/Atendimento/AtendimentoListagem';
-import FuncaoListagem from './paginas/Funcao/FuncaoListagem';
-import FuncaoCadastro from './paginas/Funcao/FuncaoCadastro';
 import FuncionarioListagem from './paginas/Funcionario/FuncionarioListagem';
 import FuncionarioCadastro from './paginas/Funcionario/FuncionarioCadastro';
 import MoradiaComponent from './components/Moradia/MoradiaComponent';
@@ -71,6 +69,7 @@ import BairroConsulta from './paginas/Bairro/BairroConsuta';
 import LogradouroConsulta from './paginas/Logradouro/LogradouroConsulta';
 import PerfilConsulta from './paginas/Perfil/PerfilConsulta';
 import UsuarioListagem from './paginas/Usuario/UsuarioListagem';
+import FuncaoConsulta from './paginas/Funcao/FuncaoConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -133,8 +132,7 @@ const Routes = () => {
                 
 
                 {/* Telas de Administração */}
-                <PrivateRoute path='/funcoes' component={FuncaoListagem} />
-                <PrivateRoute path='/funcao-ficha/:id/:status' component={FuncaoCadastro} />
+                <PrivateRoute path='/funcoes' component={FuncaoConsulta} />
                 <PrivateRoute path='/tipos-de-unidades-atendimento' component={TipoUnidadeDeAtendimentoListagem} />
                 <PrivateRoute path='/tipos-de-unidades-atendimento-ficha/:id/:status' component={TipoUnidadeDeAtendimentoCadastro} />
                 <PrivateRoute path='/funcionarios' component={FuncionarioListagem} />
