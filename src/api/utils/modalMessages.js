@@ -62,7 +62,7 @@ export const saveModalMessage = (actionperformed, callback) => {
         confirmText: 'Salvar',
         denyText: 'Não salvar',
         successResponseText: 'As alterações foram salvas!',
-        denyResponseText: 'As informações não foram salvas', 
+        denyResponseText: 'As informações não foram salvas',
         errorResponseText: `Não foi possível salvar as alterações. Entre em contato com o administrador do sistema informando a seguinte mensagem: `,
     };
     saveModalMessageProps(props, actionperformed, callback);
@@ -74,14 +74,18 @@ export const importModalMessage = (actionPerformed, callback) => {
         confirmText: 'Importar',
         denyText: 'Não importar',
         successResponseText: 'A importação foi realizada!',
-        denyResponseText: 'A importação não foi realizada', 
+        denyResponseText: 'A importação não foi realizada',
         errorResponseText: `Não foi possível realizar a importação solicitada. Entre em contato com o administrador do sistema`,
     };
     saveModalMessageProps(props, actionPerformed, callback);
 }
 
 export const showErrorMessages = (data) => {
-    if (Array.isArray(data)) {
+    if (data.hasOwnProperty('data') && Array.isArray(data.data)) {
+        data = data.data;
+    }
+
+    if (Array.isArray(data) && data.length > 0) {
         let html = "<ul>";
         data.map((err, key) => {
             html += `<li><span><b>Campo:</b> </span> ${err.campo} - <span style='color: red;'>${err.erro}</span></li>`;
@@ -95,10 +99,20 @@ export const showErrorMessages = (data) => {
             'info'
         );
         return true;
-    } else if ('status' in data && data.status === 400) {
+    } else if ((data.hasOwnProperty('status') && data.status === 400) &&
+        (data.hasOwnProperty('data')
+            //&& data.data.hasOwnProperty('statusCode') && data.data.statusCode === 'UNAUTHORIZED'
+        )) {
         swalWithBootstrapButtons.fire(
             'Ooops!',
-            data.message,
+            data.data.error,
+            'info'
+        );
+        return true;
+    } else if (data.hasOwnProperty('status') && data.status === 400) {
+        swalWithBootstrapButtons.fire(
+            'Ooops!',
+            data.error,
             'info'
         );
         return true;
@@ -107,7 +121,7 @@ export const showErrorMessages = (data) => {
 }
 
 export const saveModalMessageProps = (props, executePromise, callback) => {
-    const { title, confirmText, denyText, 
+    const { title, confirmText, denyText,
         successResponseText, denyResponseText, errorResponseText } = props;
     Swal.fire({
         customClass: {
@@ -141,9 +155,9 @@ export const addModalMessage = (actionperformed, callback) => {
     const props = {
         title: 'Deseja adicionar o item?',
         confirmText: 'Adicionar',
-        denyText: 'Cancelar', 
-        successResponseText: 'Adição realizada!', 
-        denyResponseText: 'As informações não foram adicionadas',         
+        denyText: 'Cancelar',
+        successResponseText: 'Adição realizada!',
+        denyResponseText: 'As informações não foram adicionadas',
         errorResponseText: `Não foi possível adicionar o item. Entre em contato com o administrador do sistema!`,
     };
     saveModalMessageProps(props, actionperformed, callback);
