@@ -76,12 +76,24 @@ export const createUtilFunctions = () => {
     }
 
     function formatString(mask, number) {
-        var s = ''+number, r = '';
-        for (var im=0, is = 0; im<mask.length && is<s.length; im++) {
-          r += mask.charAt(im)==='X' ? s.charAt(is++) : mask.charAt(im);
+        var s = '' + number, r = '';
+        for (var im = 0, is = 0; im < mask.length && is < s.length; im++) {
+            r += mask.charAt(im) === 'X' ? s.charAt(is++) : mask.charAt(im);
         }
         return r;
-     }  
+    }
+
+    function not(a, b) {
+        return a.filter((value) => b.map(obj => obj.id).indexOf(value.id) === -1);
+    }
+
+    function intersection(a, b) {
+        return a.filter((value) => b.map(obj => obj.id).indexOf(value.id) !== -1);
+    }
+
+    function union(a, b) {
+        return [...a, ...not(b, a)];
+    }
 
     return {
         setFieldValue,
@@ -90,7 +102,10 @@ export const createUtilFunctions = () => {
         dataURLtoFile,
         convertImgToBase64URL,
         convertToParams,
-        formatString
+        formatString,
+        not,
+        intersection,
+        union
     };
 }
 
@@ -101,5 +116,8 @@ export const {
     dataURLtoFile,
     convertImgToBase64URL,
     convertToParams,
-    formatString
+    formatString,
+    not,
+    intersection,
+    union
 } = createUtilFunctions();
