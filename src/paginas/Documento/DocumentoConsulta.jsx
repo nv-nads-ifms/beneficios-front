@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 
 // Mui Imports
-import { Grid, TextField } from '@mui/material';
-
+import { FormControlLabel, Grid, Switch, TextField } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 // Form Imports
 import { formContext } from '../../contexts/formContext';
 import { DNAStatus } from '../../api/utils/constants';
 
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
-import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
+
+
 
 import DocumentoForm from "./DocumentoForm";
 
@@ -24,14 +28,21 @@ const columns = [
         minWidth: 150,
         flex: 1
     },
+    {
+        field: 'exigeOrgaoExpedidor',
+        headerName: 'Exige Orgão Expedidor?',
+        minWidth: 150,
+        flex: 1,
+        renderCell: ({ value }) => value ? "Exige Orgão Expedidor" : "Não Exige Orgão Expedidor",
+    },
 ];
 
 function DocumentoConsulta() {
     const path = "documentos";
 
     /* Atributos utilizados para realizar a filtragem da consulta */
-    const [codigo, setCodigo] = useState("");
-    const [nome, setNome] = useState(null);
+    const [nome, setNome] = useState('');
+    const [orgaoExpedidor, setOrgaoExpedidor] = useState('');
 
     /* Atributos de controle do formulário modal */
     const [open, setOpen] = useState(false);
@@ -55,34 +66,37 @@ function DocumentoConsulta() {
                     datasourceUrl={path}
                     formtitle='Consultar Documentos'
                     filterparams={{
-                        codigo: codigo,
-                        nomeId: nome != null ? nome.id : '',
+                        nome: nome,
+                        exigeOrgaoExpedidor: orgaoExpedidor,
+
                     }}
                     columns={columns}
                 >
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <TextField
-                                id='id'
-                                value={codigo}
-                                label={"Buscar por codigo"}
-                                variant='outlined'
-                                fullWidth
-                                onChange={(event) => setCodigo(event.target.value)} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <DNAAutocomplete
                                 id="nome"
                                 fullWidth
+                                label="Buscar por Nome"
                                 path={`documentos`}
                                 input_label={'Nome'}
-
                                 value={nome}
-                                onChange={(event, value) => setNome(value)}
-
-                                isOptionEqualToValue={(option, value) => option.id === value.id}
-                                getOptionLabel={(option) => option.nome}
+                                onChange={(event, value) => setNome(event.target.value)}
                             />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl>
+                                <FormLabel>Exige Orgão Expedidor?</FormLabel>
+                                <RadioGroup row 
+                                    name="row-radio-buttons-group"
+                                    value={orgaoExpedidor}
+                                    onChange={(e) => setOrgaoExpedidor(e.target.value)}
+                                >
+                                    <FormControlLabel value={true} control={<Radio />} label="Exige" />
+                                    <FormControlLabel value={false} control={<Radio />} label="Não Exige" />
+                                    <FormControlLabel value={''} control={<Radio />} label="Não Definido" />
+                                </RadioGroup>
+                            </FormControl>
                         </Grid>
                     </Grid>
                 </DNADefaultDialogListForm>
@@ -94,10 +108,7 @@ function DocumentoConsulta() {
                     open={open}
                     on_close_func={handleClose}
                     data_source_url={path}
-                /> 
-
-
-
+                />
 
             </formContext.Provider>
 

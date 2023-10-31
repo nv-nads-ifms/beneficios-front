@@ -6,21 +6,21 @@ import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { FormControlLabel, Grid, ListItemText, Switch, TextField } from '@mui/material';
 import DNAStatusComponent from '../../components/V1.0.0/DNAStatusComponent';
 import { handleChangeInputComponent } from '../../api/utils/util';
+import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
-const emptyDoc = {
+const emptyMoradia = {
     ...emptyBaseObject,
-    exigeOrgaoExpedidor: false,
-
+    complementar: false
 }
 
-function DocumentoForm(props) {
+function TipoMoradiaForm(props) {
     const { datacontrol, on_change_datacontrol, data_source_url,
-        id_value, open, on_close_func } = props
+        id_value, open, on_close_func } = props;
 
-    const [documento, setDocumento] = useState(emptyDoc);
+    const [tipoMoradia, setTipoMoradia] = useState(emptyMoradia);
 
     const handleChange = (event, newValue) => {
-        handleChangeInputComponent(event, newValue, setDocumento, documento);
+        handleChangeInputComponent(event, newValue, setTipoMoradia, tipoMoradia);
     };
 
     const handleEdit = () => {
@@ -29,13 +29,13 @@ function DocumentoForm(props) {
 
     return (
         <objectContext.Provider value={{
-            object: documento,
-            setObject: setDocumento,
-            emptyObject: emptyDoc
+            object: tipoMoradia,
+            setObject: setTipoMoradia,
+            emptyObject: emptyMoradia
         }}>
             <DNAFormDialog
                 id_value={id_value}
-                texto_titulo_formulario={"Dados do Documento"}
+                texto_titulo_formulario={"Dados do tipo de moradia"}
                 datacontrol={datacontrol}
                 open={open}
                 data_source_url={data_source_url}
@@ -44,43 +44,37 @@ function DocumentoForm(props) {
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <ListItemText primary={documento.id} secondary="Código" />
+                        <ListItemText primary={tipoMoradia.id} secondary="Código" />
                     </Grid>
-                    <Grid item xs={12} md={8}>
+                    <Grid item xs={12}>
                         <TextField
                             id='nome'
-                            value={documento.nome}
-                            label={"Nome do Documento"}
+                            value={tipoMoradia.nome}
+                            label={"Descricao da moradia"}
                             variant='outlined'
                             fullWidth
                             disabled={datacontrol === DNAStatusComponent.VIEW}
                             onChange={handleChange}
                         />
                     </Grid>
-
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12}>
                         <FormControlLabel
-                            label="Exige órgão expedidor?"
+                            label={"Exige complemento?"}
                             control={
                                 <Switch
-                                    checked={documento.exigeOrgaoExpedidor}
+                                    checked={tipoMoradia.complementar}
                                     onChange={handleChange}
-                                    name="exigeOrgaoExpedidor"
+                                    name="complementar"
                                     color="primary"
                                     size="medium"
                                 />
-
                             }
-
                         />
                     </Grid>
-
-
-
                 </Grid>
             </DNAFormDialog>
         </objectContext.Provider>
     );
 }
 
-export default DocumentoForm;
+export default TipoMoradiaForm;
