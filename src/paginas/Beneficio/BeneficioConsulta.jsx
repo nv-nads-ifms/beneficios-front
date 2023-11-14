@@ -12,11 +12,6 @@ import BeneficioForm from "./BeneficioForm";
 
 const columns = [
     {
-        field: 'id',
-        headerName: 'Código',
-        width: 90,
-    },
-    {
         field: 'nome',
         headerName: 'Nome',
         minWidth: 150,
@@ -27,6 +22,7 @@ const columns = [
         headerName: 'Tipo de Concessão',
         minWidth: 150,
         flex: 1,
+        renderCell: (value) => value ? "Benefício Eventual" : "Outra Concessão",
     },
     {
         field: 'disponivel',
@@ -41,7 +37,7 @@ export default function BeneficioConsulta() {
     const path = "beneficios-eventuais";
 
     const [nome, setNome] = useState('');
-    const [tipoConcessao, setTipoConcessao] = useState('');
+    const [tipoConcessao, setTipoConcessao] = useState(false);
     const [disponivel, setDisponivel] = useState(false);
 
     /* Atributos de controle do formulário modal */
@@ -66,43 +62,11 @@ export default function BeneficioConsulta() {
                     datasourceUrl={path}
                     formtitle='Consultar Beneficios'
                     filterparams={{
-                        nome: nome,
-                        tipoConcessao: tipoConcessao
-
+                        
                     }}
                     columns={columns}
                 >
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <TextField
-                                name="nome"
-                                fullWidth
-                                label="Buscar por Nome"
-                                path={`beneficios-eventuais`}
-                                input_label={'Nome'}
-                                value={nome}
-                                onChange={(event, value) => setNome(event.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                label={"Exige complemento?"}
-                                control={
-                                    <Switch
-                                        checked={disponivel}
-
-                                        onChange={(e, value) => setDisponivel(value)}
-
-                                        name="complementar"
-                                        color="primary"
-                                        size="medium"
-
-                                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                                    />
-                                }
-                            />
-                        </Grid>
-                    </Grid>
+                    
                 </DNADefaultDialogListForm>
 
                 <BeneficioForm
@@ -112,6 +76,7 @@ export default function BeneficioConsulta() {
                     open={open}
                     on_close_func={handleClose}
                     data_source_url={path}
+                    columns={columns}
                 />
 
             </formContext.Provider>

@@ -64,6 +64,7 @@ import UfConsulta from './paginas/Uf/UfConsulta';
 import BairroConsulta from './paginas/Bairro/BairroConsuta';
 import LogradouroConsulta from './paginas/Logradouro/LogradouroConsulta';
 import PerfilConsulta from './paginas/Perfil/PerfilConsulta';
+
 import FuncaoConsulta from './paginas/Funcao/FuncaoConsulta';
 import UnidadeAtendimentoConsulta from './paginas/UnidadeAtendimento/UnidadeAtendimentoConsulta';
 import BeneficioConsulta from './paginas/Beneficio/BeneficioConsulta';
