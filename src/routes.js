@@ -32,8 +32,6 @@ import FuncionarioCadastro from './paginas/Funcionario/FuncionarioCadastro';
 import MoradiaComponent from './components/Moradia/MoradiaComponent';
 import TipoUnidadeDeAtendimentoCadastro from './paginas/TipoUnidadeDeAtendimento/TipoUnidadeDeAtendimentoCadastro';
 import TipoUnidadeDeAtendimentoListagem from './paginas/TipoUnidadeDeAtendimento/TipoUnidadeDeAtendimentoListagem';
-import UnidadeAtendimentoCadastro from './paginas/UnidadeAtendimento/UnidadeAtendimentoCadastro';
-import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
 import TipoMoradiaCadastro from './paginas/TipoMoradia/TipoMoradiaCadastro';
 import GrupoSocioeducativoListagem from './paginas/GrupoSocioeducativo/GrupoSocioeducativoListagem';
 import GrupoSocioeducativoCadastro from './paginas/GrupoSocioeducativo/GrupoSocioeducativoCadastro';
@@ -66,11 +64,11 @@ import UfConsulta from './paginas/Uf/UfConsulta';
 import BairroConsulta from './paginas/Bairro/BairroConsuta';
 import LogradouroConsulta from './paginas/Logradouro/LogradouroConsulta';
 import PerfilConsulta from './paginas/Perfil/PerfilConsulta';
-import UsuarioListagem from './paginas/Usuario/UsuarioListagem';
 import FuncaoConsulta from './paginas/Funcao/FuncaoConsulta';
 import UnidadeAtendimentoConsulta from './paginas/UnidadeAtendimento/UnidadeAtendimentoConsulta';
 import BeneficioConsulta from './paginas/Beneficio/BeneficioConsulta';
 import UsuarioConsulta from './paginas/Usuario/UsuarioConsulta';
+import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -139,7 +137,6 @@ const Routes = () => {
                 <PrivateRoute path='/funcionarios' component={FuncionarioListagem} />
                 <PrivateRoute path='/funcionario-ficha/:id/:status' component={FuncionarioCadastro} />
                 <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoConsulta} />
-                <PrivateRoute path='/unidade-de-atendimento-ficha/:id/:status' component={UnidadeAtendimentoCadastro} />
 
                 <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
                 <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />

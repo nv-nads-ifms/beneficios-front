@@ -4,7 +4,6 @@ import { objectContext } from '../../contexts/objectContext';
 import { DNAStatus, emptyBaseObject } from '../../api/utils/constants';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { FormControlLabel, Grid, ListItemText, Switch, TextField } from '@mui/material';
-import DNAStatusComponent from '../../components/V1.0.0/DNAStatusComponent';
 import { handleChangeInputComponent } from '../../api/utils/util';
 import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 import Logradouro from '../../components/Endereco/Logradouro';
@@ -66,7 +65,7 @@ function UnidadeAtendimentoForm(props) {
                             label={"Nome da Unidade Federativa"}
                             variant='outlined'
                             fullWidth
-                            disabled={datacontrol === DNAStatusComponent.VIEW}
+                            disabled={datacontrol === DNAStatus.VIEW}
                             onChange={handleChange}
                         />
                     </Grid>
@@ -89,13 +88,13 @@ function UnidadeAtendimentoForm(props) {
                             label={"Número da Unidade"}
                             variant='outlined'
                             fullWidth
-                            disabled={datacontrol === DNAStatusComponent.VIEW}
+                            disabled={datacontrol === DNAStatus.VIEW}
                             onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <Logradouro
-                            disabled={datacontrol === DNAStatusComponent.VIEW}
+                            disabled={datacontrol === DNAStatus.VIEW}
                             obj={unidadeAtendimento.endereco}
                             callback={(value) => setData("endereco", value)} />
                     </Grid>
@@ -108,7 +107,7 @@ function UnidadeAtendimentoForm(props) {
                                     id="matriz"
                                     color="primary"
                                     size="medium"
-                                    disabled={datacontrol === DNAStatusComponent.VIEW}
+                                    disabled={datacontrol === DNAStatus.VIEW}
                                 />
                             }
                             label="Matriz"

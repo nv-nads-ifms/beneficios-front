@@ -1,6 +1,5 @@
 import React from 'react';
-import CustomAutoComplete from '../../components/CustomFields/CustomAutoComplete';
-import UnidadeAtendimentoService from '../../services/UnidadeAtendimentoService';
+import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
 export default function ComboUnidadeAtendimento(props) {
     const { id, value, disabled, callback, label } = props;
@@ -11,19 +10,17 @@ export default function ComboUnidadeAtendimento(props) {
     }, [value]);
 
     return (
-        <React.Fragment>
-            <CustomAutoComplete
-                id={id}
-                value={unidadeAtendimento}
-                retrieveDataFunction={UnidadeAtendimentoService.getListaUnidadeAtendimentos}
-                label={label}
-                placeholder="<< Selecione uma Unidade de Atendimento >>"
-                disabled={disabled}
-                onChangeHandler={(event, newValue) => callback(newValue)}
-                getOptionSelected={(option, value) => option.id === value.id}
-                getOptionLabel={(option) => option.numeroDaUnidade + " - " +
-                                     option.nome + (option.matriz ? " [Matriz]" : "")}
-            />
-        </React.Fragment>
+        <DNAAutocomplete
+            id={id}
+            path="unidades-de-atendimento"
+            placeholder="<< Selecione uma Unidade de Atendimento >>"
+            input_label={label}
+            value={unidadeAtendimento}
+            disabled={disabled}
+            onChangeHandler={(event, newValue) => callback(newValue)}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            getOptionLabel={(option) => option.numeroDaUnidade + " - " +
+                option.nome + (option.matriz ? " [Matriz]" : "")}
+        />
     );
 }
