@@ -18,7 +18,6 @@ function UfForm (props) {
         id_value, open, on_close_func } = props;
 
     const [uf, setUf] = React.useState(emptyUf);
-    const [pais, setPais] = React.useState(null);
 
     const handleChange = (event, newValue) => {
         handleChangeInputComponent(event, newValue, setUf, uf);
@@ -74,9 +73,9 @@ function UfForm (props) {
                             id="pais"
                             path="pais"
                             input_label="País"
-                            value={pais}
+                            value={uf.pais}
                             disabled={datacontrol === DNAStatus.VIEW}
-                            onChange={(event, newValue) => setPais(newValue)}
+                            onChange={handleChange}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
                             getOptionLabel={(option) => option.nome}
                         />
