@@ -95,6 +95,7 @@ const emptyBaseObject = {
     id: '',
     nome: '',
 }
+
 const DNATipoDocumento = {
     CPF: 'CPF',
     CNPJ: 'CNPJ',

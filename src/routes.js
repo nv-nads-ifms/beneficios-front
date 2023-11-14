@@ -8,7 +8,6 @@ import Home from './paginas/Home/Home';
 import Pagina404 from './paginas/Home/Pagina404';
 import Menus from './paginas/Home/Menus';
 import UsuarioCadastro from './paginas/Usuario/UsuarioCadastro';
-import BeneficioListagem from './paginas/Beneficio/BeneficioListagem';
 import BeneficioCadastro from './paginas/Beneficio/BeneficioCadastro';
 import CondicaoDeTrabalhoListagem from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoListagem';
 import CondicaoDeTrabalhoCadastro from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoCadastro';
@@ -70,6 +69,8 @@ import PerfilConsulta from './paginas/Perfil/PerfilConsulta';
 import UsuarioListagem from './paginas/Usuario/UsuarioListagem';
 import FuncaoConsulta from './paginas/Funcao/FuncaoConsulta';
 import UnidadeAtendimentoConsulta from './paginas/UnidadeAtendimento/UnidadeAtendimentoConsulta';
+import BeneficioConsulta from './paginas/Beneficio/BeneficioConsulta';
+import UsuarioConsulta from './paginas/Usuario/UsuarioConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -140,7 +141,7 @@ const Routes = () => {
                 <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoConsulta} />
                 <PrivateRoute path='/unidade-de-atendimento-ficha/:id/:status' component={UnidadeAtendimentoCadastro} />
 
-                <PrivateRoute path="/usuarios" component={UsuarioListagem} />
+                <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
                 <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />
                 <PrivateRoute path='/conta-usuario' component={ContaUsuario} />
 
@@ -162,7 +163,7 @@ const Routes = () => {
 
 
                 {/* Controle do estoque */}
-                <PrivateRoute path="/beneficios-eventuais" component={BeneficioListagem} />
+                <PrivateRoute path="/beneficios-eventuais" component={BeneficioConsulta} />
                 <PrivateRoute path='/beneficios-eventuais-ficha/:id/:status' component={BeneficioCadastro} />
 
                 <PrivateRoute path='/retirada-de-beneficio' component={RetiradaBeneficioListagem} />
