@@ -1,18 +1,12 @@
 import React from 'react';
-import DefaultListForm from '../../components/CustomForms/DefaultListForm';
-import CondicaoDeMoradiaService from '../../services/CondicaoDeMoradiaService';
+import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
 export default function CondicaoDeMoradiaListagem() {
     return (
-        <DefaultListForm
-            url={"/condicoes-de-moradia-ficha"}
-            remotePath={'/condicoes-de-moradia'}
-            formTitle="Listagem de Condições de Moradia"
-            addButtonLabel="Cadastrar Condição de Moradia"
-            onRowRemoveButton={CondicaoDeMoradiaService.deleteCondicaoDeMoradia}
-            retrieveDataFunction={CondicaoDeMoradiaService.getCondicoesDeMoradia}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
-            idColumnName={'id'}
+        <DNABaseDialogListForm
+            datasourceUrl='condicoes-de-moradia'
+            formtitle='Consultar Condições de Moradia'
+            dialog_form_title='Dados da Condição de Moradia'
         />
     );
 }

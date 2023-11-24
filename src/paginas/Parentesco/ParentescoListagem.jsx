@@ -1,18 +1,12 @@
 import React from 'react';
-import DefaultListForm from '../../components/CustomForms/DefaultListForm';
-import ParentescoService from '../../services/ParentescoService';
+import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
 export default function ParentescoListagem() {
     return (
-        <DefaultListForm
-            url={"/parentescos-ficha"}
-            remotePath={'/parentescos'}
-            formTitle="Listagem de Parentescos"
-            addButtonLabel="Cadastrar Parentesco"
-            onRowRemoveButton={ParentescoService.deleteParentesco}
-            retrieveDataFunction={ParentescoService.getParentescos}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
-            idColumnName={'id'}
+        <DNABaseDialogListForm
+            datasourceUrl="parentescos"
+            formtitle='Listagem de Parentescos'
+            dialog_form_title='Cadastrar Parentesco'
         />
     );
 }

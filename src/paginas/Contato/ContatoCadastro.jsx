@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import BaseForm from '../../components/CustomForms/BaseForm';import ContatoForm from './ContatoForm';
+import BaseForm from '../../components/CustomForms/BaseForm';import ContatoForm from './Component/ContatoForm';
 import ContatoService from '../../services/ContatoService';
 import { userContext } from '../../hooks/userContext';
 import { getMenuPerfilByUrl } from '../../api/utils/menuUtils';

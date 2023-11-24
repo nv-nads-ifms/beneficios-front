@@ -5,7 +5,7 @@ import DialogForms from '../../../components/CustomForms/DialogForms';
 import ContatoService from '../../../services/ContatoService';
 import { Message } from '../../../api/utils/constants';
 import { emptyMessageAlert, sendMessageAlert } from '../../../api/utils/customMessages';
-import ContatoForm from '../ContatoForm';
+import ContatoForm from './ContatoForm';
 
 
 export default function ContatoCadastroModal(props) {

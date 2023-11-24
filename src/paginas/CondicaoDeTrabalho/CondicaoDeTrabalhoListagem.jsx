@@ -1,18 +1,12 @@
 import React from 'react';
-import DefaultListForm from '../../components/CustomForms/DefaultListForm';
-import CondicaoDeTrabalhoService from '../../services/CondicaoDeTrabalhoService';
+import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
 export default function CondicaoDeTrabalhoListagem() {
     return (
-        <DefaultListForm
-            url={"/condicoes-de-trabalho-ficha"}
-            remotePath={"/condicoes-de-trabalho"}
-            formTitle="Listagem de Condições de Trabalho"
-            addButtonLabel="Cadastrar Condição de Trabalho"
-            onRowRemoveButton={CondicaoDeTrabalhoService.deleteCondicaoDeTrabalho}
-            retrieveDataFunction={CondicaoDeTrabalhoService.getCondicoesDeTrabalho}
-            columns={[{ id: 'id', label: 'Código' },{ id: 'nome', label: 'Nome' }]}
-            idColumnName={'id'}
+        <DNABaseDialogListForm
+            datasourceUrl="condicoes-de-trabalho"
+            formtitle='Listagem de Condições de Trabalho'
+            dialog_form_title='Condições de Trabalho'
         />
     );
 }
