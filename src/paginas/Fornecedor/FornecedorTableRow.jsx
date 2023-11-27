@@ -31,7 +31,7 @@ export default function FornecedorTableRow(props) {
                                 }
                                 secondary={
                                     <Typography variant="caption" color="textSecondary">
-                                        Número do {extractCapitalizeLetters(documentoPessoa.documentoDto.descricao)}
+                                        Número do {extractCapitalizeLetters(documentoPessoa.documento.nome)}
                                     </Typography>
                                 }
                             />
@@ -45,13 +45,13 @@ export default function FornecedorTableRow(props) {
                 ))}
             </StyledTableCell>
             <StyledTableCell>
-                {row.enderecoDto.logradouroNome + ", " +
-                    row.enderecoDto.numero + ", " +
-                    row.enderecoDto.bairroNome}
+                {row.endereco.logradouroNome + ", " +
+                    row.endereco.numero + ", " +
+                    row.endereco.bairroNome}
             </StyledTableCell>
             <StyledTableCell>
-                {row.enderecoDto.cidadeNome + " - " +
-                    row.enderecoDto.ufSigla}
+                {row.endereco.cidadeNome + " - " +
+                    row.endereco.ufSigla}
             </StyledTableCell>
             <StyledTableCell align="center" >
                 <ListButton buttons={buttons} />

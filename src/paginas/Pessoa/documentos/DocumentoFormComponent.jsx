@@ -18,9 +18,9 @@ export default function DocumentoFormComponent(props) {
 
     const [erros, validarCampos] = useErros({
         numero: validarCampo,
-        documentoDto: validarCampo,
+        documento: validarCampo,
         emissao: validarCampo,
-        orgaoExpedidorDto: validarCampo,
+        orgaoExpedidor: validarCampo,
     });
 
     React.useEffect(() => {
@@ -61,10 +61,10 @@ export default function DocumentoFormComponent(props) {
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <ComboTipoDocumento
-                        id="documentoDto"
-                        value={documento.documentoDto}
+                        id="documento"
+                        value={documento.documento}
                         erros={erros}
-                        callback={(value) => setFieldValue('documentoDto', value)}
+                        callback={(value) => setFieldValue('documento', value)}
                         showCadastro
                     />
                 </Grid>
@@ -72,16 +72,16 @@ export default function DocumentoFormComponent(props) {
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <ComboOrgaoExpedidor
-                        id="orgaoExpedidorDto"
-                        value={documento.orgaoExpedidorDto}
-                        erros={erros.orgaoExpedidorDto}
-                        callback={(value) => setFieldValue('orgaoExpedidorDto', value)}
+                        id="orgaoExpedidor"
+                        value={documento.orgaoExpedidor}
+                        erros={erros.orgaoExpedidor}
+                        callback={(value) => setFieldValue('orgaoExpedidor', value)}
                         showCadastro />
                 </Grid>
                 <Grid item xs={6}>
                     <MaskedInput
                         value={documento.numero}
-                        mask={getDocumentFormat(documento.documentoDto != null ? documento.documentoDto.id : 0)}
+                        mask={getDocumentFormat(documento.documento != null ? documento.documento.id : 0)}
                         onChange={(e) => setFieldValue('numero', e.target.value)}
                     >
                         {(inputProps) =>

@@ -6,13 +6,13 @@ import { extractCapitalizeLetters } from '../../../api/utils/stringUtils';
 export default function ChipDocumentoComponent(props) {
     const { documento, color, onEdit, onDelete, ...others } = props;
 
-    const descricao = documento.documentoDto.descricao;
+    const nome = documento.documento.nome;
     return (
         <Chip
             {...others}
             clickable={true}
             icon={<RecentActorsIcon />}
-            label={extractCapitalizeLetters(descricao) + ": " + documento.numero}
+            label={extractCapitalizeLetters(nome) + ": " + documento.numero}
             onDelete={onDelete}
             onClick={onEdit}
             color={color != null ? color : "primary"}

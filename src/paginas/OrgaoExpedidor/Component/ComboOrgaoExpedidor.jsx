@@ -38,7 +38,7 @@ export default function ComboOrgaoExpedidor(props) {
                 error={erros}
                 onChangeHandler={(event, newValue) => callback(newValue)}
                 getOptionSelected={(option, value) => option.id === value.id}
-                getOptionLabel={(option) => option.descricao}
+                getOptionLabel={(option) => option.nome}
                 onShowInputModal={onShowCadastro}
             />
 

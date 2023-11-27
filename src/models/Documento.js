@@ -2,15 +2,17 @@ import { TipoDocumento } from "../api/utils/constants";
 
 const emptyDocumento = {
     numero: '',
-    documentoDto: null,
-    orgaoExpedidorDto: null,
+    documento: null,
+    orgaoExpedidor: null,
     emissao: new Date(),
 };
+
 const invalidCPF = ["00000000000", "11111111111", "22222222222",
     "33333333333", "44444444444", "55555555555",
     "66666666666", "77777777777", "88888888888",
     "99999999999"
 ];
+
 function validarCPF(cpf) {
     cpf = cpf.replace(/[^\d]+/g, '');
     if (cpf === '') return false;
@@ -88,30 +90,30 @@ function validarCNPJ(cnpj) {
 
 function validarDocumento(documento) {
     let campos = [];
-    if (documento.documentoDto == null) {
-        campos.push({ campo: "documentoDto", erro: "O Documento não foi informado." });
+    if (documento.documento == null) {
+        campos.push({ campo: "documento", erro: "O Documento não foi informado." });
     }
     if (documento.numero === '') {
         campos.push({ campo: "numero", erro: "O NÚMERO do documento não foi informado." });
-    } else if (documento.documentoDto != null) {
-        if (documento.documentoDto.id === TipoDocumento.CPF.id &&
+    } else if (documento.documento != null) {
+        if (documento.documento.id === TipoDocumento.CPF.id &&
             (documento.numero.length !== TipoDocumento.CPF.size || !validarCPF(documento.numero))) {
             campos.push({
                 campo: "numero", erro: "O NÚMERO do documento informado é inválido para " +
-                    documento.documentoDto.descricao + "."
+                    documento.documento.nome + "."
             });
-        } else if (documento.documentoDto.id === TipoDocumento.CNPJ.id &&
+        } else if (documento.documento.id === TipoDocumento.CNPJ.id &&
             (documento.numero.length !== TipoDocumento.CNPJ.size || !validarCNPJ(documento.numero))) {
             campos.push({
                 campo: "numero", erro: "O NÚMERO do documento informado é inválido para " +
-                    documento.documentoDto.descricao + "."
+                    documento.documento.nome + "."
             });
         }
     }
 
 
-    if (documento.documentoDto != null &&
-        documento.documentoDto.exigeOrgaoExpedidor === true &&
+    if (documento.documento != null &&
+        documento.documento.exigeOrgaoExpedidor === true &&
         documento.orgaoExpedidorDto == null) {
         campos.push({ campo: "orgaoExpedidorDto", erro: "O campo ÓRGÃO EXPEDIDOR é exigido pelo tipo de documento informado." });
     }

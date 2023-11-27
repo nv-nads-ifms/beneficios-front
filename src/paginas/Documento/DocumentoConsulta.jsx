@@ -26,7 +26,11 @@ const columns = [
         field: 'nome',
         headerName: 'Nome',
         minWidth: 150,
-        flex: 1
+        flex: 1,
+        renderCell: (params) => {
+            console.log(params);
+            return params.value;
+        }
     },
     {
         field: 'exigeOrgaoExpedidor',

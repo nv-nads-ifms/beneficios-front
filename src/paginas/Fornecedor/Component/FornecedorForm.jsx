@@ -25,7 +25,7 @@ export default function FornecedorForm(props) {
     const setEndereco = (value) => {
         callback({
             ...fornecedor,
-            enderecoDto: value,
+            endereco: value,
         });
     }
 
@@ -66,7 +66,7 @@ export default function FornecedorForm(props) {
                 <Grid item xs={12}>
                     <Logradouro
                         disabled={disabled}
-                        obj={fornecedor.enderecoDto}
+                        obj={fornecedor.endereco}
                         callback={setEndereco} />
                 </Grid>
             </Grid>

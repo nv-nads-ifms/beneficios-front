@@ -23,7 +23,7 @@ export default function DocumentosComponent(props) {
     const handleDelete = (value) => {
         const list = documentos.map(obj => {
             if (obj.numero === value.numero &&
-                obj.documentoDto.id === value.documentoDto.id) {
+                obj.documento.id === value.documento.id) {
                 obj.deleted = true;
             }
             return obj;
@@ -38,7 +38,7 @@ export default function DocumentosComponent(props) {
     const handleSave = (value) => {
         const index = documentos.findIndex(obj => (
             obj.numero === value.numero &&
-            obj.documentoDto.id === value.documentoDto.id
+            obj.documento.id === value.documento.id
         ));
 
         if (index !== -1) {
