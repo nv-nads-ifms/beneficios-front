@@ -14,7 +14,7 @@ export default function ContatoFormComponent(props) {
 
     const [erros, validarCampos] = useErros({
         descricao: validarCampo,
-        tipoContatoDto: validarCampo,
+        tipoContato: validarCampo,
     });
 
     React.useEffect(() => {
@@ -54,17 +54,17 @@ export default function ContatoFormComponent(props) {
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <ComboTipoContato
-                        id="tipoContatoDto"
-                        value={contato.tipoContatoDto}
+                        id="tipoContato"
+                        value={contato.tipoContato}
                         erros={erros}
-                        callback={(value) => setFieldValue("tipoContatoDto", value)}
+                        callback={(value) => setFieldValue("tipoContato", value)}
                         showCadastro
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <MaskedInput
                         value={contato.descricao}
-                        mask={getTipoContatoFormat(contato.tipoContatoDto != null ? contato.tipoContatoDto.tipoContato : 0)}
+                        mask={getTipoContatoFormat(contato.tipoContato != null ? contato.tipoContato.tipoContato : 0)}
                         onChange={(e) => setFieldValue('descricao', e.target.value)}
                     >
                         {(inputProps) =>

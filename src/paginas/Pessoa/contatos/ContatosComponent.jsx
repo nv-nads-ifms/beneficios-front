@@ -22,7 +22,7 @@ export default function ContatosComponent(props) {
 
     const handleDelete = (value) => {
         const list = contatos.map(obj => {
-            if (obj.tipoContatoDto.id === value.tipoContatoDto.id &&
+            if (obj.tipoContato.id === value.tipoContato.id &&
                 obj.descricao === value.descricao) {
                 obj.deleted = true;
             }
@@ -37,7 +37,7 @@ export default function ContatosComponent(props) {
 
     const handleSave = (value) => {
         const index = contatos.findIndex(obj => (
-            obj.tipoContatoDto.id === value.tipoContatoDto.id &&
+            obj.tipoContato.id === value.tipoContato.id &&
             obj.descricao === value.descricao
         ));
 

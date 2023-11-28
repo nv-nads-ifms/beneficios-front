@@ -8,7 +8,7 @@ export default function ChipContatoComponent(props) {
     return (
         <Chip
             {...others}
-            icon={ChipIcon(contato.tipoContatoDto.descricao)}
+            icon={ChipIcon(contato.tipoContato.nome)}
             label={contato.descricao}
             onDelete={onDelete}
             onClick={onEdit}
