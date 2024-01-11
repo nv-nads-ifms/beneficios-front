@@ -43,7 +43,6 @@ import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida'
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
 import ProntuarioListagem from './paginas/Prontuario/ProntuarioListagem';
 import ProntuarioCadastro from './paginas/Prontuario/ProntuarioCadastro';
-import PessoaListagem from './paginas/Pessoa/PessoaListagem';
 import ProntuarioAnaliseListagem from './paginas/Prontuario/Analise/ProntuarioAnaliseListagem';
 import AnaliseListagem from './paginas/Analise/AnaliseListagem';
 import AnaliseCadastro from './paginas/Analise/AnaliseCadastro';
@@ -70,6 +69,7 @@ import UnidadeAtendimentoConsulta from './paginas/UnidadeAtendimento/UnidadeAten
 import BeneficioConsulta from './paginas/Beneficio/BeneficioConsulta';
 import UsuarioConsulta from './paginas/Usuario/UsuarioConsulta';
 import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
+import PessoaConsulta from './paginas/Pessoa/PessoaConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -148,7 +148,7 @@ const Routes = () => {
                 <PrivateRoute path="/config-moradia" component={MoradiaComponent} />
 
                 {/* Telas do prontuario */}
-                <PrivateRoute path="/pessoas" component={PessoaListagem} />
+                <PrivateRoute path="/pessoas" component={PessoaConsulta} />
                 <PrivateRoute path="/analise-prontuario" component={ProntuarioAnaliseListagem} />
                 <PrivateRoute path='/prontuarios' component={ProntuarioListagem} />
                 <PrivateRoute path='/prontuarios-ficha/:id/:status' component={ProntuarioCadastro} />

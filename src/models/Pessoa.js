@@ -3,9 +3,9 @@ const emptyPessoa = {
     id: '',
     nome: '',
     nascimento: '',
-    escolaridadeDto: {
+    escolaridade: {
         id: "",
-        descricao: "",
+        nome: "",
     },
     sexo: null,
     foto: null,

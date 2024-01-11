@@ -47,10 +47,19 @@ class DataService {
     formData.append("id", parseInt(id));
 
     if (fileFieldname && params[fileFieldname] != null) {
-      let imagem = params[fileFieldname].data;
+      let imagem;
+      if (params[fileFieldname].hasOwnProperty('data')) {
+        imagem = params[fileFieldname].data;
+      } else {
+        imagem = params[fileFieldname];
+      }
 
       if (!(imagem instanceof File)) {
-        imagem = dataURLtoFile("data:image/png;base64," + imagem, 'imagem.png');
+        if (imagem.includes('data:image/png;base64,')) {
+          imagem = dataURLtoFile(imagem, 'imagem.png');
+        } else {
+          imagem = dataURLtoFile("data:image/png;base64," + imagem, 'imagem.png');
+        }
       }
 
       formData.append("file", imagem);
@@ -58,7 +67,7 @@ class DataService {
     formData.append('form', new Blob([JSON.stringify(params)], {
       type: "application/json"
     }));
-    
+
     if (id > 0) {
       return putImage(`${this.url}/${id}`, formData);
     }

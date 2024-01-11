@@ -3,7 +3,6 @@ import React from 'react';
 import { formContext } from '../../contexts/formContext';
 import { DNAStatus } from '../../api/utils/constants';
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
-import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 import { Grid, TextField } from '@mui/material';
 import UnidadeAtendimentoForm from './UnidadeAtendimentoForm';
 

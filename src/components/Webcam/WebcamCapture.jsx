@@ -1,55 +1,21 @@
-import { Card, CardActions, CardContent, Grid, Paper, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import Webcam from "react-webcam";
-import DialogForms from '../CustomForms/DialogForms';
-import PhotoButton from '../CustomButtons/PhotoButton';
-import ReloadButton from '../CustomButtons/ReloadButton';
-import { DEFAULT_IMAGE_URL } from '../../api/utils/constants';
+import noImageAvailable from "../../assets/img/noImageAvailable.png";
+import { Button, Dialog, DialogActions, DialogTitle, Grid, Paper } from '@mui/material';
+import DNALabel from '../V1.0.0/DNALabel';
+import DNAButton from '../V1.0.0/DNAButton';
+import { AddAPhoto, MeetingRoom, Replay, Save } from '@mui/icons-material';
 
 export default function WebcamCapture(props) {
-    const {openModal, onClose, callback} = props;
+    const { openModal, onClose, callback } = props;
     const webcamRef = React.useRef(null);
-    const [image, setImage] = useState(DEFAULT_IMAGE_URL);
-//    const [devices, setDevices] = React.useState([]);
-
-//    const handleDevices = React.useCallback(mediaDevices =>
-//        setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
-//            [setDevices]);
-
-//    React.useEffect(() => {
-//        navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia ||
-//                navigator.moxGetUserMedia || navigator.mozGetUserMedia ||
-//                navigator.msGetUserMedia);
-//        if (navigator.mediaDevices.getUserMedia) {
-//            navigator.mediaDevices.getUserMedia({audio: true, video: true})
-//                    .then(handleDevices)
-//                    .catch(function (e) {
-//                        alert("Não há câmera disponível para captura de imagem." +
-//                                "\nPortanto, esta tela será fechada automaticamente!");
-//                        onClose();
-//                    });
-//        } else {
-//            navigator.getWebcam({audio: true, video: true},
-//                    handleDevices,
-//                    function () {
-//                        alert("Não há câmera disponível para captura de imagem." +
-//                                "\nPortanto, esta tela será fechada automaticamente!");
-//                        onClose();
-//                    });
-//        }
-////        navigator.mediaDevices.enumerateDevices()
-////                .then(handleDevices)
-////                .catch(err => {
-////                    alert("Não há câmera disponível para captura de imagem." +
-////                            "\nPortanto, esta tela será fechada automaticamente!");
-////                    onClose();
-////                });
-//    }, [handleDevices, onClose]);
+    const [image, setImage] = React.useState(noImageAvailable);
 
     const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
         setImage(imageSrc);
     }, [webcamRef]);
+
 
     const handleSave = () => {
         callback(image);
@@ -57,50 +23,84 @@ export default function WebcamCapture(props) {
     }
 
     return (
-        <DialogForms
-            title="Capturar imagem"
+        <Dialog
+            fullWidth={true}
             open={openModal}
             onClose={onClose}
-            maxWidth="sm"
-            onSave={handleSave}
-            >
+
+            maxWidth="xs"
+            aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title" sx={{ fontFamily: "Nova Round" }}>Capturar imagem</DialogTitle>
             <Paper elevation={3}>
-                <Card>
-                <CardContent>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                <Grid container
+                    spacing={2}
+                    direction={'column'}
+                    justifyContent="center"
+                    alignItems="center">
+                    <Grid item xs={12} sx={{ mt: 2 }}>
+                        {image === noImageAvailable ? (
+                            <Webcam
+                                audio={false}
+                                ref={webcamRef}
+                                videoConstraints={{
+                                    width: 240,
+                                    height: 200,
+                                    facingMode: "user"
+                                }}
+                                screenshotFormat="image/png" />
+                        ) : (
                             <React.Fragment>
-                                <Webcam
-                                    audio={false}
-                                    ref={webcamRef}
-                                    videoConstraints={{
-                                        width: 240,
-                                        height: 200,
-                                        facingMode: "user"
-                                    }}
-                                    screenshotFormat="image/png" />
+                                <img alt="Imagem capturada" width="240" height="200" src={image} />
+                                <DNALabel variant="body2">
+                                    Imagem capturada
+                                </DNALabel>
                             </React.Fragment>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <img alt="Imagem capturada" width="240" height="200" src={image} />
-                            <Typography variant="body2">
-                                Imagem capturada
-                            </Typography>
-                        </Grid>
+                        )}
                     </Grid>
-                </CardContent>
-                <CardActions>
-                    <PhotoButton
-                        caption="Capturar foto"
-                        name="btFoto"
-                        onClick={capture} />
-                    <ReloadButton
-                        id="btLimpar"
-                        caption="Limpar foto"
-                        onClick={() => setImage(DEFAULT_IMAGE_URL)} />
-                </CardActions>
-                </Card>
+                    <Grid item xs={12}>
+                        {image === noImageAvailable ? (
+                            <DNAButton
+                                variant="text"
+                                name="btFoto"
+                                onClick={capture}
+                                caption={'Capturar foto'}
+                                startIcon={<AddAPhoto />}
+                            />
+                        ) : (
+                            <DNAButton
+                                variant="text"
+                                startIcon={<Replay />}
+                                id="btLimpar"
+                                onClick={() => setImage(noImageAvailable)}
+
+                                caption={'Limpar foto'}
+                            />
+                        )}
+
+                    </Grid>
+                </Grid>
             </Paper>
-        </DialogForms>
+            <DialogActions>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    name="btSalvar"
+                    startIcon={<Save />}
+                    onClick={handleSave}
+                >
+                    Salvar
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    name="btEdit"
+                    type="button"
+                    onClick={onClose}
+                    startIcon={<MeetingRoom />}
+                >
+                    Fechar
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 }

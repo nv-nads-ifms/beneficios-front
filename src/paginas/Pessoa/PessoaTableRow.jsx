@@ -61,7 +61,7 @@ export default function PessoaTableRow(props) {
                                 }
                                 secondary={
                                     <Typography variant="caption" color="textSecondary">
-                                        Número do {extractCapitalizeLetters(obj.documentoDto.descricao)}
+                                        Número do {extractCapitalizeLetters(obj.documento.nome)}
                                     </Typography>
                                 }
                             />
@@ -81,7 +81,7 @@ export default function PessoaTableRow(props) {
                                 }
                                 secondary={
                                     <Typography variant="caption" color="textSecondary">
-                                        {obj.tipoContatoDto.descricao}
+                                        {obj.tipoContato.nome}
                                     </Typography>
                                 }
                             />
@@ -90,7 +90,7 @@ export default function PessoaTableRow(props) {
                 </List>
             </StyledTableCell>
             <StyledTableCell>
-                {row.escolaridadeDto.descricao}
+                {row.escolaridade.nome}
             </StyledTableCell>
             <StyledTableCell align="center">                
                 <ListButton buttons={buttons} />

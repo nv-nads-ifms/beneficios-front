@@ -1,62 +1,56 @@
-import {
-    Card, CardActionArea, CardActions, CardMedia, FormControl, FormControlLabel,
-    FormLabel, Grid, Radio, RadioGroup
-} from "@material-ui/core";
 import React from "react";
 import { Sexo } from "../../api/utils/constants";
-import CustomAutoComplete from "../../components/CustomFields/CustomAutoComplete";
 import CustomTextField from "../../components/CustomFields/CustomTextField";
-import ImageIconButton from "../../components/CustomIconButtons/ImageIconButton";
-import PhotoIconButton from "../../components/CustomIconButtons/PhotoIconButton";
-import EscolaridadeService from "../../services/EscolaridadeService";
 import ContatosComponent from "./contatos/ContatosComponent";
 import DocumentosComponent from "./documentos/DocumentosComponent";
 import WebcamCapture from "../../components/Webcam/WebcamCapture";
 import noImageAvailable from "../../img/noImageAvailable.png";
+import DNAAutocomplete from "../../components/V1.0.0/DNAAutocomplete";
+import { objectContext } from "../../contexts/objectContext";
+import DNAImageUpload from "../../components/V1.0.0/DNAImageUpload";
+import { dataURLtoFile, handleChangeInputComponent } from "../../api/utils/util";
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup } from "@mui/material";
 
 export default function PessoaFromGeral(props) {
-    const { pessoa, disabled, callback } = props;
+    const { disabled } = props;
+
+    const { object, setObject } = React.useContext(objectContext);
+
     const [imagePreview, setImagePreview] = React.useState(null);
-    const inputRefFile = React.useRef(null);
     const [openWebcam, setOpenWebCam] = React.useState(false);
 
     React.useEffect(() => {
         setImagePreview(noImageAvailable);
-        if (pessoa != null && pessoa.foto != null) {
-            if (pessoa.foto instanceof File) {
-                setImagePreview(URL.createObjectURL(pessoa.foto));
+        if (object != null && object.foto != null) {
+            if (object.foto instanceof File) {
+                setImagePreview(URL.createObjectURL(object.foto));
             } else {
-                setImagePreview(pessoa.foto);
+                setImagePreview(object.foto);
             }
         }
-    }, [pessoa]);
+    }, [object]);
 
-    const onChange = (event, newValue) => {
-        let t = event.target;
-        let value = newValue != null ? newValue : t.value;
-        const fieldname = t.id.split('-')[0];
+    const handleChange = (e, newValue) => {
+        handleChangeInputComponent(e, newValue, setObject, object);
+    }
 
-        setValue(value, fieldname);
-    };
+    const handleOnWebcamChange = (value) => {
+        // const file = dataURLtoFile(value, 'foto_pessoa.png');
+        // let image = {
+        //     id: '',
+        //     nome: file.name,
+        //     tipo: file.type,
+        //     data: file,
+        // };
 
-    const handleUploadClick = event => {
-        let file = event.target.files[0];
-        setValue(file, "foto");
-    };
+        setValue(value, 'foto');
+    }
 
     const setValue = (value, fieldname) => {
-        callback({
-            ...pessoa,
+        setObject({
+            ...object,
             [fieldname]: value,
         });
-    }
-
-    const handleImageClick = (e) => {
-        inputRefFile.current.click();
-    }
-
-    const handleCapturarImagem = () => {
-        setOpenWebCam(true);
     }
 
     const handCloseWebcam = () => {
@@ -66,80 +60,58 @@ export default function PessoaFromGeral(props) {
     return (
         <div>
             <Grid container spacing={1}>
-                <Grid item xs={2}>
-                    <Card>
-                        <CardActionArea>
-                            <CardMedia
-                                component="img"
-                                image={imagePreview}
-                                title="Foto da pessoa"
-                            />
-                        </CardActionArea>
-                        <CardActions>
-                            <input
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                id="upload-profile-image"
-                                type="file"
-                                ref={inputRefFile}
-                                onChange={handleUploadClick}
-                                disabled={disabled}
-                            />
-                            <label htmlFor="upload-profile-image">
-                                <ImageIconButton
-                                    disabled={disabled}
-                                    tooltip="Selecionar imagem do computador"
-                                    onClick={handleImageClick} />
-                            </label>
-                            <PhotoIconButton
-                                disabled={disabled}
-                                tooltip="Capturar imagem da câmera"
-                                onClick={handleCapturarImagem} />
-                        </CardActions>
-                    </Card>
+                <Grid item xs={12} md={2}>
+                    <DNAImageUpload
+                        tooltip="Clique aqui para selecionar sua foto"
+                        image={imagePreview}
+                        disabled={disabled}
+                        onChange={handleChange}
+                        webcam
+                        onWebcamChange={handleOnWebcamChange} />
                 </Grid>
-                <Grid item xs={10}>
+                <Grid item md={10} xs={12}>
                     <Grid container spacing={1}>
                         <Grid item xs={10}>
                             <CustomTextField
                                 id="nome"
                                 label="Nome da pessoa"
-                                value={pessoa.nome}
+                                value={object.nome}
                                 placeholder={"<< Digite o nome da Pessoa >>"}
                                 autoFocus={true}
                                 disabled={disabled}
-                                onChangeHandler={onChange}
+                                onChangeHandler={handleChange}
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <CustomTextField
                                 id="id"
                                 label="Id."
-                                value={pessoa.id}
+                                value={object.id}
                                 disabled={true}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <CustomAutoComplete
-                                id="escolaridadeDto"
-                                value={pessoa.escolaridadeDto}
-                                retrieveDataFunction={EscolaridadeService.getListaEscolaridades}
-                                label="Escolaridade"
-                                placeholder="Selecione uma Escolaridade"
+                            <DNAAutocomplete
+                                id="escolaridade"
+                                path="escolaridades"
+                                input_label="<< Selecione uma Escolaridade >>"
+                                value={object.escolaridade}
                                 disabled={disabled}
-                                onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                                getOptionSelected={(option, value) => option.id === value.id}
-                                getOptionLabel={(option) => option.descricao}
+                                onChange={handleChange}
+                                isOptionEqualToValue={(option, value) =>
+                                    option.id === value.id
+                                }
+                                getOptionLabel={(option) => option.nome}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomTextField
                                 id="nascimento"
                                 label="Data de Nascimento"
-                                value={pessoa.nascimento}
+                                value={object.nascimento}
                                 type="date"
                                 disabled={disabled}
-                                onChangeHandler={onChange} />
+                                onChangeHandler={handleChange} />
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl component="fieldset">
@@ -148,8 +120,8 @@ export default function PessoaFromGeral(props) {
                                     row
                                     aria-label="sexo"
                                     name="sexo"
-                                    value={pessoa.sexo}
-                                    onChange={onChange}>
+                                    value={object.sexo}
+                                    onChange={handleChange}>
                                     <FormControlLabel
                                         disabled={disabled} value={Sexo.FEMININO} control={<Radio id="sexo" color="primary" />} label="Feminino" />
                                     <FormControlLabel
@@ -164,13 +136,13 @@ export default function PessoaFromGeral(props) {
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     <DocumentosComponent
-                        documentos={pessoa.documentos}
+                        documentos={object.documentos}
                         disabled={disabled}
                         callback={(value) => setValue(value, "documentos")} />
                 </Grid>
                 <Grid item xs={6}>
                     <ContatosComponent
-                        contatos={pessoa.contatos}
+                        contatos={object.contatos}
                         disabled={disabled}
                         callback={(value) => setValue(value, "contatos")} />
                 </Grid>

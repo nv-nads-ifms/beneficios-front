@@ -5,7 +5,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
-import cloudImageUpload from "../assets/img/CloudUploadImage100px.png";
+import cloudImageUpload from "../../assets/img/CloudUploadImage100px.png";
 import DNAWebcamCapture from './DNAWebcamCapture';
 
 export default function DNAImageUpload(props) {
@@ -33,6 +33,8 @@ export default function DNAImageUpload(props) {
         } else {
             if (image instanceof File) {
                 setPreview(URL.createObjectURL(image));
+            } else if (image.includes('data:image/png;base64,')) {
+                setPreview(image);
             } else {
                 setPreview("data:image/png;base64," + image);
             }

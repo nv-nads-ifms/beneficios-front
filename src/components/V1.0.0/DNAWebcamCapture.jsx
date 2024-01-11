@@ -7,7 +7,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import SaveIcon from '@mui/icons-material/Save';
 
-import noImageAvailable from "../assets/img/noImageAvailable.png";
+import noImageAvailable from "../../assets/img/noImageAvailable.png";
 import { Button, Dialog, DialogTitle } from '@mui/material';
 import DNALabel from './DNALabel';
 import DNAButton from './DNAButton';
@@ -22,7 +22,6 @@ export default function DNAWebcamCapture(props) {
         const imageSrc = webcamRef.current.getScreenshot();
         setImage(imageSrc);
     }, [webcamRef]);
-
 
     const handleSave = () => {
         callback(image);
