@@ -7,7 +7,7 @@ import { Cancel, Delete, Edit, Save } from '@mui/icons-material';
 
 function EditDataGridComponent(props) {
     const { height, getRowId, idRowColumnName, columns, rows, setRows, 
-        apiRef, slots, slotProps, disabled, disableDelete } = props;
+        apiRef, rowHeight, slots, slotProps, disabled, disableDelete } = props;
 
     const [rowModesModel, setRowModesModel] = React.useState({});
 
@@ -121,6 +121,7 @@ function EditDataGridComponent(props) {
                     processRowUpdate={processRowUpdate}
 
                     apiRef={apiRef}
+                    rowHeight={rowHeight}
                     slots={slots}
                     slotProps={slotProps}
                 />
