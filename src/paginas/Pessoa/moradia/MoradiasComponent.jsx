@@ -1,17 +1,94 @@
 import React from "react";
-import {
-    Paper, Grid
-} from "@material-ui/core";
+import Moment from "moment";
 import MoradiaFormComponent from './MoradiaFormComponent';
 import AddButton from "../../../components/CustomButtons/AddButton";
-import SimpleTable from "../../../components/CustomTable/SimpleTable";
-import MoradiasTableRowComponent from "./MoradiasTableRowComponent";
 import { fichaStyles } from "../../../components/UI/GlobalStyle";
+import { Avatar, Box, Grid, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
+import { Delete, Edit, House, LocationOn } from "@mui/icons-material";
+import { ccyFormat } from "../../../api/format";
+import ChipStatus from "../../../components/CustomButtons/ChipStatus";
+import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 
 const columns = [
-    { id: 'status', label: 'Status' },
-    { id: 'tipoMoradia', label: 'Tipo de Moradia' },
-    { id: 'endereco', label: 'Endereço' },
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 150,
+        renderCell: (params) => {
+            const { row, value } = params;
+            const label = (row.dataSaida == null || row.dataSaida === '') ? 'Ocupado' : 'Desocupado';
+            return (
+                <ChipStatus label={label} status={value} />
+            );
+        }
+    },
+    {
+        field: 'condicaoMoradia',
+        headerName: 'Tipo de Moradia',
+        minWidth: 150,
+        flex: 1,
+        renderCell: (params) => {
+            const { row, value } = params;
+            return (
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <House />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={row.tipoMoradia.nome}
+                        secondary={
+                            <React.Fragment>
+                                <Typography variant="body2">
+                                    Ocupada em: {Moment(row.dataOcupacao).format('D/MM/Y')}
+                                    {!(row.dataSaida == null || row.dataSaida === '') && (
+                                        <Typography variant="body2" component="span">
+                                            &nbsp;e desocupada em: {Moment(row.dataSaida).format('D/MM/Y')}
+                                        </Typography>
+                                    )}.
+                                </Typography>
+                                <Typography variant="body2">
+                                    {value.nome} no valor de R$ {ccyFormat(row.valor)}.
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    />
+                </ListItem>
+            );
+        }
+    },
+    {
+        field: 'endereco',
+        headerName: 'Endereço',
+        minWidth: 150,
+        flex: 1,
+        renderCell: (params) => {
+            const { value } = params;
+            return (
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <LocationOn />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={
+                            <Typography variant="body2">
+                                {value.logradouroNome}, {value.numero}
+                            </Typography>
+                        }
+                        secondary={
+                            <Typography variant="body2" color="textSecondary">
+                                {value.bairroNome}, {value.cidadeNome} - {value.ufSigla}
+                            </Typography>
+                        }
+                    />
+                </ListItem>
+            );
+        }
+    },
 ];
 
 export default function MoradiasComponent(props) {
@@ -25,16 +102,16 @@ export default function MoradiasComponent(props) {
         setOpen(true);
     };
 
-    const handleEdit = (event, value) => {
+    const handleEdit = (event, value) => () => {
         setMoradia(value);
         setOpen(true);
     };
 
-    const handleDelete = (value) => {
+    const handleDelete = (value) => () => {
         const list = moradias.map(obj => {
             if (obj.id === value.id &&
-                obj.condicaoMoradiaDto.id === value.condicaoMoradiaDto.id &&
-                obj.tipoMoradiaDto.id === value.tipoMoradiaDto.id) {
+                obj.condicaoMoradia.id === value.condicaoMoradia.id &&
+                obj.tipoMoradia.id === value.tipoMoradia.id) {
                 obj.deleted = true;
             }
             return obj;
@@ -49,8 +126,8 @@ export default function MoradiasComponent(props) {
     const handleSave = (value) => {
         const index = moradias.findIndex(obj => (
             obj.id === value.id &&
-            obj.condicaoMoradiaDto.id === value.condicaoMoradiaDto.id &&
-            obj.tipoMoradiaDto.id === value.tipoMoradiaDto.id
+            obj.condicaoMoradia.id === value.condicaoMoradia.id &&
+            obj.tipoMoradia.id === value.tipoMoradia.id
         ));
 
         if (index !== -1) {
@@ -62,18 +139,36 @@ export default function MoradiasComponent(props) {
         callback(moradias);
     }
 
-    const isEmpty = () => {
-        if (moradias.length === 0) {
-            return true;
-        }
-        const count = moradias.map(obj => obj.deleted ? 1 : 0)
-            .reduce((acc, cur) => acc + cur);
+    const getColumnActions = (params) => {
+        let columns = [
+            <GridActionsCellItem
+                disabled={disabled}
+                icon={<Delete />}
+                label="Excluir"
+                onClick={handleDelete(params)}
+            />,
+            <GridActionsCellItem
+                disabled={disabled}
+                icon={<Edit />}
+                label="Alterar"
+                onClick={handleEdit(params)}
+            />
+        ];
 
-        return count === moradias.length;
+        return columns;
     }
 
+    const actionColumn = {
+        field: "actions",
+        headerName: "Ações",
+        width: 140,
+        pinnable: false,
+        type: 'actions',
+        getActions: getColumnActions
+    };
+
     return (
-        <Paper>
+        <React.Fragment>
             {callback != null && (
                 <Grid container spacing={0} direction="column" alignItems="flex-end">
                     <Grid item xs>
@@ -86,26 +181,26 @@ export default function MoradiasComponent(props) {
                 </Grid>
             )}
 
-            <SimpleTable
-                emptyRows={isEmpty()}
-                columns={columns}
-                notShowActions={callback == null}
-            >
-                {moradias.map((row, key) =>
-                (callback != null && !row.deleted && (
-                    <MoradiasTableRowComponent
-                        key={"row-" + key}
-                        row={row}
-                        onRemove={() => handleDelete(row)}
-                        onEdit={(e) => handleEdit(e, row)} />
-                )))}
-            </SimpleTable>
+            <Box sx={{
+                height: 320,
+                width: '100%',
+                mt: 1
+            }}>
+                <DNADataGrid
+                    rows={moradias}
+                    rowCount={moradias.length}
+
+                    columns={[...columns, actionColumn]}
+                    rowHeight={72}
+                />
+            </Box>
+
 
             <MoradiaFormComponent
                 openModal={open}
                 value={moradia}
                 callback={handleSave}
                 onClose={handleClose} />
-        </Paper>
+        </React.Fragment>
     );
 }

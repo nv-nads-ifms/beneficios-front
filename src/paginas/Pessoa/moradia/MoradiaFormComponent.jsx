@@ -5,13 +5,11 @@ import { Card, CardContent, CardHeader, Grid, Avatar, Typography } from '@materi
 import useErros from '../../../hooks/useErros';
 import { validarCampo } from '../../../models/validaCampos';
 import Logradouro from '../../../components/Endereco/Logradouro';
-import CustomAutoComplete from '../../../components/CustomFields/CustomAutoComplete';
-import TipoMoradiaService from '../../../services/TipoMoradiaService';
-import CondicaoDeMoradiaService from '../../../services/CondicaoDeMoradiaService';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import HouseIcon from '@material-ui/icons/House';
 import { emptyMoradia, validarMoradia } from '../../../models/Moradia';
+import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 
 export default function MoradiaFormComponent(props) {
     const { value, callback, openModal, onClose } = props;
@@ -84,29 +82,31 @@ export default function MoradiaFormComponent(props) {
                 <CardContent>
                     <Grid container spacing={1}>
                         <Grid item xs={6}>
-                            <CustomAutoComplete
-                                id="tipoMoradiaDto"
-                                value={moradia.tipoMoradiaDto}
-                                retrieveDataFunction={TipoMoradiaService.getListaTipoMoradias}
-                                label="Tipo de Moradia"
-                                placeholder="Selecione um Tipo de Moradia"
-                                error={erros.tipoMoradiaDto}
-                                onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                                getOptionSelected={(option, value) => option.id === value.id}
-                                getOptionLabel={(option) => option.descricao}
+                            <DNAAutocomplete
+                                id="tipoMoradia"
+                                path="tipos-de-moradia"
+                                input_label="<< Selecione um Tipo de Moradia >>"
+                                value={moradia.tipoMoradia}
+                                // disabled={disabled}
+                                onChange={onChange}
+                                isOptionEqualToValue={(option, value) =>
+                                    option.id === value.id
+                                }
+                                getOptionLabel={(option) => option.nome}
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <CustomAutoComplete
-                                id="condicaoMoradiaDto"
-                                value={moradia.condicaoMoradiaDto}
-                                retrieveDataFunction={CondicaoDeMoradiaService.getListaCondicoesDeMoradia}
-                                label="Condição de Moradia"
-                                placeholder="Selecione uma Condição de Moradia"
-                                error={erros.condicaoMoradiaDto}
-                                onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                                getOptionSelected={(option, value) => option.id === value.id}
-                                getOptionLabel={(option) => option.descricao}
+                            <DNAAutocomplete
+                                id="condicaoMoradia"
+                                path="condicoes-de-moradia"
+                                input_label="<< Selecione uma Condição de Moradia >>"
+                                value={moradia.condicaoMoradia}
+                                // disabled={disabled}
+                                onChange={onChange}
+                                isOptionEqualToValue={(option, value) =>
+                                    option.id === value.id
+                                }
+                                getOptionLabel={(option) => option.nome}
                             />
                         </Grid>
                         <Grid item xs={4}>

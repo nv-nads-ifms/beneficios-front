@@ -46,7 +46,7 @@ export default function MoradiasTableRowComponent(props) {
                     </Grid>
                     <Grid item>
                         <Typography variant="body1" color="textPrimary">
-                            {row.tipoMoradiaDto.descricao}
+                            {row.tipoMoradia.nome}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                             Ocupada em: {Moment(row.dataOcupacao).format('D/MM/Y')}
@@ -57,7 +57,7 @@ export default function MoradiasTableRowComponent(props) {
                             )}.
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            {row.condicaoMoradiaDto.descricao} no valor de R$ {ccyFormat(row.valor)}.
+                            {row.condicaoMoradia.nome} no valor de R$ {ccyFormat(row.valor)}.
                         </Typography>
                     </Grid>
                 </Grid>
@@ -67,10 +67,10 @@ export default function MoradiasTableRowComponent(props) {
                     <Grid item><LocationOnIcon className={classes.icon} /></Grid>
                     <Grid item>
                         <Typography variant="body2" color="textSecondary">
-                            Endereço: {row.enderecoDto.logradouroNome}, {row.enderecoDto.numero}
+                            Endereço: {row.endereco.logradouroNome}, {row.endereco.numero}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            {row.enderecoDto.bairroNome}, {row.enderecoDto.cidadeNome} - {row.enderecoDto.ufSigla}
+                            {row.endereco.bairroNome}, {row.endereco.cidadeNome} - {row.endereco.ufSigla}
                         </Typography>
                     </Grid>
                 </Grid>
