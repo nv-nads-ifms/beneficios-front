@@ -174,8 +174,8 @@ export default function Logradouro(props) {
                                 variant="outlined"
                                 placeholder="Ex: Avenida Weimar Gonçalves Torres, Centro, Naviraí-MS"
 
-                                error={erros != null && erros.enderecoDto != null ? !erros.enderecoDto.valido : false}
-                                helperText={erros != null && erros.enderecoDto != null ? erros.enderecoDto.texto : ''}
+                                error={erros != null && erros.endereco != null ? !erros.endereco.valido : false}
+                                helperText={erros != null && erros.endereco != null ? erros.endereco.texto : ''}
                                 InputLabelProps={{
                                     shrink: true,
                                 }} />

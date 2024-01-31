@@ -42,10 +42,10 @@ export default function CardMoradiaComponent(props) {
                     <Grid item><LocationOnIcon className={classes.icon} /></Grid>
                     <Grid item>
                         <Typography variant="body2" color="textSecondary">
-                            Endereço: {moradia.enderecoDto.logradouroNome}, {moradia.enderecoDto.numero}
+                            Endereço: {moradia.endereco.logradouroNome}, {moradia.endereco.numero}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            {moradia.enderecoDto.bairroNome}, {moradia.enderecoDto.cidadeNome} - {moradia.enderecoDto.ufSigla}
+                            {moradia.endereco.bairroNome}, {moradia.endereco.cidadeNome} - {moradia.endereco.ufSigla}
                         </Typography>
                     </Grid>
                 </Grid>

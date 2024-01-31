@@ -5,9 +5,9 @@ const emptyMoradia = {
     dataOcupacao: '',
     dataSaida: null,
     valor: '',
-    condicaoMoradiaDto: null,
-    tipoMoradiaDto: null,
-    enderecoDto: emptyEndereco,
+    condicaoMoradia: null,
+    tipoMoradia: null,
+    endereco: emptyEndereco,
 };
 
 function validarMoradia(moradia) {
@@ -15,16 +15,16 @@ function validarMoradia(moradia) {
     if (moradia.dataOcupacao == null || moradia.dataOcupacao === '') {
         campos.push({ campo: "dataOcupacao", erro: "A DATA DE OCUPAÇÃO não foi informada." });
     }
-    if (moradia.condicaoMoradiaDto == null) {
+    if (moradia.condicaoMoradia == null) {
         campos.push({ campo: "condicaoMoradiaDto", erro: "A CONDIÇÃO DE MORADIA não foi informada." });
     }
-    if (moradia.tipoMoradiaDto == null) {
+    if (moradia.tipoMoradia == null) {
         campos.push({ campo: "tipoMoradiaDto", erro: "A TIPO DE MORADIA não foi informada." });
     }
     const nullFields = ["complemento", "referencia"];
-    for (var [key, value] of Object.entries(moradia.enderecoDto)) {
+    for (var [key, value] of Object.entries(moradia.endereco)) {
         if (value === '' && !nullFields.includes(key)) {
-            campos.push({ campo: "enderecoDto", erro: "O ENDEREÇO não foi informado." });
+            campos.push({ campo: "endereco", erro: "O ENDEREÇO não foi informado." });
             campos.push({ campo: key, erro: "Este campo deve ser informado." });
             
             break;

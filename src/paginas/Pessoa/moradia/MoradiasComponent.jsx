@@ -9,6 +9,7 @@ import { ccyFormat } from "../../../api/format";
 import ChipStatus from "../../../components/CustomButtons/ChipStatus";
 import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import { Status } from "../../../api/utils/constants";
 
 const columns = [
     {
@@ -16,10 +17,19 @@ const columns = [
         headerName: 'Status',
         width: 150,
         renderCell: (params) => {
-            const { row, value } = params;
-            const label = (row.dataSaida == null || row.dataSaida === '') ? 'Ocupado' : 'Desocupado';
+            const { row } = params;
+            const isOcupado = (row.dataSaida == null || row.dataSaida === '');
+            let label;
+            let status;
+            if (isOcupado) {
+                label = 'Ocupado';
+                status = Status.ATIVO;
+            } else {
+                label = 'Desocupado';
+                status = Status.INATIVO;
+            }
             return (
-                <ChipStatus label={label} status={value} />
+                <ChipStatus label={label} status={status} />
             );
         }
     },
@@ -102,7 +112,7 @@ export default function MoradiasComponent(props) {
         setOpen(true);
     };
 
-    const handleEdit = (event, value) => () => {
+    const handleEdit = (value) => () => {
         setMoradia(value);
         setOpen(true);
     };
@@ -124,38 +134,25 @@ export default function MoradiasComponent(props) {
     };
 
     const handleSave = (value) => {
-        const index = moradias.findIndex(obj => (
-            obj.id === value.id &&
-            obj.condicaoMoradia.id === value.condicaoMoradia.id &&
-            obj.tipoMoradia.id === value.tipoMoradia.id
-        ));
-
-        if (index !== -1) {
-            moradias[index] = value;
+        let list = [];
+        list = list.concat(moradias);
+        
+        if (value.id === "") {
+            list.push(value);
         } else {
-            moradias.push(value);
+            const index = list.findIndex(obj => (
+                obj.id === value.id &&
+                obj.condicaoMoradia.id === value.condicaoMoradia.id &&
+                obj.tipoMoradia.id === value.tipoMoradia.id
+            ));
+            
+            if (index !== -1) {
+                list[index] = value;
+            }
         }
+        
         setMoradia(value);
-        callback(moradias);
-    }
-
-    const getColumnActions = (params) => {
-        let columns = [
-            <GridActionsCellItem
-                disabled={disabled}
-                icon={<Delete />}
-                label="Excluir"
-                onClick={handleDelete(params)}
-            />,
-            <GridActionsCellItem
-                disabled={disabled}
-                icon={<Edit />}
-                label="Alterar"
-                onClick={handleEdit(params)}
-            />
-        ];
-
-        return columns;
+        callback(list);
     }
 
     const actionColumn = {
@@ -164,7 +161,24 @@ export default function MoradiasComponent(props) {
         width: 140,
         pinnable: false,
         type: 'actions',
-        getActions: getColumnActions
+        getActions: (params) => {
+            let columns = [
+                <GridActionsCellItem
+                    disabled={disabled}
+                    icon={<Delete />}
+                    label="Excluir"
+                    onClick={handleDelete(params.row)}
+                />,
+                <GridActionsCellItem
+                    disabled={disabled}
+                    icon={<Edit />}
+                    label="Alterar"
+                    onClick={handleEdit(params.row)}
+                />
+            ];
+
+            return columns;
+        }
     };
 
     return (
