@@ -26,7 +26,7 @@ function MoradiaCondicaoColumn(params) {
                             )}
                         </Typography>
                         <Typography variant="body2">
-                            {value.nome} no valor de R$ {ccyFormat(row.valor)}.
+                            {value.nome} no valor de {ccyFormat(row.valor)}.
                         </Typography>
                     </React.Fragment>
                 }

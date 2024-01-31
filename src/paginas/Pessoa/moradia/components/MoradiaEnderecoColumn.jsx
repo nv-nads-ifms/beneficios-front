@@ -4,7 +4,7 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui
 
 function MoradiaEnderecoColumn(params) {
     const { value } = params;
-console.log(value)
+
     return (
         <ListItem>
             <ListItemAvatar>

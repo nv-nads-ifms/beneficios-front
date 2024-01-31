@@ -67,7 +67,7 @@ export default function MoradiaFormComponent(props) {
                     } />
                 <CardContent>
                     <Grid container spacing={1}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <DNAAutocomplete
                                 id="tipoMoradia"
                                 path="tipos-de-moradia"
@@ -81,7 +81,7 @@ export default function MoradiaFormComponent(props) {
                                 getOptionLabel={(option) => option.nome}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <DNAAutocomplete
                                 id="condicaoMoradia"
                                 path="condicoes-de-moradia"
@@ -95,7 +95,7 @@ export default function MoradiaFormComponent(props) {
                                 getOptionLabel={(option) => option.nome}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} md={4}>
                             <CustomTextField
                                 id="dataOcupacao"
                                 label="Data de ocupação"
@@ -103,7 +103,7 @@ export default function MoradiaFormComponent(props) {
                                 type="date"
                                 onChangeHandler={handleChange} />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} md={4}>
                             <CustomTextField
                                 id="dataSaida"
                                 label="Data de Saída"
@@ -111,7 +111,7 @@ export default function MoradiaFormComponent(props) {
                                 onChangeHandler={handleChange}
                                 type="date" />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} md={4}>
                             <CustomTextField
                                 id="valor"
                                 label="Valor"

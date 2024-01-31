@@ -60,14 +60,11 @@ export default function MoradiasComponent(props) {
     };
 
     const handleDelete = (value) => () => {
-        const list = moradias.map(obj => {
-            if (obj.id === value.id &&
-                obj.condicaoMoradia.id === value.condicaoMoradia.id &&
-                obj.tipoMoradia.id === value.tipoMoradia.id) {
-                obj.deleted = true;
-            }
-            return obj;
-        });
+        const list = moradias.filter(obj => !(
+            obj.id === value.id &&
+            obj.condicaoMoradia.id === value.condicaoMoradia.id &&
+            obj.tipoMoradia.id === value.tipoMoradia.id
+        ));
         callback(list);
     }
 
@@ -78,7 +75,7 @@ export default function MoradiasComponent(props) {
     const handleSave = (value) => {
         let list = [];
         list = list.concat(moradias);
-        
+
         if (value.id === "") {
             list.push(value);
         } else {
@@ -87,12 +84,12 @@ export default function MoradiasComponent(props) {
                 obj.condicaoMoradia.id === value.condicaoMoradia.id &&
                 obj.tipoMoradia.id === value.tipoMoradia.id
             ));
-            
+
             if (index !== -1) {
                 list[index] = value;
             }
         }
-        
+
         setMoradia(value);
         callback(list);
     }

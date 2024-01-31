@@ -2,29 +2,29 @@ import React from 'react';
 import { Status } from '../../../../api/utils/constants';
 import ChipStatus from '../../../../components/CustomButtons/ChipStatus';
 
-function MoradiaStatusColumn(params) {
+function RendimentoStatusColumn(params) {
     const { row } = params;
     
     const [status, setStatus] = React.useState('');
     const [label, setLabel] = React.useState('');
 
-    const isOcupado = React.useMemo(() => {
-        return row.dataSaida == null || row.dataSaida === '';
+    const isDemitido = React.useMemo(() => {
+        return !(row.demissao === '' || row.demissao == null);
     }, [row]);
 
     React.useEffect(() => {
-        if (isOcupado) {
-            setLabel('Ocupado');
+        if (!isDemitido) {
+            setLabel('Vigente');
             setStatus(Status.ATIVO);
         } else {
-            setLabel('Desocupado');
+            setLabel('Encerrado');
             setStatus(Status.INATIVO);
         }
-    }, [isOcupado]);
+    }, [isDemitido]);
     
     return (
         <ChipStatus label={label} status={status} />
     );
 }
 
-export default MoradiaStatusColumn;
+export default RendimentoStatusColumn;

@@ -1,16 +1,17 @@
 import React from 'react';
 import CustomTextField from '../../../components/CustomFields/CustomTextField';
 import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
-import useErros from '../../../hooks/useErros';
-import { validarCampo } from '../../../models/validaCampos';
-import CustomAutoComplete from '../../../components/CustomFields/CustomAutoComplete';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
-import CondicaoDeTrabalhoService from '../../../services/CondicaoDeTrabalhoService';
 import DialogForms from '../../../components/CustomForms/DialogForms';
+import { handleChangeInputComponent } from '../../../api/utils/util';
+import { showErrorMessages } from '../../../api/utils/modalMessages';
+import { Avatar, Typography } from '@mui/material';
+import { Work } from '@mui/icons-material';
+import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 
 const emptyRendimento = {
     sequencia: '',
-    condicaoTrabalhoDto: null,
+    condicaoTrabalho: null,
     valor: '',
     admissao: '',
     demissao: '',
@@ -18,12 +19,7 @@ const emptyRendimento = {
 
 export default function RendimentoFormComponent(props) {
     const { value, callback, openModal, onClose } = props;
-    const [ rendimento, setRendimento ] = React.useState(emptyRendimento);
-
-    const [erros, validarCampos, possoEnviar] = useErros({
-        condicaoTrabalhoDto: validarCampo,
-        valor: validarCampo,
-    });
+    const [rendimento, setRendimento] = React.useState(emptyRendimento);
 
     React.useEffect(() => {
         if (value != null) {
@@ -33,34 +29,34 @@ export default function RendimentoFormComponent(props) {
         }
     }, [value]);
 
-    const onChange = (event, newValue) => {
-        let t = event.target;
-
-        const fieldname = t.id.split('-')[0];
-        setRendimento({
-            ...rendimento,
-            [fieldname]: newValue != null ? newValue : t.value,
-        });
+    const handleChange = (e, newValue) => {
+        handleChangeInputComponent(e, newValue, setRendimento, rendimento);
     }
 
-    const onSaveHandler = () => {
-        if (possoEnviar) {
-            callback(rendimento);
-            onClose();
+    const validarRendimento = (rendimento) => {
+        let campos = [];
+        if (rendimento.admissao == null || rendimento.admissao === '') {
+            campos.push({ campo: "admissao", erro: "A DATA DE ADMISSÃO não foi informada." });
         }
+
+        if (rendimento.condicaoTrabalho == null) {
+            campos.push({ campo: "condicaoTrabalho", erro: "A CONDIÇÃO DE TRABALHO não foi informada." });
+        }
+
+        if (rendimento.valor === '') {
+            campos.push({ campo: "valor", erro: "O VALOR relativo à moradia não foi informado." });
+        }
+        return campos;
     };
 
-    const onBlurHandler = (event) => {
-        let value = event.target.value;
-        const fieldname = event.target.id.split('-')[0];
-        if (value === "") {
-            const msg = "O campo " + fieldname + " não foi informado.";
-            validarCampos({ campo: fieldname, erro: msg });
-        } else if (fieldname === "valor" && value < 0) {
-            const msg = "O campo " + fieldname + " não pode ter valor negativo.";
-            validarCampos({ campo: fieldname, erro: msg });
+    const onSaveHandler = () => {
+        const data = validarRendimento(rendimento);
+
+        if (data.length > 0) {
+            showErrorMessages(data);
         } else {
-            validarCampos({ campo: fieldname, erro: '' });
+            callback(rendimento);
+            onClose();
         }
     };
 
@@ -68,65 +64,66 @@ export default function RendimentoFormComponent(props) {
         <DialogForms
             title="Cadastro de Rendimentos da Pessoa"
             open={openModal}
-            maxWidth="md"
+            maxWidth="sm"
             onClose={onClose}
             onSave={onSaveHandler}
         >
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Card>
-                        <CardHeader title="Dados dos Rendimentos" />
-                        <CardContent>
-                            <Grid container spacing={1}>
-                                <Grid item xs={8}>
-                                    <CustomAutoComplete
-                                        id="condicaoTrabalhoDto"
-                                        value={rendimento.condicaoTrabalhoDto}
-                                        retrieveDataFunction={CondicaoDeTrabalhoService.getListaCondicoesDeTrabalho}
-                                        label="Condição de Trabalho"
-                                        placeholder="Selecione uma Condição de Trabalho"
-                                        error={erros.condicaoTrabalhoDto}
-                                        onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                                        getOptionSelected={(option, value) => option.id === value.id}
-                                        getOptionLabel={(option) => option.descricao}
-                                        onBlur={onBlurHandler}
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <CustomTextField
-                                        id="valor"
-                                        label="Rendimento"
-                                        value={rendimento.valor}
-                                        error={erros.valor}
-                                        onChangeHandler={onChange}
-                                        InputProps={{
-                                            inputComponent: CustomCurrency,
-                                        }} />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={1}>
-                                <Grid item xs={6}>
-                                    <CustomTextField
-                                        id="admissao"
-                                        label="Data de Admissão"
-                                        value={rendimento.admissao}
-                                        type="date"
-                                        error={erros.admissao}
-                                        onChangeHandler={onChange} />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <CustomTextField
-                                        id="demissao"
-                                        label="Data de Demissão"
-                                        value={rendimento.demissao}
-                                        type="date"
-                                        onChangeHandler={onChange} />
-                                </Grid>
-                            </Grid>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+            <Card>
+                <CardHeader
+                    avatar={
+                        <Avatar>
+                            <Work />
+                        </Avatar>
+                    }
+                    title={
+                        <Typography variant="h6">
+                            Dados dos Rendimentos
+                        </Typography>
+                    }
+                />
+                <CardContent>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <DNAAutocomplete
+                                id="condicaoTrabalho"
+                                path="condicoes-de-trabalho"
+                                input_label="<< Selecione uma Condição de Trabalho >>"
+                                value={rendimento.condicaoTrabalho}
+                                
+                                onChange={handleChange}
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                getOptionLabel={(option) => option.nome}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <CustomTextField
+                                id="valor"
+                                label="Rendimento"
+                                value={rendimento.valor}
+                                onChangeHandler={handleChange}
+                                InputProps={{
+                                    inputComponent: CustomCurrency,
+                                }} />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <CustomTextField
+                                id="admissao"
+                                label="Data de Admissão"
+                                value={rendimento.admissao}
+                                type="date"
+                                onChangeHandler={handleChange} />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <CustomTextField
+                                id="demissao"
+                                label="Data de Demissão"
+                                value={rendimento.demissao}
+                                type="date"
+                                onChangeHandler={handleChange} />
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </Card>
         </DialogForms>
     );
 }
