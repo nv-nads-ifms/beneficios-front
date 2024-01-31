@@ -16,7 +16,7 @@ export default function RendimentosTableRowComponent(props) {
             setStatus(Status.ATIVO);
             setLabel("Vigente");
         } else {
-            setStatus(Status.INATIVO);
+            setStatus(Status.INATIVO); 
             setLabel("Encerrado");
         }
     }, [row.demissao]);

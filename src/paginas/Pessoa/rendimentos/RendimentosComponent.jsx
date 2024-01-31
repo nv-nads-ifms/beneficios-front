@@ -16,7 +16,7 @@ const columns = [
     { id: 'demissao', label: 'Data de demissão' },
     { id: 'valor', label: 'Valor' }
 ];
-
+ 
 export default function RendimentosComponent(props) {
     const { rendimentos, disabled, callback } = props;
     const classes = fichaStyles();

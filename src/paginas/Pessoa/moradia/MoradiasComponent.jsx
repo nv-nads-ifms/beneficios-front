@@ -1,15 +1,16 @@
 import React from "react";
-import Moment from "moment";
+
 import MoradiaFormComponent from './MoradiaFormComponent';
 import AddButton from "../../../components/CustomButtons/AddButton";
 import { fichaStyles } from "../../../components/UI/GlobalStyle";
-import { Avatar, Box, Grid, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
-import { Delete, Edit, House, LocationOn } from "@mui/icons-material";
-import { ccyFormat } from "../../../api/format";
-import ChipStatus from "../../../components/CustomButtons/ChipStatus";
+import { Box, Grid } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+
 import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import { Status } from "../../../api/utils/constants";
+import MoradiaStatusColumn from "./components/MoradiaStatusColumn";
+import MoradiaCondicaoColumn from "./components/MoradiaCondicaoColumn";
+import MoradiaEnderecoColumn from "./components/MoradiaEnderecoColumn";
 
 const columns = [
     {
@@ -17,20 +18,7 @@ const columns = [
         headerName: 'Status',
         width: 150,
         renderCell: (params) => {
-            const { row } = params;
-            const isOcupado = (row.dataSaida == null || row.dataSaida === '');
-            let label;
-            let status;
-            if (isOcupado) {
-                label = 'Ocupado';
-                status = Status.ATIVO;
-            } else {
-                label = 'Desocupado';
-                status = Status.INATIVO;
-            }
-            return (
-                <ChipStatus label={label} status={status} />
-            );
+            return <MoradiaStatusColumn row={params.row} />
         }
     },
     {
@@ -39,33 +27,8 @@ const columns = [
         minWidth: 150,
         flex: 1,
         renderCell: (params) => {
-            const { row, value } = params;
             return (
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <House />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={row.tipoMoradia.nome}
-                        secondary={
-                            <React.Fragment>
-                                <Typography variant="body2">
-                                    Ocupada em: {Moment(row.dataOcupacao).format('D/MM/Y')}
-                                    {!(row.dataSaida == null || row.dataSaida === '') && (
-                                        <Typography variant="body2" component="span">
-                                            &nbsp;e desocupada em: {Moment(row.dataSaida).format('D/MM/Y')}
-                                        </Typography>
-                                    )}.
-                                </Typography>
-                                <Typography variant="body2">
-                                    {value.nome} no valor de R$ {ccyFormat(row.valor)}.
-                                </Typography>
-                            </React.Fragment>
-                        }
-                    />
-                </ListItem>
+                <MoradiaCondicaoColumn row={params.row} value={params.value} />
             );
         }
     },
@@ -75,28 +38,7 @@ const columns = [
         minWidth: 150,
         flex: 1,
         renderCell: (params) => {
-            const { value } = params;
-            return (
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <LocationOn />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={
-                            <Typography variant="body2">
-                                {value.logradouroNome}, {value.numero}
-                            </Typography>
-                        }
-                        secondary={
-                            <Typography variant="body2" color="textSecondary">
-                                {value.bairroNome}, {value.cidadeNome} - {value.ufSigla}
-                            </Typography>
-                        }
-                    />
-                </ListItem>
-            );
+            return <MoradiaEnderecoColumn value={params.value} />
         }
     },
 ];
@@ -205,7 +147,7 @@ export default function MoradiasComponent(props) {
                     rowCount={moradias.length}
 
                     columns={[...columns, actionColumn]}
-                    rowHeight={72}
+                    rowHeight={87}
                 />
             </Box>
 
