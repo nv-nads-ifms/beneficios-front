@@ -1,19 +1,56 @@
 import React from "react";
-import {
-    Paper, Grid
-} from "@material-ui/core";
-import AuxiliosTableRowComponent from "./AuxiliosTableRowComponent";
-import SimpleTable from "../../../components/CustomTable/SimpleTable";
+import Moment from 'moment';
 import AddButton from "../../../components/CustomButtons/AddButton";
 import AuxilioFormComponent from "./AuxilioFormComponent";
 import { fichaStyles } from "../../../components/UI/GlobalStyle";
+import AuxilioStatusColumn from "./components/AuxilioStatusColumn";
+import { Box, Grid, Typography } from "@mui/material";
+import { ccyFormat } from "../../../api/format";
+import { GridActionsCellItem } from "@mui/x-data-grid";
+import { Delete, Edit } from "@mui/icons-material";
+import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
 
 const columns = [
-    { id: 'status', label: 'Status' },
-    { id: 'programa', label: 'Benefício/Programa de Governo' },
-    { id: 'inicio', label: 'Data de início' },
-    { id: 'fim', label: 'Data de encerramento' },
-    { id: 'valor', label: 'Valor' }
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 150,
+        renderCell: (params) => {
+            return <AuxilioStatusColumn row={params.row} />
+        }
+    },
+    {
+        field: 'programaGoverno',
+        headerName: 'Benefício/Programa de Governo',
+        minWidth: 100,
+        flex: 1,
+        valueGetter: (param) => (param.value.nome)
+    },
+    {
+        field: 'inicio',
+        headerName: 'Data de início',
+        width: 120,
+        renderCell: (params) => Moment(params.value).format('DD/MM/Y')
+    },
+    {
+        field: 'fim',
+        headerName: 'Encerrado em',
+        width: 120,
+        renderCell: (params) => {
+            return (params.value == null || params.value === '') ? ' - ' : Moment(params.value).format('DD/MM/Y')
+        }
+    },
+    {
+        field: 'valor',
+        headerName: 'Valor',
+        width: 120,
+        type: 'number',
+        renderCell: (param) => (
+            <Typography>
+                {ccyFormat(param.row.valor)}
+            </Typography>
+        )
+    },
 ];
 
 export default function AuxilioComponent(props) {
@@ -28,19 +65,16 @@ export default function AuxilioComponent(props) {
         setOpen(true);
     };
 
-    const handleEdit = (event, value) => {
+    const handleEdit = (value) => () => {
         setAuxilio(value);
         setOpen(true);
     };
 
-    const handleDelete = (value) => {
-        const list = auxilios.map(obj => {
-            if (obj.id === value.id &&
-                obj.programaGoverno.id === value.programaGoverno.id) {
-                obj.deleted = true;
-            }
-            return obj;
-        });
+    const handleDelete = (value) => () => {
+        const list = auxilios.filter(obj => !(
+            obj.id === value.id &&
+            obj.programaGoverno.id === value.programaGoverno.id
+        ));
         callback(list);
     }
 
@@ -49,62 +83,84 @@ export default function AuxilioComponent(props) {
     };
 
     const handleSave = (value) => {
-        const index = auxilios.findIndex(obj => (
-            obj.id === value.id &&
-            obj.programaGoverno.id === value.programaGoverno.id
-        ));
+        let list = [];
+        list = list.concat(auxilios);
 
-        if (index !== -1) {
-            auxilios[index] = value;
+        if (value.id === "") {
+            list.push(value);
         } else {
-            auxilios.push(value);
+            const index = list.findIndex(obj => (
+                obj.id === value.id &&
+                obj.programaGoverno.id === value.programaGoverno.id
+            ));
+
+            if (index !== -1) {
+                list[index] = value;
+            }
         }
         setAuxilio(value);
-        callback(auxilios);
+        callback(list);
     }
 
-    const isEmpty = () => {
-        if (auxilios.length === 0) {
-            return true;
+    const actionColumn = {
+        field: "actions",
+        headerName: "Ações",
+        width: 140,
+        pinnable: false,
+        type: 'actions',
+        getActions: (params) => {
+            let columns = [
+                <GridActionsCellItem
+                    disabled={disabled}
+                    icon={<Delete />}
+                    label="Excluir"
+                    onClick={handleDelete(params.row)}
+                />,
+                <GridActionsCellItem
+                    disabled={disabled}
+                    icon={<Edit />}
+                    label="Alterar"
+                    onClick={handleEdit(params.row)}
+                />
+            ];
+
+            return columns;
         }
-        const count = auxilios.map(obj => obj.deleted ? 1 : 0)
-            .reduce((acc, cur) => acc + cur);
-
-        return count === auxilios.length;
-    }
+    };
 
     return (
-        <Paper>
-            <Grid container spacing={0} direction="column" alignItems="flex-end">
-                <Grid item xs>
-                    <AddButton
-                        type="button"
-                        disabled={disabled}
-                        className={classes.button}
-                        onClick={handleOpen} />
+        <React.Fragment>
+            {callback != null && (
+                <Grid container spacing={0} direction="column" alignItems="flex-end">
+                    <Grid item xs>
+                        <AddButton
+                            type="button"
+                            disabled={disabled}
+                            className={classes.button}
+                            onClick={handleOpen} />
+                    </Grid>
                 </Grid>
-            </Grid>
+            )}
 
-            <SimpleTable
-                emptyRows={isEmpty()}
-                columns={columns}
-            >
-                {auxilios.map((row, key) => (
-                    !row.deleted && (
-                        <AuxiliosTableRowComponent
-                            key={"row-" + key}
-                            row={row}
-                            onRemove={() => handleDelete(row)}
-                            onEdit={(e) => handleEdit(e, row)} />
-                    )
-                ))}
-            </SimpleTable>
+            <Box sx={{
+                height: 320,
+                width: '100%',
+                mt: 1
+            }}>
+                <DNADataGrid
+                    getRowId={(row) => row.id}
+                    rows={auxilios}
+                    rowCount={auxilios.length}
+
+                    columns={[...columns, actionColumn]}
+                />
+            </Box>
 
             <AuxilioFormComponent
                 openModal={open}
                 value={auxilio}
                 callback={handleSave}
                 onClose={handleClose} />
-        </Paper>
+        </React.Fragment>
     );
 }

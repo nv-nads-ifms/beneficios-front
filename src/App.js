@@ -2,6 +2,7 @@ import React from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import 'dayjs/locale/pt-br';
 import './App.css';
 
 import Routes from './routes';

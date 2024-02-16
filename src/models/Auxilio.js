@@ -4,7 +4,7 @@ const emptyAuxilio = {
     id: '',
     programaGoverno: null,
     dataRegistro: '',
-    dataFim: '',
+    dataFim: null,
     valor: '',
     status: Status.ATIVO,
 };

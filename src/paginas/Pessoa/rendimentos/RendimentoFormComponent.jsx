@@ -1,13 +1,14 @@
 import React from 'react';
-import CustomTextField from '../../../components/CustomFields/CustomTextField';
 import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
 import DialogForms from '../../../components/CustomForms/DialogForms';
-import { handleChangeInputComponent } from '../../../api/utils/util';
+import { handleChangeInputComponent, handleDatePickerChange } from '../../../api/utils/util';
 import { showErrorMessages } from '../../../api/utils/modalMessages';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, TextField, Typography } from '@mui/material';
 import { Work } from '@mui/icons-material';
 import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const emptyRendimento = {
     sequencia: '',
@@ -83,43 +84,49 @@ export default function RendimentoFormComponent(props) {
                 />
                 <CardContent>
                     <Grid container spacing={1}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} md={8}>
                             <DNAAutocomplete
                                 id="condicaoTrabalho"
                                 path="condicoes-de-trabalho"
                                 input_label="<< Selecione uma Condição de Trabalho >>"
                                 value={rendimento.condicaoTrabalho}
-                                
+
                                 onChange={handleChange}
                                 getOptionSelected={(option, value) => option.id === value.id}
                                 getOptionLabel={(option) => option.nome}
                             />
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <CustomTextField
+                            <TextField
                                 id="valor"
                                 label="Rendimento"
                                 value={rendimento.valor}
-                                onChangeHandler={handleChange}
+                                variant='outlined'
+                                fullWidth
+                                onChange={handleChange}
                                 InputProps={{
                                     inputComponent: CustomCurrency,
-                                }} />
+                                }}
+                            />
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CustomTextField
-                                id="admissao"
-                                label="Data de Admissão"
-                                value={rendimento.admissao}
-                                type="date"
-                                onChangeHandler={handleChange} />
+                        <Grid item xs={12} md={6}>
+                            <DatePicker
+                                label='Data de Admissão'
+                                value={dayjs(rendimento.admissao)}
+                                disableFuture
+                                format='DD/MM/YYYY'
+                                onChange={(newValue) => handleDatePickerChange('admissao', newValue["$d"], setRendimento, rendimento)}
+                            />
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CustomTextField
-                                id="demissao"
-                                label="Data de Demissão"
-                                value={rendimento.demissao}
-                                type="date"
-                                onChangeHandler={handleChange} />
+                        <Grid item xs={12} md={6}>
+                            <DatePicker
+                                label='Data de Demissão'
+                                minDate={dayjs(rendimento.admissao)}
+                                value={dayjs(rendimento.demissao)}
+                                disableFuture
+                                format='DD/MM/YYYY'
+                                onChange={(newValue) => handleDatePickerChange('demissao', newValue["$d"], setRendimento, rendimento)}
+                            />
                         </Grid>
                     </Grid>
                 </CardContent>

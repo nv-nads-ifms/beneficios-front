@@ -36,6 +36,13 @@ export const createUtilFunctions = () => {
         setFieldValue(fieldname, value, setterFunction, object);
     }
 
+    const handleDatePickerChange = (fieldname, newValue, setterFunction, object) => {
+        setterFunction({
+            ...object,
+            [fieldname]: newValue,
+        });
+    }
+
     function dataURLtoFile(imageBase64, filename) {
         var arr = imageBase64.split(','),
             mime = arr[0].match(/:(.*?);/)[1],
@@ -99,6 +106,7 @@ export const createUtilFunctions = () => {
         setFieldValue,
         extractEventValue,
         handleChangeInputComponent,
+        handleDatePickerChange,
         dataURLtoFile,
         convertImgToBase64URL,
         convertToParams,
@@ -113,6 +121,7 @@ export const {
     setFieldValue,
     extractEventValue,
     handleChangeInputComponent,
+    handleDatePickerChange,
     dataURLtoFile,
     convertImgToBase64URL,
     convertToParams,

@@ -1,6 +1,5 @@
 import React from "react";
 import { Sexo } from "../../api/utils/constants";
-import CustomTextField from "../../components/CustomFields/CustomTextField";
 import ContatosComponent from "./contatos/ContatosComponent";
 import DocumentosComponent from "./documentos/DocumentosComponent";
 import WebcamCapture from "../../components/Webcam/WebcamCapture";
@@ -8,8 +7,10 @@ import noImageAvailable from "../../img/noImageAvailable.png";
 import DNAAutocomplete from "../../components/V1.0.0/DNAAutocomplete";
 import { objectContext } from "../../contexts/objectContext";
 import DNAImageUpload from "../../components/V1.0.0/DNAImageUpload";
-import { dataURLtoFile, handleChangeInputComponent } from "../../api/utils/util";
-import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup } from "@mui/material";
+import { handleChangeInputComponent, handleDatePickerChange } from "../../api/utils/util";
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 export default function PessoaFromGeral(props) {
     const { disabled } = props;
@@ -30,19 +31,15 @@ export default function PessoaFromGeral(props) {
         }
     }, [object]);
 
-    const handleChange = (e, newValue) => {
-        handleChangeInputComponent(e, newValue, setObject, object);
+    const idadeMinima = React.useMemo(() => {
+        return dayjs().subtract(18, 'year');
+    }, []);
+
+    const handleChange = (e, newValue, fieldname) => {
+        handleChangeInputComponent(e, newValue, setObject, object, fieldname);
     }
 
     const handleOnWebcamChange = (value) => {
-        // const file = dataURLtoFile(value, 'foto_pessoa.png');
-        // let image = {
-        //     id: '',
-        //     nome: file.name,
-        //     tipo: file.type,
-        //     data: file,
-        // };
-
         setValue(value, 'foto');
     }
 
@@ -72,18 +69,19 @@ export default function PessoaFromGeral(props) {
                 <Grid item md={10} xs={12}>
                     <Grid container spacing={1}>
                         <Grid item xs={10}>
-                            <CustomTextField
+                            <TextField
                                 id="nome"
                                 label="Nome da pessoa"
                                 value={object.nome}
+                                variant='outlined'
                                 placeholder={"<< Digite o nome da Pessoa >>"}
                                 autoFocus={true}
                                 disabled={disabled}
-                                onChangeHandler={handleChange}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={2}>
-                            <CustomTextField
+                            <TextField
                                 id="id"
                                 label="Id."
                                 value={object.id}
@@ -105,13 +103,23 @@ export default function PessoaFromGeral(props) {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <CustomTextField
+                            <DatePicker
+                                label='Data de Nascimento'
+                                value={dayjs(object.nascimento)}
+                                maxDate={idadeMinima}
+                                // disableFuture
+                                disabled={disabled}
+                                format='DD/MM/YYYY'
+                                onChange={(newValue) => handleDatePickerChange('nascimento', newValue["$d"], setObject, object)}
+                            />
+                            {/* <TextField
                                 id="nascimento"
                                 label="Data de Nascimento"
                                 value={object.nascimento}
                                 type="date"
                                 disabled={disabled}
-                                onChangeHandler={handleChange} />
+                                variant='outlined'
+                                onChange={handleChange} /> */}
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl component="fieldset">

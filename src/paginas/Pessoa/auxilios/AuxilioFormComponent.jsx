@@ -1,23 +1,19 @@
 import React from 'react';
-import CustomTextField from '../../../components/CustomFields/CustomTextField';
 import { Card, CardContent, FormControlLabel, Grid, Switch } from '@material-ui/core';
-import useErros from '../../../hooks/useErros';
-import { validarCampo } from '../../../models/validaCampos';
-import CustomAutoComplete from '../../../components/CustomFields/CustomAutoComplete';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
 import DialogForms from '../../../components/CustomForms/DialogForms';
-import { emptyAuxilio, validarAuxilio } from '../../../models/Auxilio';
-import ProgramaDeGovernoService from '../../../services/ProgramaDeGovernoService';
+import { emptyAuxilio } from '../../../models/Auxilio';
+import { Avatar, CardHeader, TextField, Typography } from '@mui/material';
+import { LocalPharmacy } from '@mui/icons-material';
+import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { extractEventValue, handleChangeInputComponent, handleDatePickerChange, setFieldValue } from '../../../api/utils/util';
+import { showErrorMessages } from '../../../api/utils/modalMessages';
 
 export default function AuxilioFormComponent(props) {
     const { value, callback, openModal, onClose } = props;
     const [auxilio, setAuxilio] = React.useState(emptyAuxilio);
-
-    const [erros, validarCampos] = useErros({
-        programaGoverno: validarCampo,
-        dataRegistro: validarCampo,
-        valor: validarCampo,
-    });
 
     React.useEffect(() => {
         if (value != null) {
@@ -27,36 +23,38 @@ export default function AuxilioFormComponent(props) {
         }
     }, [value]);
 
-    const onChange = (event, newValue) => {
-        let t = event.target;
-        let value = newValue != null ? newValue : t.value;
-        const fieldname = t.id.split('-')[0];
-
-        if (!isStatus(event)) {
-            setAuxilio({
-                ...auxilio,
-                [fieldname]: value,
-            });
+    const handleChange = (event, newValue) => {
+        const { fieldname } = extractEventValue(event, newValue);
+        if (fieldname === 'status') {
+            const t = event.target;
+            setFieldValue(fieldname, t.checked ? "ATIVO" : "INATIVO", setAuxilio, auxilio);
+            setFieldValue('dataFim', !t.checked ? new Date() : '', setAuxilio, auxilio);
+        } else {
+            handleChangeInputComponent(event, newValue, setAuxilio, auxilio);
         }
     };
 
-    const isStatus = (e) => {
-        const t = e.target;
-        if (t.name === 'status') {
-            setAuxilio({
-                ...auxilio,
-                status: t.checked ? "ATIVO" : "INATIVO",
-                dataFim: !t.checked ? new Date() : '',
-            });
-            return true;
+    const validarAuxilio = (obj) => {
+        let campos = [];
+        if (obj.dataRegistro == null || obj.dataRegistro === '') {
+            campos.push({ campo: "dataRegistro", erro: "A DATA DE REGISTRO não foi informada." });
         }
-        return false;
-    }
+
+        if (obj.programaGoverno == null) {
+            campos.push({ campo: "programaGoverno", erro: "O PROGRAMA DE GOVERNO não foi informado." });
+        }
+
+        if (obj.valor === '') {
+            campos.push({ campo: "valor", erro: "O VALOR relativo ao benefício não foi informado." });
+        }
+        return campos;
+    };
 
     const onSaveHandler = () => {
         const data = validarAuxilio(auxilio);
+        
         if (data.length > 0) {
-            validarCampos(data);
+            showErrorMessages(data);
         } else {
             callback(auxilio);
             onClose();
@@ -67,75 +65,82 @@ export default function AuxilioFormComponent(props) {
         <DialogForms
             title="Cadastro de Benefícios/Programas de Governo da Pessoa"
             open={openModal}
-            maxWidth="md"
+            maxWidth="sm"
             onClose={onClose}
             onSave={onSaveHandler}
         >
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Card>
-                        <CardContent>
-                            <Grid container spacing={1}>
-                                <Grid item xs={12}>
-                                    <CustomAutoComplete
-                                        id="programaGoverno"
-                                        value={auxilio.programaGoverno}
-                                        retrieveDataFunction={ProgramaDeGovernoService.getListaProgramasDeGoverno}
-                                        label="Benefício/Programa de Governo"
-                                        placeholder="Selecione um Benefício/Programa de Governo"
-                                        error={erros.programaGoverno}
-                                        onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                                        getOptionSelected={(option, value) => option.id === value.id}
-                                        getOptionLabel={(option) => option.descricao}
+            <Card>
+                <CardHeader
+                    avatar={
+                        <Avatar>
+                            <LocalPharmacy />
+                        </Avatar>
+                    }
+                    title={
+                        <Typography variant="h6">
+                            Dados dos Auxílios
+                        </Typography>
+                    }
+                />
+                <CardContent>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <DNAAutocomplete
+                                id="programaGoverno"
+                                path="programas-de-governo"
+                                input_label="<< Selecione um Benefício/Programa de Governo >>"
+                                value={auxilio.programaGoverno}
+
+                                onChange={handleChange}
+                                getOptionSelected={(option, value) => option.id === value.id}
+                                getOptionLabel={(option) => option.nome}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <DatePicker
+                                label='Data de Início'
+                                value={dayjs(auxilio.dataRegistro)}
+                                disableFuture
+                                format='DD/MM/YYYY'
+                                onChange={(newValue) => handleDatePickerChange('dataRegistro', newValue["$d"], setAuxilio, auxilio)}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                id="valor"
+                                label="Valor"
+                                value={auxilio.valor}
+                                variant='outlined'
+                                fullWidth
+                                onChange={handleChange}
+                                InputProps={{
+                                    inputComponent: CustomCurrency,
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={1} alignItems="center">
+                        <Grid item >
+                            Status do Benefício/Programa de Governo
+                        </Grid>
+                        <Grid item >
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        value={auxilio.status}
+                                        checked={auxilio.status === "ATIVO"}
+                                        onChange={handleChange}
+                                        name="status"
+                                        color="primary"
+                                        size="medium"
                                     />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={1}>
-                                <Grid item xs={6}>
-                                    <CustomTextField
-                                        id="dataRegistro"
-                                        label="Data de Início"
-                                        value={auxilio.dataRegistro}
-                                        type="date"
-                                        error={erros.dataRegistro}
-                                        onChangeHandler={onChange} />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <CustomTextField
-                                        id="valor"
-                                        label="Valor"
-                                        value={auxilio.valor}
-                                        error={erros.valor}
-                                        onChangeHandler={onChange}
-                                        InputProps={{
-                                            inputComponent: CustomCurrency,
-                                        }} />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={1} alignItems="center">
-                                <Grid item >
-                                    Status do Benefício/Programa de Governo
-                                    </Grid>
-                                    <Grid item >
-                                    <FormControlLabel
-                                        control={
-                                            <Switch
-                                                value={auxilio.status}
-                                                checked={auxilio.status === "ATIVO"}
-                                                onChange={onChange}
-                                                name="status"
-                                                color="primary"
-                                                size="medium"
-                                            />
-                                        }
-                                        label={auxilio.status}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+                                }
+                                label={auxilio.status}
+                            />
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </Card>
         </DialogForms>
     );
 }
