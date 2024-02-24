@@ -7,7 +7,7 @@ import { Cancel, Delete, Edit, Save } from '@mui/icons-material';
 
 function EditDataGridComponent(props) {
     const { height, getRowId, idRowColumnName, columns, rows, setRows, 
-        apiRef, rowHeight, slots, slotProps, disabled, disableDelete } = props;
+        apiRef, rowHeight, slots, slotProps, disabled, disableDelete, disableEdit } = props;
 
     const [rowModesModel, setRowModesModel] = React.useState({});
 
@@ -93,7 +93,8 @@ function EditDataGridComponent(props) {
                     className="textPrimary"
                     onClick={handleEditClick(id)}
                     color="inherit"
-                    disabled={disabled}
+                    
+                    disabled={disabled || disableEdit}
                 />,
                 <GridActionsCellItem
                     icon={<Delete />}
@@ -138,6 +139,7 @@ EditDataGridComponent.propTypes = {
     setRows: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     disableDelete: PropTypes.bool,
+    disableEdit: PropTypes.bool,
     getRowId: PropTypes.func,
     apiRef: PropTypes.any,
     slots: PropTypes.object,
