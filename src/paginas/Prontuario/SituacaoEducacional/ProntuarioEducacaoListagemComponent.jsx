@@ -1,7 +1,6 @@
 
 import React from "react";
-import SimpleTable from "../../../components/CustomTable/SimpleTable";
-import ProntuarioEducacaoTableRowComponent from "./ProntuarioEducacaoTableRowComponent";
+
 import { objectContext } from "../../../contexts/objectContext";
 import { Box, ListItemText } from "@mui/material";
 import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
@@ -64,18 +63,5 @@ export default function ProntuarioEducacaoListagemComponent() {
                 columns={columns}
             />
         </Box>
-        // <SimpleTable
-        //     emptyRows={estudos.length === 0}
-        //     columns={columns}
-        //     notShowActions
-        // >
-        //     {estudos.map((row, key) => {
-        //         return (
-        //             <ProntuarioEducacaoTableRowComponent
-        //                 key={"row-" + key}
-        //                 row={row} />
-        //         );
-        //     })}
-        // </SimpleTable>
     );
 }

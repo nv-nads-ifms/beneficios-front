@@ -112,12 +112,10 @@ function ProntuarioForm(props) {
                     <ProntuarioRendimentoListagemComponent />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={3}>
-                    <ProntuarioEducacaoListagemComponent
-                        prontuario={prontuario} />
+                    <ProntuarioEducacaoListagemComponent />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={4}>
-                    <ProntuarioHistoricoListagemComponent
-                        prontuario={prontuario} />
+                    <ProntuarioHistoricoListagemComponent />
                 </TabPanel>
             </DNAFormDialog>
         </objectContext.Provider>
