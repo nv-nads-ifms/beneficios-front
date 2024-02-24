@@ -14,20 +14,27 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import AddIcon from '@mui/icons-material/Add';
 
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { deleteModalMessage } from "../../../api/utils/modalMessages";
+import { getMenuPerfilByUrl } from "../../../api/utils/menuUtils";
+import { userContext } from "../../../hooks/userContext";
 
 
 function DNADefaultDialogListForm(props) {
     const { datasourceUrl, formtitle, children, filterparams, columns,
         moreActions, gridHeigh, gridWidth, apiRef, slots, slotProps,
         checkboxSelection, getRowId } = props;
+    /* Controle de perfil de acesso */
+    const usuario = React.useContext(userContext);
+    const perfil = React.useMemo(() => {
+        if (usuario != null && usuario.hasOwnProperty('perfis'))
+            return getMenuPerfilByUrl(usuario.perfis, `/${datasourceUrl}`);
+        return [];
+    }, [usuario, datasourceUrl]);
 
+    /* Criação do serviço para recuperação de dados */
     const dataService = React.useMemo(() => new DataService(`/${datasourceUrl}`), [datasourceUrl]);
 
     /* Atributos de controle da tabela */
@@ -67,31 +74,52 @@ function DNADefaultDialogListForm(props) {
                 () => setCount(count + 1));
         }, [count, dataService]);
 
-    const actions = React.useMemo(() => [
-        { icon: <FileCopyIcon />, name: 'Duplicar cadastro existente', action: '' },
-        { icon: <AddIcon />, name: 'Cadastrar novo registro', action: handleNew },
-        { icon: <PrintIcon />, name: 'Imprimir', action: '' },
-        { icon: <ShareIcon />, name: 'Compartilhar', action: '' },
-    ], [handleNew]);
+    const actions = React.useMemo(() => {
+        let list = [];
+        if (perfil.escrever) {
+            list.push({ icon: <AddIcon />, name: 'Cadastrar novo registro', action: handleNew });
+        }
+
+        return list;
+
+        // return [
+        //     { icon: <FileCopyIcon />, name: 'Duplicar cadastro existente', action: '' },
+        //     { icon: <AddIcon />, name: 'Cadastrar novo registro', action: handleNew },
+        //     { icon: <PrintIcon />, name: 'Imprimir', action: '' },
+        //     { icon: <ShareIcon />, name: 'Compartilhar', action: '' },
+        // ];
+    }, [perfil, handleNew]);
 
     const getColumnActions = (params) => {
-        let columns = [
-            <GridActionsCellItem
-                icon={<VisibilityIcon />}
-                label="Visualizar"
-                onClick={handleView(params)}
-            />,
-            <GridActionsCellItem
-                icon={<DeleteIcon />}
-                label="Excluir"
-                onClick={handleDelete(params)}
-            />,
-            <GridActionsCellItem
-                icon={<EditIcon />}
-                label="Alterar"
-                onClick={handleEdit(params)}
-            />
-        ];
+        let columns = [];
+        if (perfil.ler) {
+            columns.push(
+                <GridActionsCellItem
+                    icon={<VisibilityIcon />}
+                    label="Visualizar"
+                    onClick={handleView(params)}
+                />);
+        }
+
+        if (perfil.remover) {
+            columns.push(
+                <GridActionsCellItem
+                    icon={<DeleteIcon />}
+                    label="Excluir"
+                    onClick={handleDelete(params)}
+                />
+            );
+        }
+
+        if (perfil.escrever) {
+            columns.push(
+                <GridActionsCellItem
+                    icon={<EditIcon />}
+                    label="Alterar"
+                    onClick={handleEdit(params)}
+                />
+            );
+        }
 
         if (moreActions != null) {
             moreActions.map((obj, index) => {
