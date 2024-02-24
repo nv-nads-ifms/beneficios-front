@@ -1,10 +1,7 @@
 import React from "react";
 import Moment from 'moment';
-import {
-    Avatar, Card, CardHeader, makeStyles, Collapse
-} from "@material-ui/core";
 import PersonIcon from '@material-ui/icons/Person';
-import PessoaCadastroModal from "../../Pessoa/PessoaCadastroModal";
+
 import PessoaListagemModal from "../../Pessoa/PessoaListagemModal";
 import { CardContent } from "@material-ui/core";
 import { emptyPessoa } from "../../../models/Pessoa";
@@ -13,16 +10,9 @@ import EditIconButton from "../../../components/CustomIconButtons/EditIconButton
 import ClearIconButton from "../../../components/CustomIconButtons/ClearIconButton";
 import AddIconButton from "../../../components/CustomIconButtons/AddIconButton";
 import ExpandMoreIconButton from "../../../components/CustomIconButtons/ExpandMoreIconButton";
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: 345,
-    },
-    large: {
-        width: theme.spacing(7),
-        height: theme.spacing(7),
-    },
-}));
+import PessoaForm from "../../Pessoa/PessoaForm";
+import { DNAStatus } from "../../../api/utils/constants";
+import { Avatar, Card, CardHeader, Collapse } from "@mui/material";
 
 const emptyTitle = {
     title: "Pessoa",
@@ -31,7 +21,17 @@ const emptyTitle = {
 
 export default function CardPessoaComponent(props) {
     const { disabled, children, value, callback } = props;
-    const classes = useStyles();
+    
+    /* Atributo de controle do ID da pessoa de negócio a ser manipulado */
+    const [formId, setFormId] = React.useState(0);
+    /* Controle de manipulação dos botões do formulário da pessoa */
+    const dataControl = React.useMemo(() => {
+        if (disabled) {
+            return DNAStatus.VIEW;
+        }
+        return DNAStatus.EDIT;
+    }, [disabled]);
+
     const [pessoa, setPessoa] = React.useState(emptyPessoa);
     const [title, setTitle] = React.useState(emptyTitle)
     const [openCadastro, setOpenCadastro] = React.useState(false);
@@ -48,9 +48,11 @@ export default function CardPessoaComponent(props) {
                 title: value.nome,
                 subtitle: texto,
             });
+            setFormId(value.id);
         } else {
             setPessoa(emptyPessoa);
             setTitle(emptyTitle);
+            setFormId(0);
         }
     }, [value]);
 
@@ -78,8 +80,7 @@ export default function CardPessoaComponent(props) {
                         <Avatar
                             alt={pessoa.nome}
                             aria-label="titular"
-                            src={"data:image/png;base64," + pessoa.foto}
-                            className={classes.large} >
+                            src={"data:image/png;base64," + pessoa.foto} >
                             <PersonIcon />
                         </Avatar>
                     }
@@ -129,12 +130,13 @@ export default function CardPessoaComponent(props) {
                 )}
             </Card>
 
-            <PessoaCadastroModal
-                pessoaId={pessoa != null ? pessoa.id : 0}
-                openModal={openCadastro}
-                status='edit'
-                onClose={handleCloseCadastro}
-                callback={callback}
+            <PessoaForm
+                id_value={formId}
+                datacontrol={dataControl}
+                
+                open={openCadastro}
+                on_close_func={handleCloseCadastro}
+                data_source_url={"pessoas"}
             />
 
             <PessoaListagemModal

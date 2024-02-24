@@ -8,7 +8,7 @@ import { LocalPharmacy } from '@mui/icons-material';
 import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { extractEventValue, handleChangeInputComponent, handleDatePickerChange, setFieldValue } from '../../../api/utils/util';
+import { extractEventValue, handleChangeInputComponent, setFieldValue } from '../../../api/utils/util';
 import { showErrorMessages } from '../../../api/utils/modalMessages';
 
 export default function AuxilioFormComponent(props) {
@@ -102,7 +102,7 @@ export default function AuxilioFormComponent(props) {
                                 value={dayjs(auxilio.dataRegistro)}
                                 disableFuture
                                 format='DD/MM/YYYY'
-                                onChange={(newValue) => handleDatePickerChange('dataRegistro', newValue["$d"], setAuxilio, auxilio)}
+                                onChange={(newValue) => setFieldValue('dataRegistro', newValue["$d"], setAuxilio, auxilio)}
                             />
                         </Grid>
                         <Grid item xs={6}>

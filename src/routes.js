@@ -18,7 +18,7 @@ import ContatoCadastro from './paginas/Contato/ContatoCadastro';
 import OrgaoExpedidorListagem from './paginas/OrgaoExpedidor/OrgaoExpedidorListagem';
 import OrgaoExpedidorCadastro from './paginas/OrgaoExpedidor/OrgaoExpedidorCadastro';
 import ParentescoListagem from './paginas/Parentesco/ParentescoListagem';
-import ParentescoCadastro from './paginas/Parentesco/ParentescoCadastro';
+
 import DocumentoConsulta from './paginas/Documento/DocumentoConsulta';
 import DocumentoCadastro from './paginas/Documento/DocumentoCadastro';
 import EscolaridadeListagem from './paginas/Escolaridade/EscolaridadeListagem';
@@ -41,8 +41,6 @@ import AvisoSenha from './paginas/Autenticacao/AvisoSenha';
 import AlterarSenha from './paginas/ContaUsuario/AlterarSenha';
 import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida';
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
-import ProntuarioListagem from './paginas/Prontuario/ProntuarioListagem';
-import ProntuarioCadastro from './paginas/Prontuario/ProntuarioCadastro';
 import ProntuarioAnaliseListagem from './paginas/Prontuario/Analise/ProntuarioAnaliseListagem';
 import AnaliseListagem from './paginas/Analise/AnaliseListagem';
 import AnaliseCadastro from './paginas/Analise/AnaliseCadastro';
@@ -70,6 +68,7 @@ import BeneficioConsulta from './paginas/Beneficio/BeneficioConsulta';
 import UsuarioConsulta from './paginas/Usuario/UsuarioConsulta';
 import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
 import PessoaConsulta from './paginas/Pessoa/PessoaConsulta';
+import ProntuarioConsulta from './paginas/Prontuario/ProntuarioConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -110,7 +109,7 @@ const Routes = () => {
                 <PrivateRoute path='/orgaos-expedidores' component={OrgaoExpedidorListagem} />
                 <PrivateRoute path='/orgaos-expedidores-ficha/:id/:status' component={OrgaoExpedidorCadastro} />
                 <PrivateRoute path='/parentescos' component={ParentescoListagem} />
-                <PrivateRoute path='/parentescos-ficha/:id/:status' component={ParentescoCadastro} />
+                
                 <PrivateRoute path='/documentos' component={DocumentoConsulta} />
                 <PrivateRoute path='/documentos-ficha/:id/:status' component={DocumentoCadastro} />
                 <PrivateRoute path='/escolaridades' component={EscolaridadeListagem} />
@@ -150,9 +149,7 @@ const Routes = () => {
                 {/* Telas do prontuario */}
                 <PrivateRoute path="/pessoas" component={PessoaConsulta} />
                 <PrivateRoute path="/analise-prontuario" component={ProntuarioAnaliseListagem} />
-                <PrivateRoute path='/prontuarios' component={ProntuarioListagem} />
-                <PrivateRoute path='/prontuarios-ficha/:id/:status' component={ProntuarioCadastro} />
-
+                <PrivateRoute path='/prontuarios' component={ProntuarioConsulta} />
 
                 {/* Telas de atendimento */}
                 <PrivateRoute path='/atendimento' component={AtendimentoListagem} />

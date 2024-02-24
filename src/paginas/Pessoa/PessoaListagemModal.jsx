@@ -1,84 +1,143 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import CustomTable from '../../components/CustomTable/CustomTable';
-import PessoaService from '../../services/PessoaService';
-import PessoaTableRow from './PessoaTableRow';
 import DialogForms from '../../components/CustomForms/DialogForms';
-import SearchIcon from '@material-ui/icons/Search';
-import { Paper, Divider, InputBase, makeStyles } from '@material-ui/core';
 import { emptyData } from '../../api/utils/constants';
+import { Box, InputAdornment, TextField } from '@mui/material';
+import { Check, Search } from '@mui/icons-material';
+import DNADataGrid from '../../components/V1.0.0/DNADataGrid';
+import DataService from '../../api/services/DataServices';
+import { convertToParams } from '../../api/utils/util';
+import PessoaNomeColumn from './components/PessoaNomeColumn';
+import PessoaDocumentosColumn from './components/PessoaDocumentosColumn';
+import PessoaContatosColumn from './components/PessoaContatosColumn';
+import { userContext } from '../../hooks/userContext';
+import { getMenuPerfilByUrl } from '../../api/utils/menuUtils';
+import { GridActionsCellItem } from '@mui/x-data-grid';
 
-const columnsNames = [
-    { id: 'id', label: 'Id.' },
-    { id: 'nome', label: 'Nome' },
-    { id: 'nascimento', label: 'Nascimento' },
-    { id: 'documento', label: 'Documentos' },
-    { id: 'contato', label: 'Contatos' },
-    { id: 'escolaridade', label: 'Escolaridade' },
+const columns = [
+    {
+        field: 'nome',
+        headerName: 'Nome',
+        minWidth: 250,
+        flex: 1,
+        renderCell: (params) => {
+            return (
+                <PessoaNomeColumn row={params.row} value={params.value} />
+            );
+        }
+    },
+    {
+        field: 'documentos',
+        headerName: 'Documentos',
+        width: 150,
+        renderCell: (params) => {
+            return (
+                <PessoaDocumentosColumn row={params.row} />
+            );
+        }
+    },
+    {
+        field: 'contatos',
+        headerName: 'Contatos',
+        width: 200,
+        renderCell: (params) => {
+            return (
+                <PessoaContatosColumn row={params.row} />
+            );
+        }
+    },
+    {
+        field: 'escolaridade',
+        headerName: 'Escolaridade',
+        width: 200,
+        valueGetter: (params) => params.value.nome
+    }
 ];
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        padding: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-    iconButton: {
-        padding: 10,
-    },
-    divider: {
-        height: 28,
-        margin: 4,
-    },
-}));
-
-const getRequestParams = (nome, page, pageSize) => {
-    let params = {};
-    if (page) {
-        params["page"] = page;
-    }
-    if (pageSize) {
-        params["size"] = pageSize;
-    }
-    if (nome) {
-        params["nome"] = nome;
-    }
-    return params;
-};
+/* Criação do serviço para recuperação de dados */
+const datasourceUrl = 'pessoas';
+const dataService = new DataService(`/${datasourceUrl}`);
 
 export default function PessoaListagemModal(props) {
     const { openModal, onClose, response } = props;
-    const inputClasses = useStyles();
 
+    /* Controle de perfil de acesso */
+    const usuario = React.useContext(userContext);
+    const perfil = React.useMemo(() => {
+        if (usuario != null && usuario.hasOwnProperty('perfis'))
+            return getMenuPerfilByUrl(usuario.perfis, `/${datasourceUrl}`);
+        return [];
+    }, [usuario]);
+
+    /* Atributos de controle da tabela */
     const [nome, setNome] = React.useState('');
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [count, setCount] = React.useState(0);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rows, setRows] = React.useState(emptyData);
 
-    const [data, setData] = React.useState(emptyData);
-    const [dataFetched, setDataFetched] = React.useState(false);
 
-    React.useEffect(() => {
-        setDataFetched(false);
-        const params = getRequestParams(nome, page, rowsPerPage);
-        PessoaService.getPessoas(params)
-            .then((resp) => {
-                setDataFetched(true);
-                setData(resp.data);
-                setRowsPerPage(resp.data.pageable.pageSize);
-                setPage(resp.data.number);
-            });
-    }, [nome, setRowsPerPage, setPage, page, rowsPerPage]);
-
-    const handleSelect = (data) => {
-        PessoaService.getPessoaById(data.id)
+    const handleSelect = React.useCallback(
+        (row) => () => {
+            dataService.getById(row.id)
             .then((r) => {
                 response(r.data);
                 onClose();
             });
+        }, [response, onClose]);
+
+    const getColumnActions = (params) => {
+        let columns = [];
+        if (perfil.ler) {
+            columns.push(
+                <GridActionsCellItem
+                    icon={<Check />}
+                    label="Selecionar pessoa"
+                    onClick={handleSelect(params)}
+                />);
+        }
+
+        return columns;
+    }
+
+    const actionColumn = {
+        field: "actions",
+        headerName: "Ações",
+        width: 140,
+        pinnable: false,
+        type: 'actions',
+        getActions: getColumnActions
+    };
+
+    const getParams = React.useCallback(() => {
+        return convertToParams({
+            nome: nome,
+            page: page,
+            size: rowsPerPage,
+        });
+    }, [nome, page, rowsPerPage]);
+
+    React.useEffect(() => {
+        setIsLoading(true);
+
+        const params = getParams();
+
+        dataService.getDefaultData(params)
+            .then(response => {
+                setIsLoading(false);
+                setRows(response.data);
+                setPage(response.data.number);
+
+                setRowsPerPage(response.data.pageable.pageSize);
+                setCount(response.data.totalElements);
+            });
+
+    }, [getParams, count]);
+
+    function handlePaginationModelChange(props) {
+        setPage(isNaN(props.page) || props.page === undefined ? 0 : props.page);
+        setRowsPerPage(props.pageSize);
     }
 
     return (
@@ -89,37 +148,43 @@ export default function PessoaListagemModal(props) {
             onClose={onClose}
         >
             <Grid container spacing={1}>
-                <Grid item xs={8}>
-                    <Paper elevation={3} component="form" className={inputClasses.root}>
-                        <InputBase
-                            className={inputClasses.input}
-                            placeholder="Buscar por nome"
-                            inputProps={{ 'aria-label': 'busca por nome' }}
-                            onChange={(event) => setNome(event.target.value)}
+                <Grid item xs={12}>
+                    <TextField
+                        id="nome"
+                        label="Nome da pessoa"
+                        placeholder="Buscar pelo nome da pessoa"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search />
+                                </InputAdornment>
+                            ),
+                        }}
+                        variant="outlined"
+                        fullWidth
+                        onChange={(event) => setNome(event.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Box sx={{
+                        height: 350,
+                        width: '100%',
+                        mt: 1
+                    }}>
+                        <DNADataGrid
+                            rows={rows.content}
+                            rowCount={rows.totalElements}
+                            loading={isLoading}
+
+                            paginationModel={{ page: page, pageSize: rowsPerPage }}
+                            onPaginationModelChange={handlePaginationModelChange}
+                            paginationMode="server"
+
+                            columns={[...columns, actionColumn]}
                         />
-                        <Divider className={inputClasses.divider} orientation="vertical" />
-                        <SearchIcon />
-                    </Paper>
+                    </Box>
                 </Grid>
             </Grid>
-            <CustomTable
-                data={data}
-                columns={columnsNames}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={rowsPerPage}
-                setRowsPerPage={setRowsPerPage}
-                dataFetched={dataFetched}
-            >
-                {data.content.map((row, key) => {
-                    return (
-                        <PessoaTableRow
-                            key={"row-" + key}
-                            row={row}
-                            onSelectRow={handleSelect} />
-                    );
-                })}
-            </CustomTable>
 
         </DialogForms>
 

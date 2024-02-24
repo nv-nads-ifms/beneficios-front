@@ -1,114 +1,165 @@
 import React from "react";
-import { Grid, TableCell, TableRow, Typography } from "@material-ui/core";
-import SimpleTable from "../../../components/CustomTable/SimpleTable";
-import ProntuarioRendimentoTableRowComponent from "./ProntuarioRendimentoTableRowComponent";
+
 import { ccyFormat } from "../../../api/format";
 import { createListaAuxilios, createListaRendimentos } from "../../../models/Prontuario";
-import ProntuarioAuxilioTableRowComponent from "./ProntuarioAuxilioTableRowComponent";
+import { objectContext } from "../../../contexts/objectContext";
+import { Box, Grid, ListItemText, Stack, Typography } from "@mui/material";
+import ChipStatus from "../../../components/CustomButtons/ChipStatus";
+import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
 
 const rendimentoCols = [
-    { id: 'status', label: 'Status' },
-    { id: 'parentesco', label: 'Parentesco' },
-    { id: 'nome', label: 'Nome' },
-    { id: 'condicaoTrabalho', label: 'Condição de trabalho' },
-    { id: 'valor', label: 'Valor' },
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <ChipStatus status={params.value} />
+            );
+        }
+    },
+    {
+        field: 'nome',
+        headerName: 'Nome',
+        minWidth: 150,
+        flex: 1,
+        renderCell: (params) => (
+            <ListItemText
+                primary={params.value}
+                secondary={params.row.parentesco}
+            />
+        )
+    },
+    {
+        field: 'condicaoTrabalho',
+        headerName: 'Condição de Trabalho',
+        minWidth: 150,
+        flex: 1,
+    },
+    {
+        field: 'valor',
+        headerName: 'Valor',
+        width: 130,
+        renderCell: (params) => {
+            return (
+                ccyFormat(params.value)
+            );
+        }
+    },
 ];
 
 const auxilioCols = [
-    { id: 'status', label: 'Status' },
-    { id: 'parentesco', label: 'Parentesco' },
-    { id: 'nome', label: 'Nome' },
-    { id: 'programaGoverno', label: 'Benefício/Programa de Governo' },
-    { id: 'valor', label: 'Valor' },
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <ChipStatus status={params.value} />
+            );
+        }
+    },
+    {
+        field: 'nome',
+        headerName: 'Nome',
+        minWidth: 150,
+        flex: 1,
+        renderCell: (params) => (
+            <ListItemText
+                primary={params.value}
+                secondary={params.row.parentesco}
+            />
+        )
+    },
+    {
+        field: 'programaGoverno',
+        headerName: 'Benefício/Programa de Governo',
+        minWidth: 150,
+        flex: 1,
+    },
+    {
+        field: 'valor',
+        headerName: 'Valor',
+        width: 130,
+        renderCell: (params) => {
+            return (
+                ccyFormat(params.value)
+            );
+        }
+    },
 ];
 
-export default function ProntuarioRendimentoListagemComponent(props) {
-    const { prontuario } = props;
+export function CustomFooterComponent(props) {
+    const { label, valor } = props;
+    return (
+        <Stack direction="row" spacing={2} justifyContent={'flex-end'}>
+            <Typography variant="h6">
+                {label}
+            </Typography>
+            <Typography variant="h6">
+                {ccyFormat(valor)}
+            </Typography>
+        </Stack>
+    );
+}
+
+export default function ProntuarioRendimentoListagemComponent() {
+    const { object } = React.useContext(objectContext);
+
     const [rendimentos, setRendimentos] = React.useState([]);
     const [auxilios, setAuxilios] = React.useState([]);
 
     React.useEffect(() => {
-        setRendimentos(createListaRendimentos(prontuario));
-        setAuxilios(createListaAuxilios(prontuario));
-    }, [prontuario]);
+        if (object != null) {
+            setRendimentos(createListaRendimentos(object));
+            setAuxilios(createListaAuxilios(object));
+        } else {
+            setRendimentos([]);
+            setAuxilios([]);
+        }
+    }, [object]);
 
     return (
-        <Grid container spacing={2} direction="column">
-            <Grid item>
-                <SimpleTable
-                    emptyRows={rendimentos.length === 0}
-                    columns={rendimentoCols}
-                    notShowActions
-                >
-                    {rendimentos.map((row, key) => {
-                        return (
-                            <ProntuarioRendimentoTableRowComponent
-                                key={"row-" + key}
-                                row={row} />
-                        );
-                    })}
-                    <TableRow>
-                        <TableCell colSpan={4} align="right">
-                            <Typography variant="h6" color="textPrimary" component="span">
-                                Subtotal:
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                            <Typography variant="h6" color="textPrimary" component="span">
-                                {ccyFormat(prontuario.valorTotalRendimentos)}
-                            </Typography>
-                        </TableCell>
-                    </TableRow>
-                </SimpleTable>
+        <Grid container spacing={1}>
+            <Grid item xs={12} lg={6}>
+                <Box sx={{ height: 250 }}>
+                    <DNADataGrid
+                        rows={rendimentos}
+                        columns={rendimentoCols}
+                        slots={{
+                            footer: CustomFooterComponent,
+                        }}
+                        slotProps={{
+                            footer: {
+                                label: 'Subtotal',
+                                valor: object.valorTotalRendimentos
+                            },
+                        }}
+                    />
+                </Box>
             </Grid>
-            <Grid item>
-                <SimpleTable
-                    emptyRows={auxilios.length === 0}
-                    columns={auxilioCols}
-                    notShowActions
-                >
-                    {auxilios.map((row, key) => {
-                        return (
-                            <ProntuarioAuxilioTableRowComponent
-                                key={"row-" + key}
-                                row={row} />
-                        );
-                    })}
-                    <TableRow>
-                        <TableCell colSpan={4} align="right">
-                            <Typography variant="h6" color="textPrimary" component="span">
-                                Subtotal:
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                            <Typography variant="h6" color="textPrimary" component="span">
-                                {ccyFormat(prontuario.valorTotalAuxilios)}
-                            </Typography>
-                        </TableCell>
-                    </TableRow>
-                </SimpleTable>
+            <Grid item xs={12} lg={6}>
+                <Box sx={{ height: 250 }}>
+                    <DNADataGrid
+                        rows={auxilios}
+                        columns={auxilioCols}
+                        slots={{
+                            footer: CustomFooterComponent,
+                        }}
+                        slotProps={{
+                            footer: {
+                                label: 'Subtotal',
+                                valor: object.valorTotalAuxilios
+                            },
+                        }}
+                    />
+                </Box>
             </Grid>
-            <Grid item>
-                <Grid container spacing={2}>
-                    <Grid item xs={10}>
-                        <Grid container spacing={0} direction="column" alignItems="flex-end">
-                            <Grid item xs={12}>
-                                <Typography variant="h6" color="textPrimary" component="span">
-                                    Valor total:
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Grid container spacing={0} direction="column" alignItems="flex-end">
-                            <Grid item xs={12}>
-                                <Typography variant="h6" color="textPrimary" component="span">
-                                    {ccyFormat(prontuario.valorTotalRendimentos + prontuario.valorTotalAuxilios)}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
+            <Grid item xs={12}>
+                <CustomFooterComponent
+                    label={'Total'}
+                    valor={object.valorTotalRendimentos + object.valorTotalAuxilios}
+                />
             </Grid>
         </Grid>
     );

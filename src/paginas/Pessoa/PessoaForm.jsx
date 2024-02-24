@@ -14,6 +14,7 @@ import PessoaFromGeral from './PessoaFormGeral';
 import MoradiasComponent from './moradia/MoradiasComponent';
 import RendimentosComponent from './rendimentos/RendimentosComponent';
 import AuxilioComponent from './auxilios/AuxilioComponent';
+import { setFieldValue } from '../../api/utils/util';
 
 
 function PessoaForm(props) {
@@ -28,10 +29,7 @@ function PessoaForm(props) {
     }
 
     const setData = (fieldname, value) => {
-        setPessoa({
-            ...pessoa,
-            [fieldname]: value
-        });
+        setFieldValue(fieldname, value, setPessoa, pessoa);
     }
 
 

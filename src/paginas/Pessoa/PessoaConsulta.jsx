@@ -1,13 +1,13 @@
 import React from 'react';
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
 import { DNAStatus } from '../../api/utils/constants';
-import { Avatar, Grid, List, ListItemAvatar, TextField, Typography } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 
 import { formContext } from '../../contexts/formContext';
-import { ListItem, ListItemText } from '@material-ui/core';
-import Moment from 'moment';
-import { extractCapitalizeLetters } from '../../api/utils/stringUtils';
 import PessoaForm from './PessoaForm';
+import PessoaNomeColumn from './components/PessoaNomeColumn';
+import PessoaDocumentosColumn from './components/PessoaDocumentosColumn';
+import PessoaContatosColumn from './components/PessoaContatosColumn';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -18,22 +18,9 @@ const columns = [
         flex: 1,
         renderCell: (params) => {
             return (
-                <ListItem alignItems='flex-start'>
-                    <ListItemAvatar>
-                        <Avatar
-                            aria-label="pessoa"
-                            src={"data:image/png;base64," + params.row.foto} />
-                    </ListItemAvatar>
-                    <ListItemText primary={params.value} />
-                </ListItem>
+                <PessoaNomeColumn  row={params.row} value={params.value} />
             );
         }
-    },
-    {
-        field: 'nascimento',
-        headerName: 'Nascimento',
-        width: 150,
-        renderCell: (params) => Moment(params.value).format('DD/MM/Y')
     },
     {
         field: 'documentos',
@@ -41,24 +28,7 @@ const columns = [
         width: 200,
         renderCell: (params) => {
             return (
-                <List dense={true}>
-                    {params.row.documentos.map(obj => (
-                        <React.Fragment>
-                            <ListItemText
-                                primary={
-                                    <Typography variant="body2">
-                                        {obj.numero}
-                                    </Typography>
-                                }
-                                secondary={
-                                    <Typography variant="caption" color="textSecondary">
-                                        Número do {extractCapitalizeLetters(obj.documento.nome)}
-                                    </Typography>
-                                }
-                            />
-                        </React.Fragment>
-                    ))}
-                </List>
+                <PessoaDocumentosColumn row={params.row} />
             );
         }
     },
@@ -68,24 +38,7 @@ const columns = [
         width: 200,
         renderCell: (params) => {
             return (
-                <List dense={true}>
-                    {params.row.contatos.map(obj => (
-                        <React.Fragment>
-                            <ListItemText
-                                primary={
-                                    <Typography variant="body2">
-                                        {obj.descricao}
-                                    </Typography>
-                                }
-                                secondary={
-                                    <Typography variant="caption" color="textSecondary">
-                                        {obj.tipoContato.nome}
-                                    </Typography>
-                                }
-                            />
-                        </React.Fragment>
-                    ))}
-                </List>
+                <PessoaContatosColumn row={params.row} />
             );
         }
     },
@@ -114,28 +67,7 @@ function PessoaConsulta() {
     const handleClose = () => {
         setOpen(false);
         setFormId(-1);
-    };    
-
-    // const handleAtivar = React.useCallback(
-    //     (row) => () => {
-    //         ativacaoModalMessage("Confirma a ATIVAÇÃO deste Perfil?", '',
-    //             () => dataService.save(['ativar', row.id]),
-    //             () => setFormId(-3)
-    //         );
-    //     }, []);
-
-    // const handleBloquear = React.useCallback(
-    //     (row) => () => {
-    //         ativacaoModalMessage("Confirma a INATIVAÇÃO deste Usuario?", '',
-    //             () => dataService.save(['inativar', row.id]),
-    //             () => setFormId(-2)
-    //         );
-    //     }, []);
-
-    // const buttonMoreActions = [
-    //     { label: 'Ativar', icon: <Check />, handleClick: handleAtivar },
-    //     { label: 'Inativar', icon: <Block />, handleClick: handleBloquear },
-    // ];
+    };
 
     return (
         <formContext.Provider value={{

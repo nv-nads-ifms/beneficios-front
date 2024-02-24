@@ -17,11 +17,12 @@ const emptyProntuario = {
     historicos: [],
 };
 
-function createRendimentoObject(nome, parentesco, rendimento) {
+function createRendimentoObject(id, nome, parentesco, rendimento) {
     return {
+        id: id,
         parentesco: parentesco,
         nome: nome,
-        condicaoTrabalho: rendimento.condicaoTrabalhoDto.descricao,
+        condicaoTrabalho: rendimento.condicaoTrabalho.nome,
         status: (rendimento.demissao == null || rendimento.demissao === '') ? Status.ATIVO : Status.INATIVO,
         valor: rendimento.valor,
     };
@@ -29,13 +30,18 @@ function createRendimentoObject(nome, parentesco, rendimento) {
 
 function createListaRendimentos(prontuario) {
     let lista = prontuario.titular.rendimentos.map(obj => {
-        return createRendimentoObject(prontuario.titular.nome, "Titular", obj);
+        const rowId = `${prontuario.titular.id}-${obj.sequencia}`;
+        return createRendimentoObject(rowId, prontuario.titular.nome, "Titular", obj);
     });
+
     prontuario.dependentes.map((dependente) => {
         dependente.pessoa.rendimentos.map(obj => {
+            const rowId = `${dependente.pessoa.id}-${obj.sequencia}`;
+
             lista.push(createRendimentoObject(
+                rowId,
                 dependente.pessoa.nome,
-                dependente.parentesco.descricao, obj
+                dependente.parentesco.nome, obj
             ));
             return obj;
         });
@@ -44,11 +50,12 @@ function createListaRendimentos(prontuario) {
     return lista.filter((obj) => obj.status === Status.ATIVO);
 }
 
-function createAuxilioObject(nome, parentesco, auxilio) {
+function createAuxilioObject(id, nome, parentesco, auxilio) {
     return {
+        id: id,
         parentesco: parentesco,
         nome: nome,
-        programaGoverno: auxilio.programaGoverno.descricao,
+        programaGoverno: auxilio.programaGoverno.nome,
         status: auxilio.status,
         valor: auxilio.valor,
     };
@@ -56,14 +63,17 @@ function createAuxilioObject(nome, parentesco, auxilio) {
 
 function createListaAuxilios(prontuario) {
     let lista = prontuario.titular.auxilios.map(obj => {
-        return createAuxilioObject(prontuario.titular.nome, "Titular", obj);
+        const rowId = `${prontuario.titular.id}-${obj.id}`;
+        return createAuxilioObject(rowId, prontuario.titular.nome, "Titular", obj);
     });
 
     prontuario.dependentes.map((dependente) => {
         dependente.pessoa.auxilios.map(obj => {
+            const rowId = `${dependente.pessoa.id}-${obj.id}`;
             lista.push(createAuxilioObject(
+                rowId,
                 dependente.pessoa.nome,
-                dependente.parentesco.descricao, obj
+                dependente.parentesco.nome, obj
             ));
             return obj;
         });

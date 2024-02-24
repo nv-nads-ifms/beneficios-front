@@ -2,54 +2,80 @@
 import React from "react";
 import SimpleTable from "../../../components/CustomTable/SimpleTable";
 import ProntuarioEducacaoTableRowComponent from "./ProntuarioEducacaoTableRowComponent";
+import { objectContext } from "../../../contexts/objectContext";
+import { Box, ListItemText } from "@mui/material";
+import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
 
 const columns = [
-    { id: 'parentesco', label: 'Parentesco' },
-    { id: 'nome', label: 'Nome' },
-    { id: 'escolaridade', label: 'Escolaridade' },
+    {
+        field: 'nome',
+        headerName: 'Nome',
+        minWidth: 150,
+        flex: 1,
+        renderCell: (params) => (
+            <ListItemText
+                primary={params.value}
+                secondary={params.row.parentesco}
+            />
+        )
+    },
+    {
+        field: 'escolaridade',
+        headerName: 'Escolaridade',
+        minWidth: 150,
+        flex: 1
+    },
 ];
 
-export default function ProntuarioEducacaoListagemComponent(props) {
-    const { prontuario } = props;
+export default function ProntuarioEducacaoListagemComponent() {
+    const { object } = React.useContext(objectContext);
+
     const [estudos, setEstudos] = React.useState([]);
 
     React.useEffect(() => {
         let lista = [];
-        if (prontuario.titular.nome !== "" &&
-            prontuario.titular.escolaridadeDto != null) {
+        if (object.titular.nome !== "" &&
+            object.titular.escolaridade != null) {
             lista.push({
+                id: object.titular.id,
                 parentesco: "Titular",
-                nome: prontuario.titular.nome,
-                escolaridade: prontuario.titular.escolaridadeDto.descricao,
+                nome: object.titular.nome,
+                escolaridade: object.titular.escolaridade.nome,
             });
 
-            prontuario.dependentes.map((dependente) => {
+            object.dependentes.map((dependente) => {
                 lista.push({
+                    id: dependente.pessoa.id,
                     parentesco: dependente.parentesco.descricao,
                     nome: dependente.pessoa.nome,
-                    escolaridade: (dependente.pessoa.escolaridadeDto != null ? 
-                        dependente.pessoa.escolaridadeDto.descricao : ''),
+                    escolaridade: (dependente.pessoa.escolaridade != null ?
+                        dependente.pessoa.escolaridade.nome : ''),
                 });
                 return dependente;
             });
         }
         setEstudos(lista);
-    }, [prontuario.dependentes, prontuario.titular.escolaridadeDto.descricao,
-    prontuario.titular.nome, prontuario.titular.escolaridadeDto]);
+    }, [object]);
 
     return (
-        <SimpleTable
-            emptyRows={estudos.length === 0}
-            columns={columns}
-            notShowActions
-        >
-            {estudos.map((row, key) => {
-                return (
-                    <ProntuarioEducacaoTableRowComponent
-                        key={"row-" + key}
-                        row={row} />
-                );
-            })}
-        </SimpleTable>
+        <Box sx={{ height: 250 }}>
+            <DNADataGrid
+                rows={estudos}
+                columns={columns}
+            />
+        </Box>
+        // <SimpleTable
+        //     emptyRows={estudos.length === 0}
+        //     columns={columns}
+        //     notShowActions
+        // >
+        //     {estudos.map((row, key) => {
+        //         return (
+        //             <ProntuarioEducacaoTableRowComponent
+        //                 key={"row-" + key}
+        //                 row={row} />
+        //         );
+        //     })}
+        // </SimpleTable>
     );
 }

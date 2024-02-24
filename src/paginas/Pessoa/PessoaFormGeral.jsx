@@ -7,7 +7,7 @@ import noImageAvailable from "../../img/noImageAvailable.png";
 import DNAAutocomplete from "../../components/V1.0.0/DNAAutocomplete";
 import { objectContext } from "../../contexts/objectContext";
 import DNAImageUpload from "../../components/V1.0.0/DNAImageUpload";
-import { handleChangeInputComponent, handleDatePickerChange } from "../../api/utils/util";
+import { handleChangeInputComponent, setFieldValue } from "../../api/utils/util";
 import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -71,6 +71,7 @@ export default function PessoaFromGeral(props) {
                         <Grid item xs={10}>
                             <TextField
                                 id="nome"
+                                fullWidth
                                 label="Nome da pessoa"
                                 value={object.nome}
                                 variant='outlined'
@@ -100,6 +101,8 @@ export default function PessoaFromGeral(props) {
                                     option.id === value.id
                                 }
                                 getOptionLabel={(option) => option.nome}
+                                input_modal={true}
+                                input_modal_title={"Cadastrar um novo nível de escolaridade"}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -110,16 +113,8 @@ export default function PessoaFromGeral(props) {
                                 // disableFuture
                                 disabled={disabled}
                                 format='DD/MM/YYYY'
-                                onChange={(newValue) => handleDatePickerChange('nascimento', newValue["$d"], setObject, object)}
+                                onChange={(newValue) => setFieldValue('nascimento', newValue["$d"], setObject, object)}
                             />
-                            {/* <TextField
-                                id="nascimento"
-                                label="Data de Nascimento"
-                                value={object.nascimento}
-                                type="date"
-                                disabled={disabled}
-                                variant='outlined'
-                                onChange={handleChange} /> */}
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl component="fieldset">

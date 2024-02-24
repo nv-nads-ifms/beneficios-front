@@ -3,29 +3,32 @@ import React from "react";
 
 import { FormControlLabel, Grid, Switch, Typography } from "@material-ui/core";
 import CardPessoaComponent from "./CardPessoaComponent";
-import GrupoSocioeducativoService from "../../../services/GrupoSocioeducativoService";
-import CustomAutoComplete from "../../../components/CustomFields/CustomAutoComplete";
-import CustomTextField from "../../../components/CustomFields/CustomTextField";
 import DadosTitularComponent from "./DadosTitularComponent";
+import DNAAutocomplete from "../../../components/V1.0.0/DNAAutocomplete";
+import { TextField } from "@mui/material";
+import { objectContext } from "../../../contexts/objectContext";
 
 export default function ProntuarioFormGeralComponent(props) {
-    const { disabled, prontuario, setProntuario, onChange } = props;
+    const { disabled, onChange } = props;
+
+    const { object, setObject } = React.useContext(objectContext);
+
     const [participaGrupo, setParticipaGrupo] = React.useState(false);
 
     const handleChangeParticipaGrupo = (event) => {
         const participa = event.target.checked;
         setParticipaGrupo(participa);
         if (!participa) {
-            setProntuario({
-                ...prontuario,
+            setObject({
+                ...object,
                 grupoSocioeducativo: null,
             });
         }
     }
 
     const setTitular = (titular) => {
-        setProntuario({
-            ...prontuario,
+        setObject({
+            ...object,
             titular: titular,
         });
     }
@@ -36,21 +39,19 @@ export default function ProntuarioFormGeralComponent(props) {
                 <Grid item xs={12}>
                     <CardPessoaComponent
                         disabled={disabled}
-                        value={prontuario.titular}
+                        value={object.titular}
                         callback={setTitular}
-                        prontuario={prontuario}
-                        setProntuario={setProntuario}>
-                        <DadosTitularComponent value={prontuario.titular} />
+                        prontuario={object}
+                        setProntuario={setObject}>
+                        <DadosTitularComponent value={object.titular} />
                     </CardPessoaComponent>
                 </Grid>
-            </Grid>
-            <Grid container spacing={0} direction="row" alignItems="center">
-                <Grid item xs={4} >
+                <Grid item md={4} lg={4} container direction="row" alignItems="center">
                     <Typography variant="body1" color="textPrimary">
                         Participa de Grupo Sócioeducativo?
                     </Typography>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item md={8} lg={2} container direction="row" alignItems="center">
                     <FormControlLabel
                         control={
                             <Switch
@@ -65,7 +66,7 @@ export default function ProntuarioFormGeralComponent(props) {
                         label={participaGrupo ? "Sim" : "Não"}
                     />
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item md={4} lg={1} container direction="row" alignItems="center">
                     <Typography
                         variant="body1"
                         color={participaGrupo ? "textPrimary" : "textSecondary"}
@@ -73,32 +74,33 @@ export default function ProntuarioFormGeralComponent(props) {
                         Qual?
                     </Typography>
                 </Grid>
-                <Grid item xs={5}>
-                    <CustomAutoComplete
+                <Grid item md={8} lg={5}>
+                    <DNAAutocomplete
                         id="grupoSocioeducativo"
-                        disabled={!participaGrupo && disabled}
-                        value={prontuario.grupoSocioeducativo}
-                        retrieveDataFunction={GrupoSocioeducativoService.getListaGruposSocioeducativos}
-                        label="Grupo Sócioeducativo"
-                        placeholder="<< Selecione um Grupo Sócioeducativo >>"
-                        onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                        getOptionSelected={(option, value) => value != null && option.id === value.id}
+                        path="grupo-socioeducativo"
+                        input_label="<< Selecione um Grupo Socioeducativo >>"
+                        value={object.grupoSocioeducativo}
+                        disabled={participaGrupo === false || disabled}
+                        onChange={onChange}
+                        isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                        }
                         getOptionLabel={(option) => option.nome}
+                        input_modal={true}
+                        input_modal_title={"Cadastrar um novo Grupo Socioeducativo"}
                     />
                 </Grid>
-            </Grid>
-            <Grid container spacing={0} direction="row" alignItems="flex-end">
-                <Grid item xs={4} >
+                <Grid item xs={4} container direction="row" alignItems="center">
                     <Typography variant="body1" color="textPrimary">
                         Está em acompanhamento familiar?
                     </Typography>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={8} container direction="row" alignItems="center">
                     <FormControlLabel
                         control={
                             <Switch
                                 disabled={disabled}
-                                checked={prontuario.acompanhamento}
+                                checked={object.acompanhamento}
                                 onChange={onChange}
                                 name="acompanhamento"
                                 id="acompanhamento"
@@ -106,21 +108,21 @@ export default function ProntuarioFormGeralComponent(props) {
                                 size="medium"
                             />
                         }
-                        label={prontuario.acompanhamento ? "Sim" : "Não"}
+                        label={object.acompanhamento ? "Sim" : "Não"}
                     />
                 </Grid>
-            </Grid>
-            <Grid container spacing={1}>
                 <Grid item xs={12}>
-                    <CustomTextField
-                        disabled={disabled}
+                    <TextField
                         id="descricaoSaude"
                         label="Condições de saúde da famíla"
-                        value={prontuario.descricaoSaude}
+                        value={object.descricaoSaude}
+                        variant="outlined"
                         placeholder={"Descreva a condição de saúde da família"}
+                        disabled={disabled}
                         multiline
                         rows={4}
-                        onChangeHandler={(event) => onChange(event)}
+                        fullWidth
+                        onChange={onChange}
                     />
                 </Grid>
             </Grid>

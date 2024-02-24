@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
 import DialogForms from '../../../components/CustomForms/DialogForms';
-import { handleChangeInputComponent, handleDatePickerChange } from '../../../api/utils/util';
+import { handleChangeInputComponent, setFieldValue } from '../../../api/utils/util';
 import { showErrorMessages } from '../../../api/utils/modalMessages';
 import { Avatar, TextField, Typography } from '@mui/material';
 import { Work } from '@mui/icons-material';
@@ -115,7 +115,7 @@ export default function RendimentoFormComponent(props) {
                                 value={dayjs(rendimento.admissao)}
                                 disableFuture
                                 format='DD/MM/YYYY'
-                                onChange={(newValue) => handleDatePickerChange('admissao', newValue["$d"], setRendimento, rendimento)}
+                                onChange={(newValue) => setFieldValue('admissao', newValue["$d"], setRendimento, rendimento)}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -125,7 +125,7 @@ export default function RendimentoFormComponent(props) {
                                 value={dayjs(rendimento.demissao)}
                                 disableFuture
                                 format='DD/MM/YYYY'
-                                onChange={(newValue) => handleDatePickerChange('demissao', newValue["$d"], setRendimento, rendimento)}
+                                onChange={(newValue) => setFieldValue('demissao', newValue["$d"], setRendimento, rendimento)}
                             />
                         </Grid>
                     </Grid>

@@ -19,14 +19,14 @@ export default function DadosTitularComponent(props) {
     
     return (
         <Grid container spacing={1}>
-            <Grid item xs={6}>
-                <MoradiasComponent moradias={pessoa.moradias} />
+            <Grid item xs={12}>
+                <MoradiasComponent disabled={true} moradias={pessoa.moradias} />
             </Grid>
-            <Grid item xs={3}>
-                <DocumentosComponent documentos={pessoa.documentos} />
+            <Grid item xs={12} lg={6}>
+                <DocumentosComponent disabled={true} documentos={pessoa.documentos} />
             </Grid>
-            <Grid item xs={3}>
-                <ContatosComponent contatos={pessoa.contatos} />
+            <Grid item xs={12} lg={6}>
+                <ContatosComponent disabled={true} contatos={pessoa.contatos} />
             </Grid>
         </Grid>
     );
