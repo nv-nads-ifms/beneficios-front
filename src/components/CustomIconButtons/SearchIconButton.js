@@ -1,8 +1,7 @@
 import React from 'react';
-
-import SearchIcon from '@material-ui/icons/Search';
-import { IconButton, Tooltip } from "@material-ui/core";
-import { blue } from "@material-ui/core/colors";
+import { Search } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { blue } from '@mui/material/colors';
 
 export default function SearchIconButton(props) {
     const { tooltip } = props;
@@ -11,7 +10,7 @@ export default function SearchIconButton(props) {
             <IconButton
                 {...props}
                 aria-label="check">
-                <SearchIcon style={{ color: blue[600] }} />
+                <Search style={{ color: blue[600] }} />
             </IconButton>
         </Tooltip>
     );

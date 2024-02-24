@@ -1,7 +1,7 @@
+import { EditOutlined } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { orange } from '@mui/material/colors';
 import React from 'react';
-import { IconButton, Tooltip } from "@material-ui/core";
-import { orange } from "@material-ui/core/colors";
-import { EditOutlined } from "@material-ui/icons";
 
 export default function EditIconButton(props) {
     const { tooltip } = props;
