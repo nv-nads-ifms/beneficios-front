@@ -15,6 +15,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { objectContext } from '../../../contexts/objectContext';
+import { userContext } from '../../../hooks/userContext';
+import { getMenuPerfilByUrl } from '../../../api/utils/menuUtils';
 
 function DNAFormDialog(props) {
     const {
@@ -25,6 +27,15 @@ function DNAFormDialog(props) {
         data_source_url,
         on_edit_func, on_close_func } = props;
 
+    /* Controle de perfil de acesso */
+    const usuario = React.useContext(userContext);
+    const perfil = React.useMemo(() => {
+        if (usuario != null && usuario.hasOwnProperty('perfis'))
+            return getMenuPerfilByUrl(usuario.perfis, `/${data_source_url}`);
+        return [];
+    }, [usuario, data_source_url]);
+
+    /* Recuperação do objeto que será manipulado */
     const { object, setObject, emptyObject } = React.useContext(objectContext);
 
     const dataService = React.useMemo(
@@ -37,7 +48,7 @@ function DNAFormDialog(props) {
     }, [datacontrol]);
 
     React.useEffect(() => {
-        if ((Array.isArray(id_value) && id_value.length === 0) ||  id_value <= 0) {
+        if ((Array.isArray(id_value) && id_value.length === 0) || id_value <= 0) {
             setObject(emptyObject);
         } else {
             dataService.getById(Array.isArray(id_value) ? id_value.join("/") : id_value)
@@ -69,12 +80,20 @@ function DNAFormDialog(props) {
             () => on_close_func());
     }, [dataService, id_value, on_close_func]);
 
-    const actions = React.useMemo(() => [
-        { icon: <DeleteIcon fontSize='large' />, name: 'Excluir os dados do formulário', handle: handleDelete, disabled: !buttonStatus },
-        { icon: <EditIcon fontSize='large' />, name: 'Habilitar os campos para alteração', handle: on_edit_func, disabled: !buttonStatus },
-        { icon: <SaveIcon fontSize='large' />, name: 'Salvar os dados do formulário', handle: handleSave, disabled: buttonStatus },
-        { icon: <CancelIcon fontSize='large' />, name: 'Fechar', handle: on_close_func, disabled: false },
-    ], [buttonStatus, handleDelete, handleSave, on_close_func, on_edit_func]);
+    const actions = React.useMemo(() => {
+        let list = [];
+        if (perfil.remover) {
+            list.push({ icon: <DeleteIcon fontSize='large' />, name: 'Excluir os dados do formulário', handle: handleDelete, disabled: !buttonStatus });
+        }
+
+        if (perfil.escrever) {
+            list.push({ icon: <EditIcon fontSize='large' />, name: 'Habilitar os campos para alteração', handle: on_edit_func, disabled: !buttonStatus });
+            list.push({ icon: <SaveIcon fontSize='large' />, name: 'Salvar os dados do formulário', handle: handleSave, disabled: buttonStatus });
+        }
+        list.push({ icon: <CancelIcon fontSize='large' />, name: 'Fechar', handle: on_close_func, disabled: false });
+        
+        return list;
+    }, [perfil, buttonStatus, handleDelete, handleSave, on_close_func, on_edit_func]);
 
     return (
         <Dialog
