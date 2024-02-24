@@ -206,3 +206,51 @@ export const ativacaoModalMessage = (mensagem, status, actionperformed, callback
         }
     });
 }
+
+export const ativacaoModalMessageComInput = (mensagem, status, actionperformed, callback) => {
+    Swal.fire({
+        title: mensagem,
+        text: "Você não poderá reverter essa operação!",
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: `Confirmar`,
+        cancelButtonText: `Cancelar`,
+        showLoaderOnConfirm: true,
+        preConfirm: (observacao) => {
+            return observacao;
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            actionperformed()
+                .then((response) => {
+                    const data = response.data;
+                    swalWithBootstrapButtons.fire(
+                        'Alterado!',
+                        `O status ${status} foi modificado.`,
+                        'success'
+                    );
+                    callback(data);
+                })
+                .catch((error) => {
+                    swalWithBootstrapButtons.fire(
+                        'Ooops!',
+                        `Não foi possível ${status}.`,
+                        'error'
+                    );
+                });
+
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelado',
+                `A operação foi cancelada e o Status foi mantido. ;)`,
+                'error'
+            )
+        }
+    });
+}
