@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { objectContext } from '../../../contexts/objectContext';
 import { userContext } from '../../../hooks/userContext';
-import { getMenuPerfilByUrl } from '../../../api/utils/menuUtils';
+import { emptyPerfilMenu, getMenuPerfilByUrl } from '../../../api/utils/menuUtils';
 
 function DNAFormDialog(props) {
     const {
@@ -32,7 +32,7 @@ function DNAFormDialog(props) {
     const perfil = React.useMemo(() => {
         if (usuario != null && usuario.hasOwnProperty('perfis'))
             return getMenuPerfilByUrl(usuario.perfis, `/${data_source_url}`);
-        return [];
+        return emptyPerfilMenu;
     }, [usuario, data_source_url]);
 
     /* Recuperação do objeto que será manipulado */
@@ -82,16 +82,18 @@ function DNAFormDialog(props) {
 
     const actions = React.useMemo(() => {
         let list = [];
-        if (perfil.remover) {
-            list.push({ icon: <DeleteIcon fontSize='large' />, name: 'Excluir os dados do formulário', handle: handleDelete, disabled: !buttonStatus });
-        }
+        if (perfil !== undefined) {
+            if (perfil.remover) {
+                list.push({ icon: <DeleteIcon fontSize='large' />, name: 'Excluir os dados do formulário', handle: handleDelete, disabled: !buttonStatus });
+            }
 
-        if (perfil.escrever) {
-            list.push({ icon: <EditIcon fontSize='large' />, name: 'Habilitar os campos para alteração', handle: on_edit_func, disabled: !buttonStatus });
-            list.push({ icon: <SaveIcon fontSize='large' />, name: 'Salvar os dados do formulário', handle: handleSave, disabled: buttonStatus });
+            if (perfil.escrever) {
+                list.push({ icon: <EditIcon fontSize='large' />, name: 'Habilitar os campos para alteração', handle: on_edit_func, disabled: !buttonStatus });
+                list.push({ icon: <SaveIcon fontSize='large' />, name: 'Salvar os dados do formulário', handle: handleSave, disabled: buttonStatus });
+            }
         }
         list.push({ icon: <CancelIcon fontSize='large' />, name: 'Fechar', handle: on_close_func, disabled: false });
-        
+
         return list;
     }, [perfil, buttonStatus, handleDelete, handleSave, on_close_func, on_edit_func]);
 

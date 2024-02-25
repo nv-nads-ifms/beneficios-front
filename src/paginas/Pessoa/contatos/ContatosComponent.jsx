@@ -1,34 +1,46 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ContactsIcon from '@material-ui/icons/Contacts';
+
 import ContatoFormComponent from './ContatoFormComponent';
 import ChipContatoComponent from './ChipContatoComponent';
+import { objectContext } from '../../../contexts/objectContext';
+import { setFieldValue } from '../../../api/utils/util';
+import { Avatar, Card, CardContent, CardHeader, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Add, Contacts } from '@mui/icons-material';
+import { swalWithBootstrapButtons } from '../../../api/utils/modalMessages';
 
 export default function ContatosComponent(props) {
-    const { contatos, disabled, callback } = props;
+    const { disabled } = props;
+
+    /* Recupera o objeto Pessoa/Fornecedor */
+    const { object, setObject } = React.useContext(objectContext);
+    const [contatos, setContatos] = React.useState([]);
+
+    /* Atributos de controle do formulário modal */
     const [open, setOpen] = React.useState(false);
-    const [contato, setContato] = React.useState(null);
+
+    React.useEffect(() => {
+        if (object != null) {
+            setContatos(object.titular.contatos);
+        } else {
+            setContatos([]);
+        }
+    }, [object]);
+
+
+    const updateContatos = (list) => {
+        setFieldValue('contatos', list, setObject, object);
+    }
 
     const handleOpen = () => {
-        setContato(null);
-        setOpen(true);
-    };
-
-    const handleEdit = (event, value) => {
-        setContato(value);
         setOpen(true);
     };
 
     const handleDelete = (value) => {
-        const list = contatos.map(obj => {
-            if (obj.tipoContato.id === value.tipoContato.id &&
-                obj.descricao === value.descricao) {
-                obj.deleted = true;
-            }
-            return obj;
-        });
-        callback(list);
+        const list = contatos.filter(obj => !(
+            obj.tipoContato.id === value.tipoContato.id &&
+            obj.descricao === value.descricao
+        ));
+        updateContatos(list);
     }
 
     const handleClose = () => {
@@ -36,18 +48,24 @@ export default function ContatosComponent(props) {
     };
 
     const handleSave = (value) => {
-        const index = contatos.findIndex(obj => (
+        let list = [];
+        list = list.concat(contatos);
+
+        const index = list.findIndex(obj => (
             obj.tipoContato.id === value.tipoContato.id &&
             obj.descricao === value.descricao
         ));
 
         if (index !== -1) {
-            contatos[index] = value;
+            swalWithBootstrapButtons.fire(
+                'Ooops!',
+                `O Contato informado já foi adicionado.`,
+                'warning'
+            );
         } else {
-            contatos.push(value);
+            list.push(value);
+            updateContatos(list);
         }
-        setContato(value);
-        callback(contatos);
     }
 
     const isEmpty = () => {
@@ -61,55 +79,47 @@ export default function ContatosComponent(props) {
     }
 
     return (
-        <div>
+        <React.Fragment>
             <Card>
                 <CardHeader
                     avatar={
                         <Avatar aria-label="contatos">
-                            <ContactsIcon fontSize="default" />
+                            <Contacts fontSize="default" />
                         </Avatar>
                     }
                     title="Contatos"
                     action={
-                        callback != null &&
                         <Tooltip title={"Adicionar um novo contato"}>
                             <IconButton
                                 aria-label="Adicionar Contato"
                                 disabled={disabled}
                                 onClick={handleOpen}>
-                                <AddIcon />
+                                <Add />
                             </IconButton>
                         </Tooltip>
                     }
                 />
                 <CardContent>
-                    {contatos.map((obj, index) => {
-                        if (callback != null && !obj.deleted) {
+                    <Stack direction={'row'} spacing={1}>
+                        {contatos.map((obj, index) => {
                             return <ChipContatoComponent
                                 key={index}
                                 contato={obj}
                                 disabled={disabled}
-                                onEdit={(event, value) => handleEdit(event, obj)}
                                 onDelete={() => handleDelete(obj)} />
-                        } else if (callback == null) {
-                            return <ChipContatoComponent
-                                key={index}
-                                contato={obj}
-                                disabled={disabled} />
-                        }
-                        return obj;
-                    })}
+                        })}
+                    </Stack>
                     {isEmpty() &&
                         (<Typography variant="body1" color="textSecondary" component="p">
                             Contato inexistente
                         </Typography>)}
                 </CardContent>
             </Card>
+
             <ContatoFormComponent
                 openModal={open}
-                value={contato}
-                callback={handleSave}
+                onSave={handleSave}
                 onClose={handleClose} />
-        </div>
+        </React.Fragment>
     );
 }

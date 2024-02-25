@@ -2,7 +2,7 @@ import { TipoDocumento } from "../api/utils/constants";
 
 const emptyDocumento = {
     numero: '',
-    documento: null,
+    tipoDocumento: null,
     orgaoExpedidor: null,
     emissao: new Date(),
 };
@@ -90,8 +90,8 @@ function validarCNPJ(cnpj) {
 
 function validarDocumento(documento) {
     let campos = [];
-    if (documento.documento == null) {
-        campos.push({ campo: "documento", erro: "O Documento não foi informado." });
+    if (documento.tipoDocumento == null) {
+        campos.push({ campo: "tipoDocumento", erro: "O Tipo do Documento não foi informado." });
     }
     if (documento.numero === '') {
         campos.push({ campo: "numero", erro: "O NÚMERO do documento não foi informado." });

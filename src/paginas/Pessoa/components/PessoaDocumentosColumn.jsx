@@ -18,7 +18,7 @@ function PessoaDocumentosColumn(params) {
                         }
                         secondary={
                             <Typography variant="caption" color="textSecondary">
-                                Número do {extractCapitalizeLetters(obj.documento.nome)}
+                                Número do {extractCapitalizeLetters(obj.tipoDocumento.nome)}
                             </Typography>
                         }
                     />

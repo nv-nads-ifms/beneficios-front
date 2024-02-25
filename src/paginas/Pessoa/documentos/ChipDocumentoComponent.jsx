@@ -6,10 +6,11 @@ import { extractCapitalizeLetters } from '../../../api/utils/stringUtils';
 export default function ChipDocumentoComponent(props) {
     const { documento, color, onEdit, onDelete, ...others } = props;
 
-    const nome = documento.documento.nome;
+    const nome = documento.tipoDocumento.nome;
     return (
         <Chip
             {...others}
+            
             clickable={true}
             icon={<RecentActorsIcon />}
             label={extractCapitalizeLetters(nome) + ": " + documento.numero}

@@ -1,29 +1,16 @@
-import { Grid, TextField } from '@material-ui/core';
 import React from 'react';
+import { Grid, TextField } from '@material-ui/core';
 import { getTipoContatoFormat } from '../../../api/utils/constants';
 import MaskedInput from '../../../components/CustomFields/MaskedInput';
 import DialogForms from '../../../components/CustomForms/DialogForms';
-import useErros from '../../../hooks/useErros';
 import { emptyContato, validarContato } from '../../../models/Contato';
-import { validarCampo } from '../../../models/validaCampos';
-import ComboTipoContato from '../../Contato/Component/ComboTipoContato';
+import { showErrorMessages } from '../../../api/utils/modalMessages';
+import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 
 export default function ContatoFormComponent(props) {
-    const { value, callback, openModal, onClose } = props;
+    const { onSave, openModal, onClose } = props;
+
     const [contato, setContato] = React.useState(emptyContato);
-
-    const [erros, validarCampos] = useErros({
-        descricao: validarCampo,
-        tipoContato: validarCampo,
-    });
-
-    React.useEffect(() => {
-        if (value != null) {
-            setContato(value);
-        } else {
-            setContato(emptyContato);
-        }
-    }, [value]);
 
     const setFieldValue = (fieldname, value) => {
         setContato({
@@ -36,9 +23,10 @@ export default function ContatoFormComponent(props) {
         const data = validarContato(contato);
         
         if (data.length > 0) {
-            validarCampos(data);
+            showErrorMessages(data);
         } else {
-            callback(contato);
+            onSave(contato);
+            setContato(emptyContato);
             onClose();
         }
     };
@@ -53,12 +41,19 @@ export default function ContatoFormComponent(props) {
         >
             <Grid container spacing={1}>
                 <Grid item xs={12}>
-                    <ComboTipoContato
+                    <DNAAutocomplete
                         id="tipoContato"
+                        path="contatos"
+                        input_label="<< Tipo de Contato >>"
                         value={contato.tipoContato}
-                        erros={erros}
-                        callback={(value) => setFieldValue("tipoContato", value)}
-                        showCadastro
+
+                        onChange={(e, value) => setFieldValue('tipoContato', value)}
+                        isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                        }
+                        getOptionLabel={(option) => option.nome}
+                        input_modal={true}
+                        input_modal_title={"Cadastrar um novo Tipo de Contato"}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -73,15 +68,13 @@ export default function ContatoFormComponent(props) {
                                 id="descricao"
                                 label="Descrição"
                                 placeholder="Digite o número ou a descrição do contato"
-                                error={erros.descricao != null ? !erros.descricao.valido : false}
+                                
                                 disableUnderline
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                helperText={erros.descricao.texto}
-
+                                
                                 variant="outlined"
-                                margin="normal"
                                 fullWidth
                             />
                         }

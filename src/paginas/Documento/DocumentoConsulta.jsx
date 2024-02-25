@@ -12,15 +12,13 @@ import { DNAStatus } from '../../api/utils/constants';
 
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
 
-
-
 import DocumentoForm from "./DocumentoForm";
 
 const columns = [
     {
         field: 'id',
         headerName: 'Código',
-        width: 90,
+        width: 50,
     },
     {
         field: 'nome',
@@ -31,6 +29,11 @@ const columns = [
             console.log(params);
             return params.value;
         }
+    },
+    {
+        field: 'sigla',
+        headerName: 'Sigla',
+        width: 100,
     },
     {
         field: 'exigeOrgaoExpedidor',

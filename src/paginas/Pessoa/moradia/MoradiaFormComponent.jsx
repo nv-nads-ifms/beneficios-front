@@ -73,7 +73,7 @@ export default function MoradiaFormComponent(props) {
                                 path="tipos-de-moradia"
                                 input_label="<< Selecione um Tipo de Moradia >>"
                                 value={moradia.tipoMoradia}
-                                // disabled={disabled}
+                                disabled={false}
                                 onChange={handleChange}
                                 isOptionEqualToValue={(option, value) =>
                                     option.id === value.id

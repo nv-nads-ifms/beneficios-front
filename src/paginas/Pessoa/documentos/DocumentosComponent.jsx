@@ -1,34 +1,45 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ContactsIcon from '@material-ui/icons/Contacts';
+
 import ChipDocumentoComponent from './ChipDocumentoComponent';
 import DocumentoFormComponent from './DocumentoFormComponent'
+import { objectContext } from '../../../contexts/objectContext';
+import { Avatar, Card, CardContent, CardHeader, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Add, Contacts } from '@mui/icons-material';
+import { setFieldValue } from '../../../api/utils/util';
+import { swalWithBootstrapButtons } from '../../../api/utils/modalMessages';
 
 export default function DocumentosComponent(props) {
-    const { documentos, disabled, callback } = props;
+    const { disabled } = props;
+
+    /* Recupera o objeto Pessoa/Fornecedor */
+    const { object, setObject } = React.useContext(objectContext);
+    const [documentos, setDocumentos] = React.useState([]);
+
+    /* Atributos de controle do formulário modal */
     const [open, setOpen] = React.useState(false);
-    const [documento, setDocumento] = React.useState(null);
+
+    React.useEffect(() => {
+        if (object != null) {
+            setDocumentos(object.titular.documentos);
+        } else {
+            setDocumentos([]);
+        }
+    }, [object]);
+
+    const updateDocumentos = (list) => {
+        setFieldValue('documentos', list, setObject, object);
+    }
 
     const handleOpen = () => {
-        setDocumento(null);
-        setOpen(true);
-    };
-
-    const handleEdit = (event, value) => {
-        setDocumento(value);
         setOpen(true);
     };
 
     const handleDelete = (value) => {
-        const list = documentos.map(obj => {
-            if (obj.numero === value.numero &&
-                obj.documento.id === value.documento.id) {
-                obj.deleted = true;
-            }
-            return obj;
-        });
-        callback(list);
+        const list = documentos.filter(obj => !(
+            obj.numero === value.numero &&
+            obj.tipoDocumento.id === value.tipoDocumento.id
+        ));
+        updateDocumentos(list);
     }
 
     const handleClose = () => {
@@ -36,18 +47,23 @@ export default function DocumentosComponent(props) {
     };
 
     const handleSave = (value) => {
-        const index = documentos.findIndex(obj => (
+        let list = [];
+        list = list.concat(documentos);
+        const index = list.findIndex(obj => (
             obj.numero === value.numero &&
-            obj.documento.id === value.documento.id
+            obj.tipoDocumento.id === value.tipoDocumento.id
         ));
 
         if (index !== -1) {
-            documentos[index] = value;
+            swalWithBootstrapButtons.fire(
+                'Ooops!',
+                `O Documento informado já foi adicionado.`,
+                'warning'
+            );
         } else {
-            documentos.push(value);
+            list.push(value);
+            updateDocumentos(list);
         }
-        setDocumento(value);
-        callback(documentos);
     }
 
     const isEmpty = () => {
@@ -59,59 +75,51 @@ export default function DocumentosComponent(props) {
 
         return count === documentos.length;
     }
-    
+
     return (
-        <div>
+        <React.Fragment>
             <Card>
                 <CardHeader
                     avatar={
                         <Avatar aria-label="documentos">
-                            <ContactsIcon fontSize="default" />
+                            <Contacts fontSize="default" />
                         </Avatar>
                     }
                     title="Documentos"
                     action={
-                        callback != null &&
                         <Tooltip title={"Adicionar um novo documento"}>
                             <IconButton
                                 aria-label="Adicionar Documento"
                                 disabled={disabled}
                                 onClick={handleOpen}>
-                                <AddIcon />
+                                <Add />
                             </IconButton>
                         </Tooltip>
                     }
                 />
                 <CardContent>
-                    {documentos.map((obj, index) => {
-                        if (callback != null && !obj.deleted) {
+                    <Stack direction={'row'} spacing={1}>
+                        {documentos.map((obj, index) => {
                             return <ChipDocumentoComponent
                                 key={index}
                                 disabled={disabled}
                                 documento={obj}
-                                onEdit={(event, value) => handleEdit(event, obj)}
                                 onDelete={() => handleDelete(obj)} />
 
-                        } else if (callback == null) {
-                            return <ChipDocumentoComponent
-                                key={index}
-                                disabled={disabled}
-                                documento={obj} />
-
-                        }
-                        return obj;
-                    })}
+                        })}
+                    </Stack>
                     {isEmpty() &&
                         (<Typography variant="body1" color="textSecondary" component="p">
                             Documento inexistente
                         </Typography>)}
                 </CardContent>
             </Card>
+
             <DocumentoFormComponent
                 openModal={open}
-                value={documento}
-                callback={handleSave}
-                onClose={handleClose} />
-        </div>
+                onSave={handleSave}
+                onClose={handleClose}
+            />
+        </React.Fragment>
     );
 }

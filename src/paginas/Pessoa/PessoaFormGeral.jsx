@@ -35,8 +35,8 @@ export default function PessoaFromGeral(props) {
         return dayjs().subtract(18, 'year');
     }, []);
 
-    const handleChange = (e, newValue, fieldname) => {
-        handleChangeInputComponent(e, newValue, setObject, object, fieldname);
+    const handleChange = (e, newValue) => {
+        handleChangeInputComponent(e, newValue, setObject, object);
     }
 
     const handleOnWebcamChange = (value) => {
@@ -138,10 +138,7 @@ export default function PessoaFromGeral(props) {
 
             <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <DocumentosComponent
-                        documentos={object.documentos}
-                        disabled={disabled}
-                        callback={(value) => setValue(value, "documentos")} />
+                    <DocumentosComponent disabled={disabled} />
                 </Grid>
                 <Grid item xs={6}>
                     <ContatosComponent
