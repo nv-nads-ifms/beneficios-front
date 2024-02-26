@@ -110,29 +110,29 @@ function ProntuarioConsulta() {
     };
 
     const handleAtivar = React.useCallback(
-        (row) => () => {
+        (params) => () => {
             ativacaoModalMessage(
                 "Confirma a ATIVAÇÃO do prontuário de " +
-                row.titular.nome + "?", '',
-                () => dataService.save(['ativar', row.id], { observacao: '' }),
+                params.row.titular.nome + "?", '',
+                () => dataService.save(['ativar', params.row.id], { observacao: '' }),
                 () => decrement()
             );
         }, [decrement]);
 
     const handleDesativar = React.useCallback(
-        (row) => () => {
+        (params) => () => {
             ativacaoModalMessageComInput("Informe o motivo da INATIVAÇÃO do prontuário de " +
-                row.titular.nome + "?", '',
-                () => dataService.save(['desativar', row.id]),
+                params.row.titular.nome + "?", '',
+                () => dataService.save(['desativar', params.row.id]),
                 () => decrement()
             );
         }, [decrement]);
 
     const handleRestore = React.useCallback(
-        (row) => () => {
+        (params) => () => {
             ativacaoModalMessageComInput("Informe o motivo da REATIVAÇÃO do prontuário de " +
-                row.titular.nome + "?", '',
-                () => dataService.save(['reativar', row.id]),
+            params.row.titular.nome + "?", '',
+                () => dataService.save(['reativar', params.row.id]),
                 () => decrement()
             );
         }, [decrement]);
@@ -164,7 +164,7 @@ function ProntuarioConsulta() {
                 }}
                 columns={columns}
                 moreActions={buttonMoreActions}
-                gridHeigh={500}
+                gridHeigh={400}
             >
                 <ProntuarioContagem
                     rowCount={formId}

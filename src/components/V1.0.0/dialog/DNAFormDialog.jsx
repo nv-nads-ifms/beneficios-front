@@ -71,7 +71,7 @@ function DNAFormDialog(props) {
                 }
                 return dataService.save(id_value, object);
             },
-            () => on_close_func())
+            () => on_close_func());
     }, [dataService, id_value, object, objectfilefieldname, on_close_func]);
 
     const handleDelete = React.useCallback(() => {

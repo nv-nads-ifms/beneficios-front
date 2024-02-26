@@ -1,34 +1,19 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+
 import throttle from 'lodash/throttle';
 import AutocompleteService from '../../services/AutocompleteService';
-import { Link } from '@material-ui/core';
 import CustomTextField from '../CustomFields/CustomTextField';
-import { grey } from '@material-ui/core/colors';
 import { emptyEndereco, enderecoToString, stringToEndereco } from '../../models/Endereco';
 import CepFormModal from './CepFormModal';
 
-const autocompleteService = { current: null };
+import { Autocomplete, Grid, Link, TextField, Typography } from '@mui/material';
+import { LocationOn } from '@mui/icons-material';
 
-const useStyles = makeStyles((theme) => ({
-    icon: {
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(2),
-    },
-    paper: {
-        padding: theme.spacing(1),
-        background: grey[200],
-    }
-}));
+const autocompleteService = { current: null };
 
 export default function Logradouro(props) {
     const { erros, obj, callback, disabled } = props;
-    const classes = useStyles();
+    
     const [openModal, setOpenModal] = React.useState(false);
 
     const [endereco, setEndereco] = React.useState(emptyEndereco);
@@ -184,7 +169,7 @@ export default function Logradouro(props) {
                             return (
                                 <Grid container alignItems="center">
                                     <Grid item>
-                                        <LocationOnIcon className={classes.icon} />
+                                        <LocationOn />
                                     </Grid>
                                     <Grid item xs>
                                         <span key='0' style={{ fontWeight: 400 }}>

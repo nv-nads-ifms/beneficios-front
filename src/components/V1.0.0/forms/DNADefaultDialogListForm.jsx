@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { deleteModalMessage } from "../../../api/utils/modalMessages";
-import { getMenuPerfilByUrl } from "../../../api/utils/menuUtils";
+import { emptyPerfilMenu, getMenuPerfilByUrl } from "../../../api/utils/menuUtils";
 import { userContext } from "../../../hooks/userContext";
 
 
@@ -31,7 +31,7 @@ function DNADefaultDialogListForm(props) {
     const perfil = React.useMemo(() => {
         if (usuario != null && usuario.hasOwnProperty('perfis'))
             return getMenuPerfilByUrl(usuario.perfis, `/${datasourceUrl}`);
-        return [];
+        return emptyPerfilMenu;
     }, [usuario, datasourceUrl]);
 
     /* Criação do serviço para recuperação de dados */
@@ -76,7 +76,8 @@ function DNADefaultDialogListForm(props) {
 
     const actions = React.useMemo(() => {
         let list = [];
-        if (perfil.escrever) {
+
+        if (perfil !== undefined && perfil.escrever) {
             list.push({ icon: <AddIcon />, name: 'Cadastrar novo registro', action: handleNew });
         }
 
@@ -92,33 +93,35 @@ function DNADefaultDialogListForm(props) {
 
     const getColumnActions = (params) => {
         let columns = [];
-        if (perfil.ler) {
-            columns.push(
-                <GridActionsCellItem
-                    icon={<VisibilityIcon />}
-                    label="Visualizar"
-                    onClick={handleView(params)}
-                />);
-        }
+        if (perfil !== undefined) {
+            if (perfil.ler) {
+                columns.push(
+                    <GridActionsCellItem
+                        icon={<VisibilityIcon />}
+                        label="Visualizar"
+                        onClick={handleView(params)}
+                    />);
+            }
 
-        if (perfil.remover) {
-            columns.push(
-                <GridActionsCellItem
-                    icon={<DeleteIcon />}
-                    label="Excluir"
-                    onClick={handleDelete(params)}
-                />
-            );
-        }
+            if (perfil.remover) {
+                columns.push(
+                    <GridActionsCellItem
+                        icon={<DeleteIcon />}
+                        label="Excluir"
+                        onClick={handleDelete(params)}
+                    />
+                );
+            }
 
-        if (perfil.escrever) {
-            columns.push(
-                <GridActionsCellItem
-                    icon={<EditIcon />}
-                    label="Alterar"
-                    onClick={handleEdit(params)}
-                />
-            );
+            if (perfil.escrever) {
+                columns.push(
+                    <GridActionsCellItem
+                        icon={<EditIcon />}
+                        label="Alterar"
+                        onClick={handleEdit(params)}
+                    />
+                );
+            }
         }
 
         if (moreActions != null) {

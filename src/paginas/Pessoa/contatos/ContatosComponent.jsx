@@ -20,7 +20,11 @@ export default function ContatosComponent(props) {
 
     React.useEffect(() => {
         if (object != null) {
-            setContatos(object.titular.contatos);
+            if (object.hasOwnProperty('titular'))
+                setContatos(object.titular.contatos);
+            else
+                setContatos(object.contatos);
+
         } else {
             setContatos([]);
         }

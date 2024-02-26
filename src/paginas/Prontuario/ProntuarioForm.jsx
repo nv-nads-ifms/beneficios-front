@@ -35,6 +35,7 @@ function ProntuarioForm(props) {
         } else {
             setUnidadeAtendimento(emptyUnidadeAtendimento);
         }
+        
     }, [usuario]);
 
     const handleChange = (event, newValue) => {
@@ -47,7 +48,10 @@ function ProntuarioForm(props) {
 
     return (
         <objectContext.Provider value={{
-            object: prontuario,
+            object: {
+                ...prontuario,
+                unidadeAtendimento: unidadeAtendimento
+            },
             setObject: setProntuario,
             emptyObject: emptyProntuario
         }}>
@@ -61,7 +65,6 @@ function ProntuarioForm(props) {
                 on_close_func={on_close_func}
                 fullWidth
                 maxWidth={"lg"}
-                objectfilefieldname={'foto'}
             >
                 <Grid sx={{mb: 3}} container spacing={0} direction="column" alignItems="center" justify="center">
                     <Grid item xs={12}>

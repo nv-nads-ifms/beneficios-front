@@ -20,7 +20,10 @@ export default function DocumentosComponent(props) {
 
     React.useEffect(() => {
         if (object != null) {
-            setDocumentos(object.titular.documentos);
+            if (object.hasOwnProperty('titular'))
+                setDocumentos(object.titular.documentos);
+            else
+                setDocumentos(object.documentos);
         } else {
             setDocumentos([]);
         }

@@ -10,7 +10,6 @@ import CustomTextField from "../../components/CustomFields/CustomTextField";
 import DialogForms from "../../components/CustomForms/DialogForms";
 import { Message } from "../../api/utils/constants";
 import ComboUf from "./Components/ComboUf";
-import { emptyPais } from "../../models/Uf";
 
 const emptyErros = {
     nome: validarCampo,

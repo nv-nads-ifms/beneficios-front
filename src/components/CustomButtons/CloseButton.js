@@ -1,6 +1,7 @@
+import { MeetingRoom } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import React from 'react';
-import { Button } from "@material-ui/core";
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+
 
 export default function CloseButton(props) {
     return (
@@ -9,7 +10,7 @@ export default function CloseButton(props) {
             color="primary"
             name="btEdit"
             type="button"
-            startIcon={<MeetingRoomIcon />}
+            startIcon={<MeetingRoom />}
             {...props}
         >
             Fechar

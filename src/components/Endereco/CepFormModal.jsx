@@ -1,51 +1,52 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { emptyMessageAlert, sendMessageAlert } from '../../api/utils/customMessages';
-import useErros from '../../hooks/useErros';
 import { emptyCep } from '../../models/Endereco';
-
-import { validarCampo } from '../../models/validaCampos';
 import FieldCidadeComponent from '../../paginas/Cidade/FieldCidadeComponent';
 import DialogForms from '../CustomForms/DialogForms';
 import FieldLogradouroComponent from '../../paginas/Logradouro/FieldLogradouroComponent';
 import FieldBairroComponent from '../../paginas/Bairro/FieldBairroComponent';
-import CepService from '../../services/CepService';
-import { Message } from '../../api/utils/constants';
+import { Box, Grid } from '@mui/material';
+import DataService from '../../api/services/DataServices';
+import { saveModalMessage } from '../../api/utils/modalMessages';
 
-const emptyErros = {
-    logradouro: validarCampo,
-    bairro: validarCampo,
-    cidade: validarCampo,
-};
+function validarCep(cep) {
+    let campos = [];
+
+    if (cep.logradouro == null) {
+        campos.push({ campo: "logradouro", erro: "O LOGRADOURO não foi informado." });
+    }
+
+    if (cep.bairro == null) {
+        campos.push({ campo: "bairro", erro: "O BAIRRO não foi informado." });
+    }
+
+    if (cep.cidade == null) {
+        campos.push({ campo: "cidade", erro: "A CIDADE não foi informada." });
+    }
+
+    return campos;
+}
+
+const dataService = new DataService('/ceps');
 
 export default function CepFormModal(props) {
     const { openModal, onClose, callback } = props;
     const [cep, setCep] = React.useState(emptyCep);
-    const [messageAlert, setMessageAlert] = React.useState(emptyMessageAlert);
 
     React.useEffect(() => {
         setCep(emptyCep);
     }, [openModal])
 
-    const sendMessage = (type, message) => {
-        sendMessageAlert(type, message, setMessageAlert);
-    }
-
-    const [erros, validarCampos] = useErros(emptyErros);
     const handlePost = (event) => {
-        CepService.saveCep(cep, 0)
-            .then(r => r.data)
-            .then(data => {
-                if ('status' in data && data.status === 400) {
-                    sendMessage(Message.WARNING, data.message);
-                } else if (Array.isArray(data)) {
-                    validarCampos(data);
-                    sendMessage(Message.WARNING, "Alguns campos não foram informados!");
-                } else {
+        if (validarCep(cep)) {
+            saveModalMessage(
+                () => {
+                    return dataService.save(0, cep);
+                },
+                (data) => {
                     callback(data);
                     onClose();
-                }
-            });
+                });
+        }
     }
 
     const setValue = (value, fieldname) => {
@@ -62,31 +63,29 @@ export default function CepFormModal(props) {
             maxWidth="md"
             onClose={onClose}
             onSave={handlePost}
-            messageAlert={messageAlert}
         >
-            <Grid container spacing={1}>
-                <Grid item xs={6}>
-                    <FieldLogradouroComponent
-                        logradouro={cep.logradouro}
-                        callback={(value) => setValue(value, 'logradouro')}
-                        error={erros.logradouro}
-                    />
+            <Box sx={{ mt: 1 }}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <FieldCidadeComponent
+                            cidade={cep.cidade}
+                            callback={(value) => setValue(value, 'cidade')}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FieldBairroComponent
+                            bairro={cep.bairro}
+                            callback={(value) => setValue(value, 'bairro')}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FieldLogradouroComponent
+                            logradouro={cep.logradouro}
+                            callback={(value) => setValue(value, 'logradouro')}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <FieldBairroComponent
-                        bairro={cep.bairro}
-                        callback={(value) => setValue(value, 'bairro')}
-                        error={erros.bairro}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <FieldCidadeComponent
-                        cidade={cep.cidade}
-                        callback={(value) => setValue(value, 'cidade')}
-                        error={erros.cidade}
-                    />
-                </Grid>
-            </Grid>
+            </Box>
         </DialogForms>
     );
 }

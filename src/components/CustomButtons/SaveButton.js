@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from "@material-ui/core";
-import SaveIcon from '@material-ui/icons/Save';
+import { Save } from '@mui/icons-material';
+import { Button } from '@mui/material';
 
 export default function SaveButton(props) {
     const { label, ...others } = props;
@@ -9,7 +9,7 @@ export default function SaveButton(props) {
             variant="contained"
             color="primary"
             name="btSalvar"
-            startIcon={<SaveIcon />}
+            startIcon={<Save />}
             {...others}
         >
             {label != null ? label : "Salvar"}

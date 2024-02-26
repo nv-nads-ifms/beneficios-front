@@ -54,8 +54,7 @@ import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEnt
 import DocumentoSaidaListagem from './paginas/DocumentoSaida/DocumentoSaidaListagem';
 import DocumentoSaidaCadastro from './paginas/DocumentoSaida/DocumentoSaidaCadastro';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
-import CidadeListagem from './paginas/Cidade/CidadeListagem';
-import CidadeForm from './paginas/Cidade/CidadeForm';
+import CidadeConsulta from './paginas/Cidade/CidadeConsulta';
 import PaisConsulta from './paginas/Pais/PaisConsulta';
 import UfConsulta from './paginas/Uf/UfConsulta';
 import BairroConsulta from './paginas/Bairro/BairroConsuta';
@@ -122,8 +121,8 @@ const Routes = () => {
                 <PrivateRoute path='/grupo-socioeducativo-ficha/:id/:status' component={GrupoSocioeducativoCadastro} />
 
                 {/* Localização */}
-                <PrivateRoute path='/cidades' component={CidadeListagem} />
-                <PrivateRoute path='/cidades-ficha/:id/:status' component={CidadeForm} />
+                <PrivateRoute path='/cidades' component={CidadeConsulta} />
+                
                 <PrivateRoute path='/pais' component={PaisConsulta} />
                 <PrivateRoute path='/uf' component={UfConsulta} />
                 <PrivateRoute path='/bairro' component={BairroConsulta} />

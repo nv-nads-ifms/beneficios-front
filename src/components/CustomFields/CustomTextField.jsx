@@ -1,6 +1,7 @@
 import React from 'react';
-import { TextField } from "@material-ui/core";
+
 import PropTypes from 'prop-types';
+import { TextField } from '@mui/material';
 
 function CustomTextField(props) {
     const { id, error, onChangeHandler, type, onBlurHanler, fullWidth,

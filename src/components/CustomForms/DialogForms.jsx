@@ -1,12 +1,12 @@
 import React from 'react';
-import {
-    Dialog, DialogTitle, DialogContent, DialogActions, Slide
-} from "@material-ui/core";
+
+
 import SaveButton from "../CustomButtons/SaveButton";
 import CloseButton from "../CustomButtons/CloseButton";
 import { fichaStyles } from "../UI/GlobalStyle";
 import CustomAlert from '../CustomAlert/CustomAlert';
 import { closeMessageAlert, emptyMessageAlert } from '../../api/utils/customMessages';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;

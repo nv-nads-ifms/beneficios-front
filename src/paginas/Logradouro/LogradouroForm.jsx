@@ -4,7 +4,6 @@ import { objectContext } from '../../contexts/objectContext';
 import { DNAStatus, emptyBaseObject } from '../../api/utils/constants';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { Grid, ListItemText, TextField } from '@mui/material';
-import DNAStatusComponent from '../../components/V1.0.0/DNAStatusComponent';
 import { handleChangeInputComponent } from '../../api/utils/util';
 import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
@@ -18,7 +17,6 @@ function LogradouroForm (props) {
         id_value, open, on_close_func } = props;
 
     const [logradouro, setLogradouro] = React.useState(emptyLogradouro);
-    const [tipoLogradouro, setTipoLogradouro] = React.useState(null);
 
     const handleChange = (event, newValue) => {
         handleChangeInputComponent(event, newValue, setLogradouro, logradouro);
@@ -54,7 +52,7 @@ function LogradouroForm (props) {
                             label={"Nome do Logradouro"}
                             variant='outlined'
                             fullWidth
-                            disabled={datacontrol === DNAStatusComponent.VIEW}
+                            disabled={datacontrol === DNAStatus.VIEW}
                             onChange={handleChange}
                         />
                     </Grid>
@@ -63,9 +61,9 @@ function LogradouroForm (props) {
                             id="tipoLogradouro"
                             path="tipos-de-logradouros"
                             input_label="Tipo de Logradouro"
-                            value={tipoLogradouro}
+                            value={logradouro.tipoLogradouro}
                             disabled={datacontrol === DNAStatus.VIEW}
-                            onChange={(event, newValue) => setTipoLogradouro(newValue)}
+                            onChange={handleChange}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
                             getOptionLabel={(option) => option.nome}
                         />
