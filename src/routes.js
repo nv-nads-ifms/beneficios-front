@@ -68,6 +68,7 @@ import UsuarioConsulta from './paginas/Usuario/UsuarioConsulta';
 import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
 import PessoaConsulta from './paginas/Pessoa/PessoaConsulta';
 import ProntuarioConsulta from './paginas/Prontuario/ProntuarioConsulta';
+import AtendimentoConsulta from './paginas/Atendimento/AtendimentoConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -151,7 +152,7 @@ const Routes = () => {
                 <PrivateRoute path='/prontuarios' component={ProntuarioConsulta} />
 
                 {/* Telas de atendimento */}
-                <PrivateRoute path='/atendimento' component={AtendimentoListagem} />
+                <PrivateRoute path='/atendimento' component={AtendimentoConsulta} />
                 <PrivateRoute path='/analise-atendimento' component={AnaliseListagem} />
                 <PrivateRoute path='/analise-atendimento-ficha/:id/:status' component={AnaliseCadastro} />
 
