@@ -190,6 +190,15 @@ const StatusAvaliacao = {
     AVALIADO: 'AVALIADO'
 }
 
+const MenuTipo = {
+    ADMIN: 'ADMIN',
+    ATENDIMENTO: 'ATENDIMENTO',
+    CADASTRO: 'CADASTRO',
+    ANALISE: 'ANALISE',
+    ESTOQUE: 'ESTOQUE',
+    LOCALIZACAO: 'LOCALIZACAO',
+}
+
 const emptyArquivo = {
     ...emptyBaseObject,
     tipo: '',
@@ -304,7 +313,7 @@ const Perfil = {
 export {
     DNAStatus, DNASexo, DNATipoDocumento, DNATipoContato, StatusType, StatusEvento, Perfil,
     TipoMembro, StatusProjeto, TipoNotificacao, TipoAvaliacao, StatusConvite, TipoEscalaAvaliacao,
-    Eixo, StatusAvaliacao,
+    Eixo, StatusAvaliacao, MenuTipo,
     emptyBaseObject, emptyArquivo,
     emptyUf, emptyCidade, emptyCep, emptyEndereco,
     emptyAdvogado, emptyLogradouro, emptyTipoCapacitacao, emptyTipoDocumento, emptyTipoRedeSocial,

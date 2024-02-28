@@ -71,6 +71,7 @@ export default function PessoaListagemModal(props) {
 
     /* Atributos de controle da tabela */
     const [nome, setNome] = React.useState('');
+    const [documento, setDocumento] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
     const [count, setCount] = React.useState(0);
     const [page, setPage] = React.useState(0);
@@ -79,12 +80,12 @@ export default function PessoaListagemModal(props) {
 
 
     const handleSelect = React.useCallback(
-        (row) => () => {
+        (row) => {
             dataService.getById(row.id)
-            .then((r) => {
-                response(r.data);
-                onClose();
-            });
+                .then((r) => {
+                    response(r.data);
+                    onClose();
+                });
         }, [response, onClose]);
 
     const getColumnActions = (params) => {
@@ -94,7 +95,7 @@ export default function PessoaListagemModal(props) {
                 <GridActionsCellItem
                     icon={<Check />}
                     label="Selecionar pessoa"
-                    onClick={handleSelect(params)}
+                    onClick={() => handleSelect(params)}
                 />);
         }
 
@@ -113,10 +114,11 @@ export default function PessoaListagemModal(props) {
     const getParams = React.useCallback(() => {
         return convertToParams({
             nome: nome,
+            documento: documento,
             page: page,
             size: rowsPerPage,
         });
-    }, [nome, page, rowsPerPage]);
+    }, [nome, documento, page, rowsPerPage]);
 
     React.useEffect(() => {
         setIsLoading(true);
@@ -144,47 +146,69 @@ export default function PessoaListagemModal(props) {
         <DialogForms
             title="Consulta de pessoas"
             open={openModal}
-            maxWidth="md"
+            maxWidth="lg"
             onClose={onClose}
         >
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <TextField
-                        id="nome"
-                        label="Nome da pessoa"
-                        placeholder="Buscar pelo nome da pessoa"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search />
-                                </InputAdornment>
-                            ),
-                        }}
-                        variant="outlined"
-                        fullWidth
-                        onChange={(event) => setNome(event.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <Box sx={{
-                        height: 350,
-                        width: '100%',
-                        mt: 1
-                    }}>
-                        <DNADataGrid
-                            rows={rows.content}
-                            rowCount={rows.totalElements}
-                            loading={isLoading}
-
-                            paginationModel={{ page: page, pageSize: rowsPerPage }}
-                            onPaginationModelChange={handlePaginationModelChange}
-                            paginationMode="server"
-
-                            columns={[...columns, actionColumn]}
+            <Box sx={{ mt: 1 }}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} md={7}>
+                        <TextField
+                            id="nome"
+                            label="Nome da pessoa"
+                            placeholder="Buscar pelo nome da pessoa"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            variant="outlined"
+                            fullWidth
+                            onChange={(event) => setNome(event.target.value)}
                         />
-                    </Box>
+                    </Grid>
+                    <Grid item xs={12} md={5}>
+                        <TextField 
+                            id="documento"
+                            label="Número do documento da pessoa"
+                            placeholder="Buscar pelo número do documento da pessoa"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            variant="outlined"
+                            fullWidth
+                            onChange={(event) => setDocumento(event.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box sx={{
+                            height: 350,
+                            width: '100%',
+                            mt: 1
+                        }}>
+                            <DNADataGrid
+                                rows={rows.content}
+                                rowCount={rows.totalElements}
+                                loading={isLoading}
+
+                                paginationModel={{ page: page, pageSize: rowsPerPage }}
+                                onPaginationModelChange={handlePaginationModelChange}
+                                paginationMode="server"
+
+                                columns={[...columns, actionColumn]}
+                                onRowClick={(params, event, details) => {
+                                    handleSelect(params);
+                                }}
+                            />
+                        </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Box>
 
         </DialogForms>
 

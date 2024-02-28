@@ -1,7 +1,7 @@
-import { Clear } from '@mui/icons-material';
-import { IconButton, Tooltip } from '@mui/material';
-import { red } from '@mui/material/colors';
 import React from 'react';
+import { CleaningServices } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { grey } from '@material-ui/core/colors';
 
 export default function ClearIconButton(props) {
     const { tooltip } = props;
@@ -10,7 +10,7 @@ export default function ClearIconButton(props) {
             <IconButton
                 {...props}
                 aria-label="check">
-                <Clear style={{ color: red[300] }} />
+                <CleaningServices style={{ color: grey[500] }} />
             </IconButton>
         </Tooltip>
     );

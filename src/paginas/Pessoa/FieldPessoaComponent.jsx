@@ -69,31 +69,31 @@ export default function FieldPessoaComponent(props) {
                     ),
                     endAdornment: (
                         <InputAdornment position="end">
-                            {(onlySearch != null || pessoa == null || pessoa === emptyPessoa) && (
-                                <SearchIconButton
-                                    disabled={disabled}
-                                    tooltip="Buscar por uma Pessoa"
-                                    onClick={handleShowConsulta} />
-                            )}
-                            {onlySearch == null && (
-                                (pessoa == null || pessoa === emptyPessoa) ? (
-                                    <AddIconButton
+                            <React.Fragment>
+                                {(onlySearch != null || pessoa == null || pessoa === emptyPessoa) && (
+                                    <SearchIconButton
                                         disabled={disabled}
-                                        tooltip="Adicionar uma Pessoa"
-                                        onClick={handleShowCadastro} />
-                                ) : (
-                                    <React.Fragment>
+                                        tooltip="Buscar por uma Pessoa"
+                                        onClick={handleShowConsulta} />
+                                )}
+                                {onlySearch == null && (
+                                    (pessoa == null || pessoa === emptyPessoa) ? (
+                                        <AddIconButton
+                                            disabled={disabled}
+                                            tooltip="Adicionar uma Pessoa"
+                                            onClick={handleShowCadastro} />
+                                    ) : (
                                         <EditIconButton
                                             disabled={disabled}
                                             tooltip="Alterar dados da Pessoa"
                                             onClick={handleShowCadastro} />
-                                        <ClearIconButton
-                                            disabled={disabled}
-                                            tooltip="Limpar pessoa"
-                                            onClick={() => callback(null)} />
-                                    </React.Fragment>
-                                )
-                            )}
+                                    )
+                                )}
+                                <ClearIconButton
+                                    disabled={disabled}
+                                    tooltip="Limpar pessoa"
+                                    onClick={() => callback(null)} />
+                            </React.Fragment>
                         </InputAdornment>
                     )
                 }}

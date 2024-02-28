@@ -10,6 +10,7 @@ import ChipStatus from '../../components/CustomButtons/ChipStatus';
 import { firstName } from '../../api/utils/stringUtils';
 import FieldPessoaComponent from '../Pessoa/FieldPessoaComponent';
 import ComboUnidadeAtendimento from '../UnidadeAtendimento/ComboUnidadeAtendimento';
+import AtendimentoForm from './AtendimentoForm';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -114,7 +115,7 @@ function AtendimentoConsulta() {
         }}>
             <DNADefaultDialogListForm
                 datasourceUrl={path}
-                formtitle='Consultar Prontuários'
+                formtitle='Consultar Atendimentos'
                 filterparams={{
                     pessoaId: pessoa != null ? pessoa.id : '',
                     unidadeAtendimentoId: unidadeAtendimento != null ? unidadeAtendimento.id : '',
@@ -162,14 +163,14 @@ function AtendimentoConsulta() {
                 </Grid>
             </DNADefaultDialogListForm>
 
-            {/* <ProntuarioForm
+            <AtendimentoForm
                 id_value={formId}
                 datacontrol={dataControl}
                 on_change_datacontrol={setDataControl}
                 open={open}
                 on_close_func={handleClose}
                 data_source_url={path}
-            /> */}
+            />
         </formContext.Provider>
     );
 }

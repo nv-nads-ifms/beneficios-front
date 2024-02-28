@@ -69,6 +69,7 @@ import TipoMoradiaConsulta from './paginas/TipoMoradia/TipoMoradiaConsulta';
 import PessoaConsulta from './paginas/Pessoa/PessoaConsulta';
 import ProntuarioConsulta from './paginas/Prontuario/ProntuarioConsulta';
 import AtendimentoConsulta from './paginas/Atendimento/AtendimentoConsulta';
+import MenuSistemaConsulta from './paginas/MenuSistema/MenuSistemaConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -137,6 +138,7 @@ const Routes = () => {
                 <PrivateRoute path='/funcionarios' component={FuncionarioListagem} />
                 <PrivateRoute path='/funcionario-ficha/:id/:status' component={FuncionarioCadastro} />
                 <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoConsulta} />
+                <PrivateRoute path='/menu-sistema' component={MenuSistemaConsulta} />
 
                 <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
                 <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />
