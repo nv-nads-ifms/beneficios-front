@@ -17,7 +17,7 @@ export default function ComboUnidadeAtendimento(props) {
             input_label={label}
             value={unidadeAtendimento}
             disabled={disabled}
-            onChangeHandler={(event, newValue) => callback(newValue)}
+            onChange={(event, newValue) => callback(newValue)}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => option.numeroDaUnidade + " - " +
                 option.nome + (option.matriz ? " [Matriz]" : "")}

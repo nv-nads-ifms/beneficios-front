@@ -15,7 +15,7 @@ export const createUtilFunctions = () => {
         if (fieldname === null || fieldname === undefined || fieldname === '') {
             fieldname = t.name;
         }
-console.log(fieldname)
+
         if (t.type === "checkbox") {
             value = t.checked;
         } else if (t.type === "file") {

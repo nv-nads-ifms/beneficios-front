@@ -59,7 +59,7 @@ const datasourceUrl = 'pessoas';
 const dataService = new DataService(`/${datasourceUrl}`);
 
 export default function PessoaListagemModal(props) {
-    const { openModal, onClose, response } = props;
+    const { openModal, onClose, callback } = props;
 
     /* Controle de perfil de acesso */
     const usuario = React.useContext(userContext);
@@ -83,10 +83,10 @@ export default function PessoaListagemModal(props) {
         (row) => {
             dataService.getById(row.id)
                 .then((r) => {
-                    response(r.data);
+                    callback(r.data);
                     onClose();
                 });
-        }, [response, onClose]);
+        }, [callback, onClose]);
 
     const getColumnActions = (params) => {
         let columns = [];

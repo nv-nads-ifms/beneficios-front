@@ -12,7 +12,7 @@ import FieldPessoaComponent from '../Pessoa/FieldPessoaComponent';
 
 function AtendimentoForm(props) {
     const { datacontrol, on_change_datacontrol, data_source_url,
-        id_value, open, on_close_func } = props;
+        id_value, open, on_close_func } = props; 
 
     const usuario = React.useContext(userContext);
     const [atendimento, setAtendimento] = React.useState(emptyAtendimento);
@@ -73,7 +73,8 @@ function AtendimentoForm(props) {
                             name="pessoa"
                             pessoa={atendimento.pessoa}
                             disabled={datacontrol === DNAStatus.VIEW}
-                            callback={(value) => setFieldValue("pessoa", value, setAtendimento, atendimento)} />
+                            callback={(value) => setFieldValue("pessoa", value, setAtendimento, atendimento)} 
+                            onlySearch />
                     </Grid>
                     <Grid item >
                         <TextField

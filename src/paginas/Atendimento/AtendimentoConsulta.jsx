@@ -23,12 +23,12 @@ const columns = [
                 <ChipStatus status={params.value} />
             );
         }
-    },
+    }, 
     {
         field: 'unidadeAtendimento',
         headerName: 'Unidade de Atendimento',
         width: 200,
-        valueGetter: (params) => params.value.numeroDaUnidade
+        valueGetter: ({row}) => row.atendente.unidadeAtendimento.numeroDaUnidade
     },
     {
         field: 'prontuario',
@@ -39,7 +39,7 @@ const columns = [
             if (value != null) {
                 return `${value.id}/${value.unidadeAtendimento.numeroDaUnidade}`;
             }
-            return '';
+            return '<< Sem Prontuário >>';
         }
     },
     {

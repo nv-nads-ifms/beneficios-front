@@ -116,7 +116,7 @@ export default function FieldPessoaComponent(props) {
             <PessoaListagemModal
                 openModal={openConsulta}
                 onClose={handleCloseConsulta}
-                response={callback}
+                callback={callback}
             />
         </formContext.Provider>
     );
