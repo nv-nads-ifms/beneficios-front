@@ -70,6 +70,7 @@ import PessoaConsulta from './paginas/Pessoa/PessoaConsulta';
 import ProntuarioConsulta from './paginas/Prontuario/ProntuarioConsulta';
 import AtendimentoConsulta from './paginas/Atendimento/AtendimentoConsulta';
 import MenuSistemaConsulta from './paginas/MenuSistema/MenuSistemaConsulta';
+import TipoLogradouroConsulta from './paginas/TipoLogradouro/TipoLogradouroConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -105,7 +106,7 @@ const Routes = () => {
                 <PrivateRoute path='/condicoes-de-trabalho-ficha/:id/:status' component={CondicaoDeTrabalhoCadastro} />
                 <PrivateRoute path='/programas-de-governo' component={ProgramaDeGovernoListagem} />
                 <PrivateRoute path='/programas-de-governo-ficha/:id/:status' component={ProgramaDeGovernoCadastro} />
-                <PrivateRoute path='/contato' component={ContatoConsulta} />
+                <PrivateRoute path='/contatos' component={ContatoConsulta} />
                 <PrivateRoute path='/contato-ficha/:id/:status' component={ContatoCadastro} />
                 <PrivateRoute path='/orgaos-expedidores' component={OrgaoExpedidorListagem} />
                 <PrivateRoute path='/orgaos-expedidores-ficha/:id/:status' component={OrgaoExpedidorCadastro} />
@@ -117,6 +118,7 @@ const Routes = () => {
                 <PrivateRoute path='/escolaridades-ficha/:id/:status' component={EscolaridadeCadastro} />
                 <PrivateRoute path='/condicoes-de-moradia' component={CondicaoDeMoradiaListagem} />
                 <PrivateRoute path='/condicoes-de-moradia-ficha/:id/:status' component={CondicaoDeMoradiaCadastro} />
+                
                 <PrivateRoute path='/tipos-de-moradia' component={TipoMoradiaConsulta} />
                 <PrivateRoute path='/tipos-de-moradia-ficha/:id/:status' component={TipoMoradiaCadastro} />
                 <PrivateRoute path='/grupo-socioeducativo' component={GrupoSocioeducativoListagem} />
@@ -126,9 +128,10 @@ const Routes = () => {
                 <PrivateRoute path='/cidades' component={CidadeConsulta} />
                 
                 <PrivateRoute path='/pais' component={PaisConsulta} />
-                <PrivateRoute path='/uf' component={UfConsulta} />
-                <PrivateRoute path='/bairro' component={BairroConsulta} />
-                <PrivateRoute path='/logradouro' component={LogradouroConsulta} />
+                <PrivateRoute path='/ufs' component={UfConsulta} />
+                <PrivateRoute path='/bairros' component={BairroConsulta} />
+                <PrivateRoute path='/logradouros' component={LogradouroConsulta} />
+                <PrivateRoute path='/tipos-de-logradouros' component={TipoLogradouroConsulta} />
                 
 
                 {/* Telas de Administração */}
@@ -138,7 +141,7 @@ const Routes = () => {
                 <PrivateRoute path='/funcionarios' component={FuncionarioListagem} />
                 <PrivateRoute path='/funcionario-ficha/:id/:status' component={FuncionarioCadastro} />
                 <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoConsulta} />
-                <PrivateRoute path='/menu-sistema' component={MenuSistemaConsulta} />
+                <PrivateRoute path='/menus' component={MenuSistemaConsulta} />
 
                 <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
                 <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />
@@ -154,7 +157,7 @@ const Routes = () => {
                 <PrivateRoute path='/prontuarios' component={ProntuarioConsulta} />
 
                 {/* Telas de atendimento */}
-                <PrivateRoute path='/atendimento' component={AtendimentoConsulta} />
+                <PrivateRoute path='/atendimentos' component={AtendimentoConsulta} />
                 <PrivateRoute path='/analise-atendimento' component={AnaliseListagem} />
                 <PrivateRoute path='/analise-atendimento-ficha/:id/:status' component={AnaliseCadastro} />
 

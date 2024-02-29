@@ -3,7 +3,11 @@ import React from 'react';
 import { formContext } from '../../contexts/formContext';
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
 import { DNAStatus } from '../../api/utils/constants';
-import { TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
+import MenuSistemaForm from './MenuSistemaForm';
+import TipoMenuSistemaToggleButton from './component/TipoMenuSistemaToggleButton';
+import DisponivelSwitchComponent from './component/DisponivelSwitchComponent';
+import DisponivelToggleButton from './component/DisponivelToggleButton';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -45,7 +49,8 @@ function MenuSistemaConsulta() {
 
     /* Atributos utilizados para realizar a filtragem da consulta */
     const [nome, setNome] = React.useState('');
-
+    const [tipo, setTipo] = React.useState('');
+    const [disponivel, setDisponivel] = React.useState('');
 
     const decrement = React.useCallback(() => {
         if (formId >= 0) {
@@ -71,20 +76,48 @@ function MenuSistemaConsulta() {
                 formtitle='Consultar Menus do Sistema'
                 filterparams={{
                     nome: nome,
+                    tipo: tipo,
+                    disponivel: disponivel,
                 }}
                 columns={columns}
                 gridHeigh={400}
             >
-                <TextField
-                    id="nome"
-                    label="Nome do menu"
-                    value={nome}
-                    variant="outlined"
-                    placeholder={"Buscar pelo nome do menu"}
-                    fullWidth
-                    onChange={(e) => setNome(e.target.value)}
-                />
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="nome"
+                            label="Nome do menu"
+                            value={nome}
+                            variant="outlined"
+                            placeholder={"Buscar pelo nome do menu"}
+                            fullWidth
+                            onChange={(e) => setNome(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={10}>
+                        <TipoMenuSistemaToggleButton
+                            value={tipo}
+                            onChange={(e, newValue) => setTipo(newValue)}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={2}>
+                        <DisponivelToggleButton
+                            value={disponivel}
+                            onChange={(e, newValue) => setDisponivel(newValue)}
+                        />
+                    </Grid>
+                </Grid>
+
             </DNADefaultDialogListForm>
+
+            <MenuSistemaForm
+                id_value={formId}
+                datacontrol={dataControl}
+                on_change_datacontrol={setDataControl}
+                open={open}
+                on_close_func={handleClose}
+                data_source_url={path}
+            />
         </formContext.Provider>
     );
 }

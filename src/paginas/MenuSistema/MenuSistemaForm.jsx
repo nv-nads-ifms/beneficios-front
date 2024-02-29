@@ -3,8 +3,10 @@ import React from 'react';
 import { objectContext } from '../../contexts/objectContext';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { DNAStatus, MenuTipo } from '../../api/utils/constants';
-import { handleChangeInputComponent } from '../../api/utils/util';
-import { Grid, TextField, Typography } from '@mui/material';
+import { handleChangeInputComponent, setFieldValue } from '../../api/utils/util';
+import { FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItemText, Switch, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import DisponivelSwitchComponent from './component/DisponivelSwitchComponent';
+import TipoMenuSistemaToggleButton from './component/TipoMenuSistemaToggleButton';
 
 const emptyMenuSistema = {
     id: '',
@@ -22,6 +24,10 @@ function MenuSistemaForm(props) {
 
     const handleChange = (event, newValue) => {
         handleChangeInputComponent(event, newValue, setMenuSistema, menuSistema);
+    };
+
+    const handleChangeToggle = (event, newTipo) => {
+        setFieldValue('tipo', newTipo, setMenuSistema, menuSistema);
     };
 
     const handleEdit = () => {
@@ -43,17 +49,16 @@ function MenuSistemaForm(props) {
                 on_edit_func={handleEdit}
                 on_close_func={on_close_func}
                 fullWidth
-                maxWidth={"lg"}
+                maxWidth={"md"}
             >
                 <Grid container spacing={1}>
                     <Grid item xs={12}>
-                        <Grid item xs={12}>
-                            <Typography gutterBottom variant="subtitle1" color="textPrimary" align="center">
-                                Menu ID {menuSistema.id}
-                            </Typography>
-                        </Grid>
+                        <ListItemText
+                            primary={menuSistema.id}
+                            secondary="Menu ID"
+                        />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6}>
                         <TextField
                             id="nome"
                             label="Nome do menu"
@@ -65,7 +70,7 @@ function MenuSistemaForm(props) {
                             onChange={handleChange}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6}>
                         <TextField
                             id="remotePath"
                             label="URL de acesso"
@@ -77,15 +82,17 @@ function MenuSistemaForm(props) {
                             onChange={handleChange}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            id="remotePath"
-                            label="URL de acesso"
-                            value={menuSistema.remotePath}
-                            variant="outlined"
-                            placeholder={"Digite a URL de acesso ao menu"}
+                    <Grid item xs={12} md={10}>
+                        <TipoMenuSistemaToggleButton
+                            value={menuSistema.tipo}
                             disabled={datacontrol === DNAStatus.VIEW}
-                            fullWidth
+                            onChange={handleChangeToggle}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={2}>
+                        <DisponivelSwitchComponent
+                            checked={menuSistema.disponivel} 
+                            disabled={datacontrol === DNAStatus.VIEW}
                             onChange={handleChange}
                         />
                     </Grid>
