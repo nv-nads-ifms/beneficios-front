@@ -1,4 +1,4 @@
-import { emptyCidade } from "./Cidade";
+import { emptyCidade } from "../paginas/Cidade/CidadeForm";
 
 const emptyBairro = {
     id: '',

@@ -19,7 +19,6 @@ const emptyContato = {
     tipoContato: null,
 };
 
-
 function ContatoForm(props) {
     const { datacontrol, on_change_datacontrol, data_source_url,
         id_value, open, on_close_func } = props

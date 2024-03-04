@@ -4,7 +4,7 @@ import { objectContext } from '../../contexts/objectContext';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { DNAStatus, MenuTipo } from '../../api/utils/constants';
 import { handleChangeInputComponent, setFieldValue } from '../../api/utils/util';
-import { FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItemText, Switch, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Grid, ListItemText, TextField } from '@mui/material';
 import DisponivelSwitchComponent from './component/DisponivelSwitchComponent';
 import TipoMenuSistemaToggleButton from './component/TipoMenuSistemaToggleButton';
 

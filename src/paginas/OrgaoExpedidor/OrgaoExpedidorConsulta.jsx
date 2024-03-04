@@ -1,7 +1,7 @@
 import React from 'react';
 import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
-export default function OrgaoExpedidorListagem() {
+export default function OrgaoExpedidorConsulta() {
     return (
         <DNABaseDialogListForm
             datasourceUrl="orgaos-expedidores"

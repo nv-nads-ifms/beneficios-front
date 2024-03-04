@@ -1,15 +1,17 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import CustomCircularMonitor from '../../../components/CustomFields/CustomCircularMonitor';
-import ProntuarioService from '../../../services/ProntuarioService';
+import DataService from '../../../api/services/DataServices';
+
+const dataService = new DataService('/prontuarios');
 
 export default function ProntuarioContagem(props) {
     const { rowCount, unidadeAtendimentoId } = props;
     const [data, setData] = React.useState([]);
 
     React.useEffect(() => {
-        ProntuarioService.getProntuarioListarContagem(unidadeAtendimentoId)
-            .then(resp => resp.data)
+        const value = (!!unidadeAtendimentoId ? unidadeAtendimentoId : 0);
+        dataService.getBy('contagem/'+value)
             .then(data => {
                 setData(data);
             })

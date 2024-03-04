@@ -11,8 +11,9 @@ import { firstName } from '../../api/utils/stringUtils';
 import FieldPessoaComponent from '../Pessoa/FieldPessoaComponent';
 import ComboUnidadeAtendimento from '../UnidadeAtendimento/ComboUnidadeAtendimento';
 import AtendimentoForm from './AtendimentoForm';
+import AtendimentoContagem from './AtendimentoContagem';
 
-const columns = [
+export const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
     {
         field: 'status',
@@ -23,19 +24,19 @@ const columns = [
                 <ChipStatus status={params.value} />
             );
         }
-    }, 
+    },
     {
         field: 'unidadeAtendimento',
         headerName: 'Unidade de Atendimento',
         width: 200,
-        valueGetter: ({row}) => row.atendente.unidadeAtendimento.numeroDaUnidade
+        valueGetter: ({ row }) => row.atendente.unidadeAtendimento.numeroDaUnidade
     },
     {
         field: 'prontuario',
         headerName: 'Prontuário',
         minWidth: 150,
         flex: 1,
-        valueGetter: ({value}) => {
+        valueGetter: ({ value }) => {
             if (value != null) {
                 return `${value.id}/${value.unidadeAtendimento.numeroDaUnidade}`;
             }
@@ -47,14 +48,14 @@ const columns = [
         headerName: 'Atendente',
         minWidth: 150,
         flex: 1,
-        valueGetter: ({value}) => firstName(value.nome)
+        valueGetter: ({ value }) => firstName(value.nome)
     },
     {
         field: 'pessoa',
         headerName: 'Assistido',
         minWidth: 150,
         flex: 1,
-        valueGetter: ({value}) => value.nome
+        valueGetter: ({ value }) => value.nome
     },
     {
         field: 'emissao',
@@ -94,6 +95,10 @@ function AtendimentoConsulta() {
         }
     }, [usuario]);
 
+    const uaid = React.useMemo(() => {
+        return unidadeAtendimento != null ? unidadeAtendimento.id : 0;
+    }, [unidadeAtendimento]);
+
     const decrement = React.useCallback(() => {
         if (formId >= 0) {
             setFormId(-1);
@@ -118,13 +123,17 @@ function AtendimentoConsulta() {
                 formtitle='Consultar Atendimentos'
                 filterparams={{
                     pessoaId: pessoa != null ? pessoa.id : '',
-                    unidadeAtendimentoId: unidadeAtendimento != null ? unidadeAtendimento.id : '',
+                    unidadeAtendimentoId: uaid,
                     status: status !== Status.TODOS ? status : '',
                 }}
                 columns={columns}
                 // moreActions={buttonMoreActions}
                 gridHeigh={400}
             >
+                <AtendimentoContagem
+                    rowCount={0}
+                    unidadeAtendimentoId={uaid} />
+
                 <Grid container spacing={2}>
                     <Grid item sm={12} md={6}>
                         <FieldPessoaComponent

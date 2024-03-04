@@ -11,19 +11,18 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { fichaStyles } from '../../components/UI/GlobalStyle';
 
 import FuncionarioService from "../../services/FuncionarioService";
-import UsuarioService from "../../services/UsuarioService";
 
 import CustomTextField from "../../components/CustomFields/CustomTextField";
-import CustomAutoComplete from "../../components/CustomFields/CustomAutoComplete";
-import FuncaoService from "../../services/FuncaoService";
+
 import { ValidacaoFuncionario } from "../../models/ValidacaoFuncionario";
 import useErros from "../../hooks/useErros";
+import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function FuncionarioCadastro() {
+function MovimentacaoFuncionarioCadastro() {
     let history = useHistory();
     const classes = fichaStyles();
     const { id } = useParams();
@@ -115,28 +114,30 @@ function FuncionarioCadastro() {
                         error={erros.nascimento}
                         onChangeHandler={(event) => { setNascimento(event.target.value); }} />
 
-                    <CustomAutoComplete
+                    <DNAAutocomplete
                         id="funcao"
+                        fullWidth
+                        path={`funcoes`}
+                        input_label={'<< Selecione uma Função >>'}
+
                         value={funcao}
-                        retrieveDataFunction={FuncaoService.getListaFuncoes}
-                        label="Função"
-                        placeholder="<< Selecione uma Função >>"
-                        error={erros.funcao}
-                        onChangeHandler={(event, newValue) => setFuncao(newValue === null ? newValue : newValue.nome)}
-                        getOptionSelected={(option, value) => option.nome === value}
-                        getOptionLabel={(option) => (typeof option === 'string' ? option : option.nome)}
+                        onChange={(event, value) => setFuncao(value)}
+
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => option.ema}
                     />
 
-                    <CustomAutoComplete
+                    <DNAAutocomplete
                         id="email"
+                        fullWidth
+                        path={`funcionarios`}
+                        input_label={'Buscar por Nome de Funcionario'}
+
                         value={usuario}
-                        retrieveDataFunction={UsuarioService.getListaUsuarios}
-                        label="E-mail"
-                        placeholder="<< Selecione um e-mail de usuário >>"
-                        error={erros.email}
-                        onChangeHandler={(event, newValue) => setUsuario(newValue === null ? newValue : newValue.email)}
-                        getOptionSelected={(option, value) => option.email === value}
-                        getOptionLabel={(option) => (typeof option === 'string' ? option : option.email)}
+                        onChange={(event, value) => setUsuario(value)}
+
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => option.ema}
                     />
 
                     <Button
@@ -174,4 +175,4 @@ function FuncionarioCadastro() {
     );
 }
 
-export default FuncionarioCadastro;
+export default MovimentacaoFuncionarioCadastro;

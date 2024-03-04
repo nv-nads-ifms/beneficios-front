@@ -7,9 +7,8 @@ import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { FormControlLabel, Grid, ListItemText, Switch, TextField } from '@mui/material';
 import DNAStatusComponent from '../../components/V1.0.0/DNAStatusComponent';
 import { handleChangeInputComponent } from '../../api/utils/util';
-import CustomAutoComplete from '../../components/CustomFields/CustomAutoComplete';
-import FuncionarioService from '../../services/FuncionarioService';
 import CheckboxPerfil from './CheckboxPerfil';
+import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
 const emptyDoc = {
     ...emptyBaseObject,
@@ -109,14 +108,16 @@ export default function UsuarioForm(props) {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <CustomAutoComplete
+                            <DNAAutocomplete
                                 id="funcionario"
+                                fullWidth
+                                path={`funcionarios`}
+                                input_label={'<< Selecione um Funcionário >>'}
+
                                 value={usuario.funcionario}
-                                retrieveDataFunction={FuncionarioService.getListaFuncionarios}
-                                label="Funcionário"
-                                placeholder="<< Selecione um Funcionário >>"
-                                onChangeHandler={(event, newValue) => onChange(event, newValue)}
-                                getOptionSelected={(option, value) => option.id === value.id}
+                                onChange={handleChange}
+
+                                isOptionEqualToValue={(option, value) => option.id === value.id}
                                 getOptionLabel={(option) => option.nome}
                             />
                         </Grid>

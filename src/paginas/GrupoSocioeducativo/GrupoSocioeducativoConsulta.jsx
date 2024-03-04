@@ -1,7 +1,7 @@
 import React from 'react';
 import DNABaseDialogListForm from '../../components/V1.0.0/forms/DNABaseDialogListForm';
 
-export default function GrupoSocioeducativoListagem() {    
+function GrupoSocioeducativoConsulta() {    
     return (
         <DNABaseDialogListForm
             datasourceUrl="grupo-socioeducativo"
@@ -10,3 +10,5 @@ export default function GrupoSocioeducativoListagem() {
         />
     );
 }
+
+export default GrupoSocioeducativoConsulta;

@@ -3,16 +3,13 @@ import React, { useState } from 'react';
 import { formContext } from '../../contexts/formContext';
 import { DNAStatus, Status } from '../../api/utils/constants';
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
-import DNAAvatarComponent from '../../components/V1.0.0/DNAAvatarComponent';
 
-import { CardHeader, Grid, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import UsuarioForm from './UsuarioForm';
 import AvatarComponent from '../../components/V1.0.0/DNAAvatarComponent';
 import { Block, Check } from '@mui/icons-material';
 import { ativacaoModalMessage } from '../../api/utils/modalMessages';
 import DataService from '../../api/services/DataServices';
-import SearchIconButton from '../../components/CustomIconButtons/SearchIconButton';
-import ExpandMoreIconButton from '../../components/CustomIconButtons/ExpandMoreIconButton';
 import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
 const columns = [
@@ -53,17 +50,17 @@ const columns = [
 const path = "usuarios";
 const dataService = new DataService(`/${path}`);
 
+const emptyPerfil = {
+    id: '',
+    nome: '',
+    status: Status.ATIVO
+};
 
 function UsuarioConsulta() {
-
-
     /* Atributos utilizados para realizar a filtragem da consulta */
     const [funcionario, setFuncionario] = useState(null);
+    const [perfilSearch, setPerfilSearch] = React.useState(emptyPerfil);
     const [nome, setNome] = useState("");
-    const [status, setStatus] = useState(Status.ATIVO);
-    const [enabled, setEnabled] = useState(false);
-
-    const [expanded, setExpanded] = React.useState(false);
 
     /* Atributos de controle do formulário modal */
     const [open, setOpen] = useState(false);
@@ -108,7 +105,8 @@ function UsuarioConsulta() {
                 formtitle='Consultar Listagem de Usuários.'
                 filterparams={{
                     funcionarioId: funcionario != null ? funcionario.id : "",
-                    nome: nome
+                    nome: nome,
+                    perfilId: perfilSearch != null ? perfilSearch.id : '',
                 }}
                 columns={columns}
                 moreActions={buttonMoreActions}
@@ -128,15 +126,28 @@ function UsuarioConsulta() {
                             getOptionLabel={(option) => option.nome}
                         />
                     </Grid>
-
                     <Grid item xs={12} md={6}>
-                    <TextField
-                        id='nome'
-                        value={nome}
-                        label={"Buscar por Nome de Usuario"}
-                        variant='outlined'
-                        fullWidth
-                        onChange={(event) => setNome(event.target.value)} />
+                        <DNAAutocomplete
+                            id="perfilSearch"
+                            fullWidth
+                            path={`perfis`}
+                            input_label={'Buscar pelo Perfil de Acesso'}
+
+                            value={perfilSearch}
+                            onChange={(event, value) => setPerfilSearch(value)}
+
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            getOptionLabel={(option) => option.nome}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id='nome'
+                            value={nome}
+                            label={"Buscar por Nome de Usuario"}
+                            variant='outlined'
+                            fullWidth
+                            onChange={(event) => setNome(event.target.value)} />
                     </Grid>
                 </Grid>
             </DNADefaultDialogListForm>

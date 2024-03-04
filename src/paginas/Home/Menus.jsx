@@ -19,7 +19,8 @@ import ListItemLink from '../../components/ListItemLink/ListItemLink';
 import MenuComponent from '../../components/Menu/MenuComponent';
 import UserView from './UserView';
 import { getCurrentUser, logout } from '../../api/services/auth';
-import UsuarioService from '../../services/UsuarioService';
+
+import DataService from '../../api/services/DataServices';
 
 const drawerWidth = 240;
 
@@ -69,6 +70,8 @@ const getMenus = (tipo, usuario) => {
   return value;
 }
 
+const dataService = new DataService('/usuarios');
+
 function Menus(props) {
   const { window, children } = props;
   let history = useHistory();
@@ -81,7 +84,7 @@ function Menus(props) {
 
   React.useEffect(() => {
     if (localUserData !== null) {
-      UsuarioService.getUsuarioByEmail(localUserData)
+      dataService.getFilter('/email', {email: localUserData})
         .then(response => {
           setUsuario(response.data);
         })
@@ -90,7 +93,7 @@ function Menus(props) {
           history.push('/login');
         });
     } else {
-      UsuarioService.logout()
+      dataService.getBy('auth/logout')
         .then(response => logout());
     }
   }, [localUserData, history]);

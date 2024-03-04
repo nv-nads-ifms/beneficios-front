@@ -1,7 +1,9 @@
 import React from 'react'
 import { fichaStyles } from '../../components/UI/GlobalStyle';
 import { Checkbox, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core';
-import PerfilService from '../../services/PerfilService';
+import DataService from '../../api/services/DataServices';
+
+const dataService = new DataService('/perfis');
 
 export default function CheckboxPerfil(props) {
     const { values, callback, read } = props;
@@ -9,7 +11,7 @@ export default function CheckboxPerfil(props) {
     const [perfis, setPerfis] = React.useState([]);
 
     React.useEffect(() => {
-        PerfilService.getListaPerfis()
+        dataService.getDataList()
             .then(r => setPerfis(r.data))
     }, [setPerfis]);
 

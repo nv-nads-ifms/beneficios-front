@@ -1,14 +1,16 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import AtendimentoService from '../../services/AtendimentoService';
 import CustomCircularMonitor from '../../components/CustomFields/CustomCircularMonitor';
+import DataService from '../../api/services/DataServices';
+import { Grid } from '@mui/material';
+
+const dataService = new DataService("/atendimentos");
 
 export default function AtendimentoContagem(props) {
     const { rowCount, unidadeAtendimentoId } = props;
     const [data, setData] = React.useState([]);
 
     React.useEffect(() => {
-        AtendimentoService.getAtendimentoListarContagem(unidadeAtendimentoId)
+        dataService.getBy('contagem/'+unidadeAtendimentoId)
             .then(resp => {
                 setData(resp.data);
             })

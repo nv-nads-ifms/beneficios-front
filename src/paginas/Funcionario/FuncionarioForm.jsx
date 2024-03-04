@@ -72,9 +72,54 @@ function FuncionarioForm(props) {
                 data_source_url={data_source_url}
                 on_edit_func={handleEdit}
                 on_close_func={on_close_func}
+                maxWidth={'md'}
             >
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} md={8}>
+                        <TextField
+                            id="nome"
+                            value={funcionario.nome}
+                            label={"Digite o nome do Funcionário"}
+                            variant="outlined"
+                            fullWidth
+                            disabled={datacontrol === DNAStatus.VIEW}
+                            onChange={handleChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <FormControl>
+                            <FormLabel id="demo-radio-buttons-group-label">
+                                Sexo
+                            </FormLabel>
+                            <RadioGroup
+                                disabled={datacontrol === DNAStatus.VIEW}
+                                row
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="FEMININO"
+                                name="radio-buttons-group"
+                                value={funcionario.sexo}
+                                onChange={handleChange}
+                            >
+                                <FormControlLabel
+                                    value="FEMININO"
+                                    control={<Radio />}
+                                    label="Feminino"
+                                    disabled={
+                                        datacontrol === DNAStatus.VIEW
+                                    }
+                                />
+                                <FormControlLabel
+                                    value="MASCULINO"
+                                    control={<Radio />}
+                                    label="Masculino"
+                                    disabled={
+                                        datacontrol === DNAStatus.VIEW
+                                    }
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} md={8}>
                         <TextField
                             id="email"
                             value={funcionario.email}
@@ -90,112 +135,45 @@ function FuncionarioForm(props) {
                             }
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            id="nome"
-                            value={funcionario.nome}
-                            label={"Digite o nome do Funcionário"}
-                            variant="outlined"
-                            fullWidth
+                    <Grid item xs={12} md={4}>
+                        <DatePicker
+                            label="Data de Nascimento"
+                            value={dayjs(funcionario.nascimento)}
                             disabled={datacontrol === DNAStatus.VIEW}
-                            onChange={(event) => {
-                                handleChange(
-                                    event,
-                                    (funcionario.nome = event.target.value)
+                            onChange={(newValue) => {
+                                handleDatePickerChange(
+                                    (funcionario.nascimento = newValue)
                                 );
                             }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <DNAAutocomplete
-                            id="unidadeAtendimento"
-                            path="unidades-de-atendimento"
-                            input_label="<< Selecione uma Unidade de Atendimento >>"
-                            value={funcionario.unidadeAtendimento}
-                            disabled={datacontrol === DNAStatus.VIEW}
-                            onChange={(event, value) =>
-                                handleChange(
-                                    event,
-                                    (funcionario.unidadeAtendimento = value)
-                                )
-                            }
-                            isOptionEqualToValue={(option, value) =>
-                                option.id === value.id
-                            }
-                            getOptionLabel={(option) => option.nome}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6}>
                         <DNAAutocomplete
                             id="funcao"
                             path="funcoes"
                             input_label="<< Selecione uma Função >>"
                             value={funcionario.funcao}
                             disabled={datacontrol === DNAStatus.VIEW}
-                            onChange={(event, value) =>
-                                handleChange(
-                                    event,
-                                    (funcionario.funcao = value)
-                                )
-                            }
+                            onChange={handleChange}
                             isOptionEqualToValue={(option, value) =>
                                 option.id === value.id
                             }
                             getOptionLabel={(option) => option.nome}
                         />
                     </Grid>
-                    <Grid item xs={12} display={"flex"}>
-                        <Grid item xs={12}>
-                            <DatePicker
-                                label="Data de Nascimento"
-                                value={dayjs(funcionario.nascimento)}
-                                disabled={datacontrol === DNAStatus.VIEW}
-                                onChange={(newValue) => {
-                                    handleDatePickerChange(
-                                        (funcionario.nascimento = newValue)
-                                    );
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl>
-                                <FormLabel id="demo-radio-buttons-group-label">
-                                    Sexo
-                                </FormLabel>
-                                <RadioGroup
-                                    disabled={datacontrol === DNAStatus.VIEW}
-                                    row
-                                    aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="FEMININO"
-                                    name="radio-buttons-group"
-                                    value={funcionario.sexo}
-                                    onChange={(event) =>
-                                        handleChange(
-                                            event,
-                                            (funcionario.sexo =
-                                                event.target.value)
-                                        )
-                                    }
-                                >
-                                    <FormControlLabel
-                                        value="FEMININO"
-                                        control={<Radio />}
-                                        label="Feminino"
-                                        disabled={
-                                            datacontrol === DNAStatus.VIEW
-                                        }
-                                    />
-                                    <FormControlLabel
-                                        value="MASCULINO"
-                                        control={<Radio />}
-                                        label="Masculino"
-                                        disabled={
-                                            datacontrol === DNAStatus.VIEW
-                                        }
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                        </Grid>
+                    <Grid item xs={12} md={6}>
+                        <DNAAutocomplete
+                            id="unidadeAtendimento"
+                            path="unidades-de-atendimento"
+                            input_label="<< Selecione uma Unidade de Atendimento >>"
+                            value={funcionario.unidadeAtendimento}
+                            disabled={datacontrol === DNAStatus.VIEW}
+                            onChange={handleChange}
+                            isOptionEqualToValue={(option, value) =>
+                                option.id === value.id
+                            }
+                            getOptionLabel={(option) => option.nome}
+                        />
                     </Grid>
                 </Grid>
             </DNAFormDialog>

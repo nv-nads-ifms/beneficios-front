@@ -40,7 +40,7 @@ const columns = [
     },
 ];
 
-function FuncionarioListagem() {
+function FuncionarioConsulta() {
     /* Classe de controle para acesso aos serviços do BACKEND */
     const path = "funcionarios";
 
@@ -119,4 +119,4 @@ function FuncionarioListagem() {
     );
 }
 
-export default FuncionarioListagem;
+export default FuncionarioConsulta;

@@ -9,8 +9,8 @@ import { firstName } from '../../api/utils/stringUtils';
 import noImageAvailable from "../../img/noImageAvailable.png";
 import jwt_decode from "jwt-decode";
 import Moment, { utc } from 'moment';
-import RestoreIconButton from "../../components/CustomIconButtons/RestoreIconButton";
-import UsuarioService from '../../services/UsuarioService';
+
+import DataService from '../../api/services/DataServices';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     }
 }));
+
+const dataService = new DataService('/usuarios');
 
 export default function UserView(props) {
     const { usuario } = props;
@@ -74,7 +76,7 @@ export default function UserView(props) {
     }, [usuario.funcionario]);
 
     const handleClick = () => {
-        UsuarioService.logout()
+        dataService.getBy('auth/logout')
             .then(response => {
                 logout();
                 history.push('/login');

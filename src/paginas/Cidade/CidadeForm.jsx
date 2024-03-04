@@ -6,7 +6,7 @@ import { objectContext } from '../../contexts/objectContext';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 
-const emptyCidade = {
+export const emptyCidade = {
     ...emptyBaseObject,
     uf: null
 };

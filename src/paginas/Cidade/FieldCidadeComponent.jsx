@@ -1,6 +1,10 @@
 import React from "react";
-import CidadeCadastro from "./CidadeCadastro";
+
 import DNAAutocomplete from "../../components/V1.0.0/DNAAutocomplete";
+import { DNAStatus } from "../../api/utils/constants";
+import CidadeForm from "./CidadeForm";
+
+const path = 'cidades';
 
 export default function FieldCidadeComponent(props) {
     const { cidade, callback } = props;
@@ -18,10 +22,10 @@ export default function FieldCidadeComponent(props) {
         <React.Fragment>
             <DNAAutocomplete
                 id="cidade"
-                path="cidades"
+                path={path}
                 input_label="<< Cidade >>"
                 value={cidade}
-                
+
                 onChange={(e, value) => callback(value)}
                 isOptionEqualToValue={(option, value) =>
                     option.id === value.id
@@ -31,11 +35,13 @@ export default function FieldCidadeComponent(props) {
                 input_handle_modal={handleShowCadastro}
             />
 
-            <CidadeCadastro
-                id={cidade != null ? cidade.id : 0}
-                openModal={openCadastro}
-                onClose={handleCloseCadastro}
-                callback={callback}
+            <CidadeForm
+                id_value={0}
+                datacontrol={DNAStatus.EDIT}
+                
+                open={openCadastro}
+                on_close_func={handleCloseCadastro}
+                data_source_url={path}
             />
         </React.Fragment>
     );

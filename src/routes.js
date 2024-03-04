@@ -7,34 +7,10 @@ import Autenticacao from './paginas/Autenticacao/Autenticacao';
 import Home from './paginas/Home/Home';
 import Pagina404 from './paginas/Home/Pagina404';
 import Menus from './paginas/Home/Menus';
-import UsuarioCadastro from './paginas/Usuario/UsuarioCadastro';
 import BeneficioCadastro from './paginas/Beneficio/BeneficioCadastro';
-import CondicaoDeTrabalhoListagem from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoListagem';
-import CondicaoDeTrabalhoCadastro from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoCadastro';
-import ProgramaDeGovernoListagem from './paginas/ProgramaDeGoverno/ProgramaDeGovernoListagem';
-import ProgramaDeGovernoCadastro from './paginas/ProgramaDeGoverno/ProgramaDeGovernoCadastro';
 import ContatoConsulta from './paginas/Contato/ContatoConsulta';
-import ContatoCadastro from './paginas/Contato/ContatoCadastro';
-import OrgaoExpedidorListagem from './paginas/OrgaoExpedidor/OrgaoExpedidorListagem';
-import OrgaoExpedidorCadastro from './paginas/OrgaoExpedidor/OrgaoExpedidorCadastro';
 import ParentescoListagem from './paginas/Parentesco/ParentescoListagem';
-
 import DocumentoConsulta from './paginas/Documento/DocumentoConsulta';
-import DocumentoCadastro from './paginas/Documento/DocumentoCadastro';
-import EscolaridadeListagem from './paginas/Escolaridade/EscolaridadeListagem';
-import EscolaridadeCadastro from './paginas/Escolaridade/EscolaridadeCadastro';
-import CondicaoDeMoradiaListagem from './paginas/CondicaoDeMoradia/CondicaoDeMoradiaListagem';
-import CondicaoDeMoradiaCadastro from './paginas/CondicaoDeMoradia/CondicaoDeMoradiaCadastro';
-
-import AtendimentoListagem from './paginas/Atendimento/AtendimentoListagem';
-import FuncionarioListagem from './paginas/Funcionario/FuncionarioListagem';
-import FuncionarioCadastro from './paginas/Funcionario/FuncionarioCadastro';
-import MoradiaComponent from './components/Moradia/MoradiaComponent';
-import TipoUnidadeDeAtendimentoCadastro from './paginas/TipoUnidadeDeAtendimento/TipoUnidadeDeAtendimentoCadastro';
-import TipoUnidadeDeAtendimentoListagem from './paginas/TipoUnidadeDeAtendimento/TipoUnidadeDeAtendimentoListagem';
-import TipoMoradiaCadastro from './paginas/TipoMoradia/TipoMoradiaCadastro';
-import GrupoSocioeducativoListagem from './paginas/GrupoSocioeducativo/GrupoSocioeducativoListagem';
-import GrupoSocioeducativoCadastro from './paginas/GrupoSocioeducativo/GrupoSocioeducativoCadastro';
 import ContaUsuario from './paginas/ContaUsuario/ContaUsuario';
 import EsqueceuSenha from './paginas/Autenticacao/EsqueceuSenha';
 import AvisoSenha from './paginas/Autenticacao/AvisoSenha';
@@ -71,6 +47,14 @@ import ProntuarioConsulta from './paginas/Prontuario/ProntuarioConsulta';
 import AtendimentoConsulta from './paginas/Atendimento/AtendimentoConsulta';
 import MenuSistemaConsulta from './paginas/MenuSistema/MenuSistemaConsulta';
 import TipoLogradouroConsulta from './paginas/TipoLogradouro/TipoLogradouroConsulta';
+import FuncionarioConsulta from './paginas/Funcionario/FuncionarioConsulta';
+import TipoUnidadeDeAtendimentoConsulta from './paginas/TipoUnidadeDeAtendimento/TipoUnidadeDeAtendimentoConsulta';
+import ProgramaDeGovernoConsulta from './paginas/ProgramaDeGoverno/ProgramaDeGovernoConsulta';
+import OrgaoExpedidorConsulta from './paginas/OrgaoExpedidor/OrgaoExpedidorConsulta';
+import GrupoSocioeducativoConsulta from './paginas/GrupoSocioeducativo/GrupoSocioeducativoConsulta';
+import CondicaoDeMoradiaConsulta from './paginas/CondicaoDeMoradia/CondicaoDeMoradiaConsulta';
+import EscolaridadeConsulta from './paginas/Escolaridade/EscolaridadeConsulta';
+import CondicaoDeTrabalhoConsulta from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -102,27 +86,18 @@ const Routes = () => {
 
                 <PrivateRoute exact path="/" component={Home} />
                 <PrivateRoute path="/home" component={Home} />
-                <PrivateRoute path='/condicoes-de-trabalho' component={CondicaoDeTrabalhoListagem} />
-                <PrivateRoute path='/condicoes-de-trabalho-ficha/:id/:status' component={CondicaoDeTrabalhoCadastro} />
-                <PrivateRoute path='/programas-de-governo' component={ProgramaDeGovernoListagem} />
-                <PrivateRoute path='/programas-de-governo-ficha/:id/:status' component={ProgramaDeGovernoCadastro} />
+                <PrivateRoute path='/condicoes-de-trabalho' component={CondicaoDeTrabalhoConsulta} />
+                <PrivateRoute path='/programas-de-governo' component={ProgramaDeGovernoConsulta} />
                 <PrivateRoute path='/contatos' component={ContatoConsulta} />
-                <PrivateRoute path='/contato-ficha/:id/:status' component={ContatoCadastro} />
-                <PrivateRoute path='/orgaos-expedidores' component={OrgaoExpedidorListagem} />
-                <PrivateRoute path='/orgaos-expedidores-ficha/:id/:status' component={OrgaoExpedidorCadastro} />
+                <PrivateRoute path='/orgaos-expedidores' component={OrgaoExpedidorConsulta} />
                 <PrivateRoute path='/parentescos' component={ParentescoListagem} />
                 
                 <PrivateRoute path='/documentos' component={DocumentoConsulta} />
-                <PrivateRoute path='/documentos-ficha/:id/:status' component={DocumentoCadastro} />
-                <PrivateRoute path='/escolaridades' component={EscolaridadeListagem} />
-                <PrivateRoute path='/escolaridades-ficha/:id/:status' component={EscolaridadeCadastro} />
-                <PrivateRoute path='/condicoes-de-moradia' component={CondicaoDeMoradiaListagem} />
-                <PrivateRoute path='/condicoes-de-moradia-ficha/:id/:status' component={CondicaoDeMoradiaCadastro} />
+                <PrivateRoute path='/escolaridades' component={EscolaridadeConsulta} />
+                <PrivateRoute path='/condicoes-de-moradia' component={CondicaoDeMoradiaConsulta} />
                 
                 <PrivateRoute path='/tipos-de-moradia' component={TipoMoradiaConsulta} />
-                <PrivateRoute path='/tipos-de-moradia-ficha/:id/:status' component={TipoMoradiaCadastro} />
-                <PrivateRoute path='/grupo-socioeducativo' component={GrupoSocioeducativoListagem} />
-                <PrivateRoute path='/grupo-socioeducativo-ficha/:id/:status' component={GrupoSocioeducativoCadastro} />
+                <PrivateRoute path='/grupo-socioeducativo' component={GrupoSocioeducativoConsulta} />
 
                 {/* Localização */}
                 <PrivateRoute path='/cidades' component={CidadeConsulta} />
@@ -136,20 +111,18 @@ const Routes = () => {
 
                 {/* Telas de Administração */}
                 <PrivateRoute path='/funcoes' component={FuncaoConsulta} />
-                <PrivateRoute path='/tipos-de-unidades-atendimento' component={TipoUnidadeDeAtendimentoListagem} />
-                <PrivateRoute path='/tipos-de-unidades-atendimento-ficha/:id/:status' component={TipoUnidadeDeAtendimentoCadastro} />
-                <PrivateRoute path='/funcionarios' component={FuncionarioListagem} />
-                <PrivateRoute path='/funcionario-ficha/:id/:status' component={FuncionarioCadastro} />
+                <PrivateRoute path='/tipos-de-unidades-atendimento' component={TipoUnidadeDeAtendimentoConsulta} />
+                <PrivateRoute path='/funcionarios' component={FuncionarioConsulta} />
+                
                 <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoConsulta} />
                 <PrivateRoute path='/menus' component={MenuSistemaConsulta} />
 
                 <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
-                <PrivateRoute path='/usuarios-ficha/:id/:status' component={UsuarioCadastro} />
+        
                 <PrivateRoute path='/conta-usuario' component={ContaUsuario} />
 
                 <PrivateRoute path="/perfis" component={PerfilConsulta} />
                 <PrivateRoute path='/alterar-senha' component={AlterarSenha} />
-                <PrivateRoute path="/config-moradia" component={MoradiaComponent} />
 
                 {/* Telas do prontuario */}
                 <PrivateRoute path="/pessoas" component={PessoaConsulta} />

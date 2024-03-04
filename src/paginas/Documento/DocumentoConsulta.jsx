@@ -63,63 +63,60 @@ function DocumentoConsulta() {
     };
 
     return (
-        <>
-            <formContext.Provider value={{
-                setFormId: setFormId,
-                setDataControl: setDataControl,
-                setOpen: setOpen
-            }}>
-                <DNADefaultDialogListForm
-                    datasourceUrl={path}
-                    formtitle='Consultar Documentos'
-                    filterparams={{
-                        nome: nome,
-                        exigeOrgaoExpedidor: orgaoExpedidor,
+        <formContext.Provider value={{
+            setFormId: setFormId,
+            setDataControl: setDataControl,
+            setOpen: setOpen
+        }}>
+            <DNADefaultDialogListForm
+                datasourceUrl={path}
+                formtitle='Consultar Documentos'
+                filterparams={{
+                    nome: nome,
+                    exigeOrgaoExpedidor: orgaoExpedidor,
 
-                    }}
-                    columns={columns}
-                >
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="nome"
-                                fullWidth
-                                label="Buscar por Nome"
-                                path={`documentos`}
-                                input_label={'Nome'}
-                                value={nome}
-                                onChange={(event, value) => setNome(event.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl>
-                                <FormLabel>Exige Orgão Expedidor?</FormLabel>
-                                <RadioGroup row 
-                                    name="row-radio-buttons-group"
-                                    value={orgaoExpedidor}
-                                    onChange={(e) => setOrgaoExpedidor(e.target.value)}
-                                >
-                                    <FormControlLabel value={true} control={<Radio />} label="Exige" />
-                                    <FormControlLabel value={false} control={<Radio />} label="Não Exige" />
-                                    <FormControlLabel value={''} control={<Radio />} label="Não Definido" />
-                                </RadioGroup>
-                            </FormControl>
-                        </Grid>
+                }}
+                columns={columns}
+            >
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="nome"
+                            fullWidth
+                            label="Buscar por Nome"
+                            path={`documentos`}
+                            input_label={'Nome'}
+                            value={nome}
+                            onChange={(event, value) => setNome(event.target.value)}
+                        />
                     </Grid>
-                </DNADefaultDialogListForm>
+                    <Grid item xs={12}>
+                        <FormControl>
+                            <FormLabel>Exige Orgão Expedidor?</FormLabel>
+                            <RadioGroup row
+                                name="row-radio-buttons-group"
+                                value={orgaoExpedidor}
+                                onChange={(e) => setOrgaoExpedidor(e.target.value)}
+                            >
+                                <FormControlLabel value={true} control={<Radio />} label="Exige" />
+                                <FormControlLabel value={false} control={<Radio />} label="Não Exige" />
+                                <FormControlLabel value={''} control={<Radio />} label="Não Definido" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </DNADefaultDialogListForm>
 
-                <DocumentoForm
-                    id_value={formId}
-                    datacontrol={dataControl}
-                    on_change_datacontrol={setDataControl}
-                    open={open}
-                    on_close_func={handleClose}
-                    data_source_url={path}
-                />
+            <DocumentoForm
+                id_value={formId}
+                datacontrol={dataControl}
+                on_change_datacontrol={setDataControl}
+                open={open}
+                on_close_func={handleClose}
+                data_source_url={path}
+            />
 
-            </formContext.Provider>
-
-        </>
+        </formContext.Provider>
     )
 }
 

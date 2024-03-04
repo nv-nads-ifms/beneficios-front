@@ -1,12 +1,14 @@
 import React from "react";
 
-import LogradouroCadastroModal from "./LogradouroCadastroModal";
-
 import DNAAutocomplete from "../../components/V1.0.0/DNAAutocomplete";
+import LogradouroForm from "./LogradouroForm";
+import { DNAStatus } from "../../api/utils/constants";
+
+const path = "logradouros";
 
 export default function FieldLogradouroComponent(props) {
     const { logradouro, callback } = props;
-    
+
     const [openCadastro, setOpenCadastro] = React.useState(false);
 
     const handleShowCadastro = () => {
@@ -21,10 +23,10 @@ export default function FieldLogradouroComponent(props) {
         <React.Fragment>
             <DNAAutocomplete
                 id="logradouro"
-                path="logradouros"
+                path={path}
                 input_label="<< Logradouro >>"
                 value={logradouro}
-                
+
                 onChange={(e, value) => callback(value)}
                 isOptionEqualToValue={(option, value) =>
                     option.id === value.id
@@ -34,12 +36,15 @@ export default function FieldLogradouroComponent(props) {
                 input_handle_modal={handleShowCadastro}
             />
 
-            <LogradouroCadastroModal
-                id={logradouro != null ? logradouro.id : 0}
-                openModal={openCadastro}
-                onClose={handleCloseCadastro}
-                callback={callback}
+            <LogradouroForm
+                id_value={0}
+                datacontrol={DNAStatus.EDIT}
+                
+                open={openCadastro}
+                on_close_func={handleCloseCadastro}
+                data_source_url={path}
             />
+            
         </React.Fragment>
     );
 }
