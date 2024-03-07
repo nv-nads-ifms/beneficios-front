@@ -123,7 +123,11 @@ function ProntuarioConsulta() {
         (params) => () => {
             ativacaoModalMessageComInput("Informe o motivo da INATIVAÇÃO do prontuário de " +
                 params.row.titular.nome + "?", '',
-                () => dataService.save(['desativar', params.row.id]),
+                (text) => dataService.save(['desativar', params.row.id], {
+                    prontuarioId: params.row.id,
+                    unidadeAtendimentoId: params.row.unidadeAtendimento.id,
+                    observacao: text
+                }),
                 () => decrement()
             );
         }, [decrement]);
@@ -131,8 +135,12 @@ function ProntuarioConsulta() {
     const handleRestore = React.useCallback(
         (params) => () => {
             ativacaoModalMessageComInput("Informe o motivo da REATIVAÇÃO do prontuário de " +
-            params.row.titular.nome + "?", '',
-                () => dataService.save(['reativar', params.row.id]),
+                params.row.titular.nome + "?", '',
+                (text) => dataService.save(['reativar', params.row.id], {
+                    prontuarioId: params.row.id,
+                    unidadeAtendimentoId: params.unidadeAtendimento.id,
+                    observacao: text
+                }),
                 () => decrement()
             );
         }, [decrement]);

@@ -11,27 +11,25 @@ export default function ProntuarioContagem(props) {
 
     React.useEffect(() => {
         const value = (!!unidadeAtendimentoId ? unidadeAtendimentoId : 0);
-        dataService.getBy('contagem/'+value)
-            .then(data => {
-                setData(data);
+        dataService.getBy('contagem/' + value)
+            .then(response => {
+                setData(response.data);
             })
     }, [rowCount, unidadeAtendimentoId]);
 
     return (
-        <React.Fragment>
-            <Grid container spacing={2}>
-                {data.map(obj => {
-                    return (
-                        <Grid item md={4} sm={12}>
-                            <CustomCircularMonitor
-                                status={obj.status}
-                                total={obj.totalStatus}
-                                percentual={obj.percentualStatus}
-                            />
-                        </Grid>
-                    );
-                })}
-            </Grid>
-        </React.Fragment>
+        <Grid container spacing={2}>
+            {data.map(obj => {
+                return (
+                    <Grid item md={4} sm={12}>
+                        <CustomCircularMonitor
+                            status={obj.status}
+                            total={obj.totalStatus}
+                            percentual={obj.percentualStatus}
+                        />
+                    </Grid>
+                );
+            })}
+        </Grid>
     );
 }

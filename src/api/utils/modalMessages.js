@@ -219,30 +219,20 @@ export const ativacaoModalMessageComInput = (mensagem, status, actionperformed, 
         confirmButtonText: `Confirmar`,
         cancelButtonText: `Cancelar`,
         showLoaderOnConfirm: true,
-        preConfirm: (observacao) => {
-            return observacao;
+        preConfirm: async (observacao) => {
+            return actionperformed(observacao)
         },
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            actionperformed()
-                .then((response) => {
-                    const data = response.data;
-                    swalWithBootstrapButtons.fire(
-                        'Alterado!',
-                        `O status ${status} foi modificado.`,
-                        'success'
-                    );
-                    callback(data);
-                })
-                .catch((error) => {
-                    swalWithBootstrapButtons.fire(
-                        'Ooops!',
-                        `Não foi possível ${status}.`,
-                        'error'
-                    );
-                });
-
+            const response = result.value;
+            const data = response.data;
+            swalWithBootstrapButtons.fire(
+                'Alterado!',
+                `O status ${status} foi modificado.`,
+                'success'
+            );
+            callback(data);
         } else if (
             result.dismiss === Swal.DismissReason.cancel
         ) {

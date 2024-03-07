@@ -12,6 +12,11 @@ import FieldPessoaComponent from '../Pessoa/FieldPessoaComponent';
 import ComboUnidadeAtendimento from '../UnidadeAtendimento/ComboUnidadeAtendimento';
 import AtendimentoForm from './AtendimentoForm';
 import AtendimentoContagem from './AtendimentoContagem';
+import { emptyPerfilMenu, getMenuPerfilByUrl } from '../../api/utils/menuUtils';
+import { PlayCircleOutline, Visibility } from '@mui/icons-material';
+import { ativacaoModalMessage, swalWithBootstrapButtons } from '../../api/utils/modalMessages';
+import DataService from '../../api/services/DataServices';
+import AnaliseForm from '../Analise/AnaliseForm';
 
 export const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -71,10 +76,17 @@ export const columns = [
 
 /* Classe de controle para acesso aos serviços do BACKEND */
 const path = "atendimentos";
-// const dataService = new DataService(`/${path}`);
+const pathAnalise = 'analises';
+const dataService = new DataService(`/${path}`);
 
 function AtendimentoConsulta() {
     const usuario = React.useContext(userContext);
+    /* Perfil de analise dos atendimentos */
+    const perfilAnalise = React.useMemo(() => {
+        if (usuario != null && usuario.hasOwnProperty('perfis'))
+            return getMenuPerfilByUrl(usuario.perfis, `/${pathAnalise}`);
+        return emptyPerfilMenu;
+    }, [usuario]);
 
     /* Atributos utilizados para realizar a filtragem da consulta */
     const [pessoa, setPessoa] = React.useState(null);
@@ -83,6 +95,7 @@ function AtendimentoConsulta() {
 
     /* Atributos de controle do formulário modal */
     const [open, setOpen] = React.useState(false);
+    const [openAnalise, setOpenAnalise] = React.useState(false);
     const [dataControl, setDataControl] = React.useState(DNAStatus.VIEW);
     /* Atributo de controle do ID do objeto de negócio a ser manipulado */
     const [formId, setFormId] = React.useState(0);
@@ -101,16 +114,64 @@ function AtendimentoConsulta() {
 
     const decrement = React.useCallback(() => {
         if (formId >= 0) {
-            setFormId(-1);
-        } else {
             setFormId(formId - 1);
+        } else {
+            setFormId(-1);
         }
     }, [formId]);
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleClose = (form) => {
+        if (form == null) {
+            setOpen(false);
+        } else {
+            setOpenAnalise(false);
+        }
         decrement();
     };
+
+    const handleStart = React.useCallback(
+        (params) => () => {
+            if (params.row.status === Status.INICIADO) {
+                swalWithBootstrapButtons.fire(
+                    'Ooops!',
+                    `O ATENDIMENTO já foi iniciado.`,
+                    'warning'
+                );
+            } else {
+                ativacaoModalMessage(
+                    'Iniciar atendimento?', 'Iniciar',
+                    () => dataService.save(['iniciar', params.id]),
+                    (value) => {
+                        setFormId(value.id);
+                        setOpenAnalise(true);
+                    }
+                );
+            }
+        }, []);
+
+    const handleView = React.useCallback(
+        (params) => () => {
+            if (params.row.status === Status.ABERTO) {
+                swalWithBootstrapButtons.fire(
+                    'Ooops!',
+                    `O ATENDIMENTO ainda não foi INICIADO.`,
+                    'warning'
+                );
+            } else {
+                setFormId(params.id);
+                setOpenAnalise(true);
+            }
+        }, []);
+
+    const buttonMoreActions = React.useMemo(() => {
+        if (perfilAnalise !== undefined && perfilAnalise.escrever) {
+            return [
+                { label: 'Iniciar análise', icon: <PlayCircleOutline />, handleClick: handleStart },
+                { label: 'Ver análise', icon: <Visibility />, handleClick: handleView },
+            ];
+        }
+        return [];
+    }, [perfilAnalise, handleStart, handleView]);
 
     return (
         <formContext.Provider value={{
@@ -127,11 +188,11 @@ function AtendimentoConsulta() {
                     status: status !== Status.TODOS ? status : '',
                 }}
                 columns={columns}
-                // moreActions={buttonMoreActions}
-                gridHeigh={400}
+                moreActions={buttonMoreActions}
+                gridHeigh={350}
             >
                 <AtendimentoContagem
-                    rowCount={0}
+                    rowCount={formId}
                     unidadeAtendimentoId={uaid} />
 
                 <Grid container spacing={2}>
@@ -178,6 +239,15 @@ function AtendimentoConsulta() {
                 on_change_datacontrol={setDataControl}
                 open={open}
                 on_close_func={handleClose}
+                data_source_url={path}
+            />
+
+            <AnaliseForm
+                id_value={formId}
+                datacontrol={dataControl}
+                on_change_datacontrol={setDataControl}
+                open={openAnalise}
+                on_close_func={() => handleClose(1)}
                 data_source_url={path}
             />
         </formContext.Provider>

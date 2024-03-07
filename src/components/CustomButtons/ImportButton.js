@@ -1,6 +1,6 @@
 import React from 'react'; 
-import { Button, Tooltip } from "@material-ui/core";
-import ImportExportIcon from '@material-ui/icons/ImportExport';
+import { ImportExport } from '@mui/icons-material';
+import { Button, Tooltip } from '@mui/material';
 
 export default function ImportButton(props) {
     const { label, tooltip, ...others } = props;
@@ -8,7 +8,7 @@ export default function ImportButton(props) {
         <Tooltip title={tooltip != null ? tooltip : "Importar"}>
             <Button
                 variant="contained"
-                startIcon={<ImportExportIcon />}
+                startIcon={<ImportExport />}
                 color="primary"
                 {...others}
             >

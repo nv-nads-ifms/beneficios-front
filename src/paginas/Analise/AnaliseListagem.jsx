@@ -83,7 +83,8 @@ export default function AnaliseListagem() {
         ativacaoModalMessage(
             'Iniciar atendimento?', 'Iniciar',
             () => AtendimentoService.iniciarAtendimento(value.id),
-            (value) => handleView(value)
+            (value) => console.log(value)
+            // (value) => handleView(value)
         );
     }
     
