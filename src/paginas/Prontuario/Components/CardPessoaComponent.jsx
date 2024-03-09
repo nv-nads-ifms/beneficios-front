@@ -1,9 +1,7 @@
 import React from "react";
 import Moment from 'moment';
-import PersonIcon from '@material-ui/icons/Person';
 
 import PessoaListagemModal from "../../Pessoa/PessoaListagemModal";
-import { CardContent } from "@material-ui/core";
 import { emptyPessoa } from "../../../models/Pessoa";
 import SearchIconButton from "../../../components/CustomIconButtons/SearchIconButton";
 import EditIconButton from "../../../components/CustomIconButtons/EditIconButton";
@@ -12,7 +10,8 @@ import AddIconButton from "../../../components/CustomIconButtons/AddIconButton";
 import ExpandMoreIconButton from "../../../components/CustomIconButtons/ExpandMoreIconButton";
 import PessoaForm from "../../Pessoa/PessoaForm";
 import { DNAStatus } from "../../../api/utils/constants";
-import { Avatar, Card, CardHeader, Collapse } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader, Collapse } from "@mui/material";
+import { Person } from "@mui/icons-material";
 
 const emptyTitle = {
     title: "Pessoa",
@@ -81,7 +80,7 @@ export default function CardPessoaComponent(props) {
                             alt={pessoa.nome}
                             aria-label="titular"
                             src={"data:image/png;base64," + pessoa.foto} >
-                            <PersonIcon />
+                            <Person />
                         </Avatar>
                     }
                     title={title.title}

@@ -6,7 +6,6 @@ import { DNAStatus } from '../../api/utils/constants';
 import { Grid, TextField } from '@mui/material';
 import MenuSistemaForm from './MenuSistemaForm';
 import TipoMenuSistemaToggleButton from './component/TipoMenuSistemaToggleButton';
-import DisponivelSwitchComponent from './component/DisponivelSwitchComponent';
 import DisponivelToggleButton from './component/DisponivelToggleButton';
 
 const columns = [

@@ -1,78 +1,73 @@
 import React from 'react'
-import { emptyData } from '../../../api/utils/constants';
-import CustomTable from '../../../components/CustomTable/CustomTable';
-import AtendimentoService from '../../../services/AtendimentoService';
-import AnaliseTableRow from '../AnaliseTableRow';
+import Moment from 'moment';
+import ChipStatus from '../../../components/CustomButtons/ChipStatus';
+import { objectContext } from '../../../contexts/objectContext';
+import { Box } from '@mui/material';
+import DNADataGrid from '../../../components/V1.0.0/DNADataGrid';
 
-const columnsNames = [
-    { id: 'status', label: 'Status' },
-    { id: 'unidade', label: 'Unid. Atend.' },
-    { id: 'prontuario', label: 'Prontuário' },
-    { id: 'funcionario', label: 'Atendente' },
-    { id: 'pessoa', label: 'Solicitante' },
-    { id: 'emissao', label: 'Emissão' },
+const columns = [
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 150,
+        renderCell: (params) => (
+            <ChipStatus status={params.value} />
+        )
+    },
+    {
+        field: 'funcionario',
+        headerName: 'Atendente',
+        minWidth: 150,
+        flex: 1,
+        valueGetter: (params) => params.value.nome
+    },
+    {
+        field: 'unidadeAtendimento',
+        headerName: 'Unid. Atendimento',
+        width: 150,
+        valueGetter: ({row}) => {
+            const und = row.funcionario.unidadeAtendimento;
+            return `${und.id}/${und.numeroDaUnidade}`;
+        }
+    },
+    {
+        field: 'emissao',
+        headerName: 'Emissão',
+        width: 170,
+        renderCell: (params) => {
+            console.log(params)
+            return (
+                Moment(params.value).format('DD/MM/Y hh:mm:ss a')
+            );
+        }
+    },
+    {
+        field: 'observacao',
+        headerName: 'Observação',
+        width: 250,
+    },
 ];
 
-export default function AnaliseHistoricoSolicitacoesView(props) {
-    const { atendimento } = props;
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [data, setData] = React.useState(emptyData);
-
-    const getRequestParams = (atendimento, page, pageSize) => {
-        let params = {};
-        if (page) {
-            params["page"] = page;
-        }
-        if (pageSize) {
-            params["size"] = pageSize;
-        }
-
-        params["prontuarioId"] = atendimento.prontuario.id;
-        params["unidadeAtendimentoId"] = atendimento.prontuario.unidadeAtendimento.id;
-        params["emissao"] = atendimento.emissao;
-
-        return params;
-    };
+export default function AnaliseHistoricoSolicitacoesView() {
+    
+    /* Recuperação do atendimento que será manipulado */
+    const { object } = React.useContext(objectContext);
+    const [historicos, setHistoricos] = React.useState([]);
 
     React.useEffect(() => {
-        if (atendimento.prontuario != null && atendimento.prontuario.id != null) {
-            const params = getRequestParams(atendimento, page, rowsPerPage);
-            AtendimentoService.getHistoricoAtendimentos(params)
-                .then((resp) => {
-                    if (resp.status === 400) {
-                        setData(emptyData);
-                        setRowsPerPage(10);
-                        setPage(0);
-                    } else {
-                        setData(resp.data)
-                        setRowsPerPage(resp.data.pageable.pageSize);
-                        setPage(resp.data.number);
-                    }
-                });
+        if (object != null) {
+            setHistoricos(object.historicos);
         } else {
-            setData(emptyData);
-            setRowsPerPage(10);
-            setPage(0);
+            setHistoricos([]);
         }
-    }, [atendimento, setRowsPerPage, setPage, page, rowsPerPage]);
+    }, [object]);
 
     return (
-        <CustomTable
-            data={data}
-            columns={columnsNames}
-            page={page}
-            setPage={setPage}
-            rowsPerPage={rowsPerPage}
-            setRowsPerPage={setRowsPerPage}
-        >
-            {data.content.map((row, key) => {
-                return (
-                    <AnaliseTableRow
-                        key={"row-" + key}
-                        row={row} />
-                );
-            })}
-        </CustomTable>
+        <Box sx={{ height: 250 }}>
+            <DNADataGrid
+                rows={historicos}
+                columns={columns}
+            />
+        </Box>
     );
 }

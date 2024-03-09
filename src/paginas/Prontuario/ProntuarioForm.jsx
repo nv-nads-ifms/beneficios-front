@@ -112,7 +112,7 @@ function ProntuarioForm(props) {
                         onChange={handleChange} />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
-                    <ProntuarioRendimentoListagemComponent />
+                    <ProntuarioRendimentoListagemComponent prontuario={prontuario} />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={3}>
                     <ProntuarioEducacaoListagemComponent />

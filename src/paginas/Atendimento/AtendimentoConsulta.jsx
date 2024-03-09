@@ -120,8 +120,8 @@ function AtendimentoConsulta() {
         }
     }, [formId]);
 
-    const handleClose = (form) => {
-        if (form == null) {
+    const handleClose = (intForm) => {
+        if (intForm !== 1) {
             setOpen(false);
         } else {
             setOpenAnalise(false);
@@ -144,6 +144,7 @@ function AtendimentoConsulta() {
                     (value) => {
                         setFormId(value.id);
                         setOpenAnalise(true);
+                        setDataControl(DNAStatus.EDIT);
                     }
                 );
             }
@@ -160,6 +161,7 @@ function AtendimentoConsulta() {
             } else {
                 setFormId(params.id);
                 setOpenAnalise(true);
+                setDataControl(params.row.status === Status.INICIADO ? DNAStatus.EDIT : DNAStatus.VIEW);
             }
         }, []);
 
@@ -238,7 +240,7 @@ function AtendimentoConsulta() {
                 datacontrol={dataControl}
                 on_change_datacontrol={setDataControl}
                 open={open}
-                on_close_func={handleClose}
+                on_close_func={() => handleClose(0)}
                 data_source_url={path}
             />
 
@@ -248,7 +250,7 @@ function AtendimentoConsulta() {
                 on_change_datacontrol={setDataControl}
                 open={openAnalise}
                 on_close_func={() => handleClose(1)}
-                data_source_url={path}
+                data_source_url={pathAnalise}
             />
         </formContext.Provider>
     );

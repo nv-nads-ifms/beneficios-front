@@ -3,50 +3,41 @@ import Moment from 'moment';
 import {
     AppBar,
     Avatar, Grid, List, ListItem, ListItemAvatar, ListItemText,
-    makeStyles, Paper, Tab, Tabs, Typography
-} from '@material-ui/core';
+    Paper, Tab, Tabs, Typography
+} from '@mui/material';
 import { Sexo } from '../../../api/utils/constants';
 import { ccyFormat } from '../../../api/format';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import ListContatoView from './ListContatoView';
 import ListDocumentoView from './ListDocumentoView';
-import TabPanel, { a11yProps } from '../../../components/CustomTabs/TabPanel';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        // boxShadow: '3px 3px 10px 3px #bbb',
-    },
-    lista: {
-        width: '100%',
-        minWidth: '48ch',
-        backgroundColor: theme.palette.background.paper,
-    },
-    large: {
-        width: theme.spacing(6),
-        height: theme.spacing(6),
-    },
-}));
+import TabPanel, { a11yProps } from '../../../components/V1.0.0/DNATabPanel';
 
 export default function ListPessoaView(props) {
     const { pessoa, parentesco } = props;
     const [geralTabIndex, setGeralTabIndex] = React.useState(0);
-    const classes = useStyles();
 
-    const rendimentos = pessoa.rendimentos;
-    const auxilios = pessoa.auxilios;
-    const contatos = pessoa.contatos;
-    const documentos = pessoa.documentos;
+    const [rendimentos, setRendimentos] = React.useState([]);
+    const [auxilios, setAuxilios] = React.useState([]);
+    const [contatos, setContatos] = React.useState([]);
+    const [documentos, setDocumentos] = React.useState([]);
+
+    React.useEffect(() => {
+        if (pessoa != null) {
+            setRendimentos(pessoa.rendimentos);
+            setAuxilios(pessoa.auxilios);
+            setContatos(pessoa.contatos);
+            setDocumentos(pessoa.documentos);
+        }
+    }, [pessoa]);
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={1} >
             <Grid item lg={6} md={12}>
-                <List className={classes.lista} dense={true}>
+                <List dense={true}>
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
                             <Avatar
-                                className={classes.large}
                                 alt={pessoa.nome}
                                 src={"data:image/png;base64," + pessoa.foto} />
                         </ListItemAvatar>
@@ -69,10 +60,10 @@ export default function ListPessoaView(props) {
                     </ListItem>
                     <ListItem>
                         <Grid container spacing={2}>
-                            {pessoa.escolaridadeDto != null && (
+                            {pessoa.escolaridade != null && (
                                 <Grid item xs={6}>
                                     <Typography variant="body2">
-                                        {pessoa.escolaridadeDto.descricao}
+                                        {pessoa.escolaridade.nome}
                                     </Typography>
                                     <Typography variant="caption" color="textSecondary">
                                         Escolaridade
@@ -82,7 +73,7 @@ export default function ListPessoaView(props) {
                             {parentesco != null && (
                                 <Grid item xs={6}>
                                     <Typography variant="body2">
-                                        {parentesco.descricao}
+                                        {parentesco.nome}
                                     </Typography>
                                     <Typography variant="caption" color="textSecondary">
                                         Parentesco
@@ -100,7 +91,7 @@ export default function ListPessoaView(props) {
                                         <Grid container spacing={2} key={index}>
                                             <Grid item xs={6}>
                                                 <Typography variant="caption" color="textSecondary">
-                                                    {obj.condicaoTrabalhoDto.descricao}
+                                                    {obj.condicaoTrabalho.nome}
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={6}>
@@ -113,6 +104,8 @@ export default function ListPessoaView(props) {
                                 }
                             />
                         )}
+                    </ListItem>
+                    <ListItem>
                         {auxilios.length > 0 && (
                             <ListItemText
                                 primary="Auxílios"

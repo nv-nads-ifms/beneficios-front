@@ -87,7 +87,7 @@ export default function ProntuarioFamiliaListagemComponent(props) {
     const setPessoa = (pessoa) => {
         setDependente({
             ...dependente,
-            id: pessoa.id,
+            id: pessoa != null ? pessoa.id : '',
             pessoa: pessoa,
         });
     }

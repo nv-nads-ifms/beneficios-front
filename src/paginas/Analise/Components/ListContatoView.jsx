@@ -1,34 +1,28 @@
 import React from 'react';
 import {
     Avatar, List, ListItem, ListItemAvatar, ListItemText,
-    makeStyles, Tooltip, Typography
-} from '@material-ui/core';
+    Tooltip, Typography
+} from '@mui/material';
 import { ChipIcon } from '../../../api/format';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        maxWidth: '36ch',
-        backgroundColor: theme.palette.background.paper,
-        // boxShadow: '3px 3px 10px 3px #bbb',
-    },
-    inline: {
-        display: 'inline',
-    },
-}));
+import { emptyBaseObject } from '../../../api/utils/constants';
 
 export default function ListContatoView(props) {
     const { contatoPessoa } = props;
-    const classes = useStyles();
-    const tipoContato = contatoPessoa.tipoContatoDto;
+
+    const tipoContato = React.useMemo(() => {
+        if (contatoPessoa != null) {
+            return contatoPessoa.tipoContato;
+        }
+        return emptyBaseObject;
+    }, [contatoPessoa]);
 
     return (
-        <List className={classes.root} dense={true}>
+        <List dense={true}>
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
-                    <Tooltip title={tipoContato.descricao}>
+                    <Tooltip title={tipoContato.nome}>
                         <Avatar>
-                            {ChipIcon(tipoContato.descricao)}
+                            {ChipIcon(tipoContato.nome)}
                         </Avatar>
                     </Tooltip>
                 </ListItemAvatar>
@@ -40,7 +34,7 @@ export default function ListContatoView(props) {
                     }
                     secondary={
                         <Typography variant="caption" color="textSecondary">
-                            {tipoContato.descricao}
+                            {tipoContato.nome}
                         </Typography>
                     }
                 />

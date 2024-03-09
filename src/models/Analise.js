@@ -5,7 +5,7 @@ import { emptyPessoa } from "./Pessoa";
 
 const emptyAnalise = {
     id: '',
-    atendimentoId: '',
+    atendimento: null,
     tecnico: null,
     arquivo: emptyArquivo,
     emissao: new Date(),

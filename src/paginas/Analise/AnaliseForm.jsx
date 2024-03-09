@@ -2,28 +2,22 @@ import React from 'react';
 
 import { objectContext } from '../../contexts/objectContext';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
-import { userContext } from '../../hooks/userContext';
-import { emptyAnalise } from '../../models/Analise';
-import { handleChangeInputComponent } from '../../api/utils/util';
+
 import { DNAStatus } from '../../api/utils/constants';
 import { AppBar, Tab, Tabs } from '@mui/material';
 import { a11yProps } from '../../components/V1.0.0/DNATabPanel';
 import TabPanel from '../../components/CustomTabs/TabPanel';
-import { emptyAtendimento } from '../../models/Atendimento';
 import AnaliseSolicitacaoView from './Views/AnaliseSolicitacaoView';
+import AnaliseFormulario from './AnaliseFormulario';
+import { emptyAnalise } from '../../models/Analise';
 
 function AnaliseForm(props) {
     const { datacontrol, on_change_datacontrol, data_source_url,
         id_value, open, on_close_func } = props;
 
-    const usuario = React.useContext(userContext);
+    // const usuario = React.useContext(userContext);
     const [analise, setAnalise] = React.useState(emptyAnalise);
-    const [atendimento, setAtendimento] = React.useState(emptyAtendimento);
     const [tabIndex, setTabIndex] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        handleChangeInputComponent(event, newValue, setAtendimento, atendimento);
-    };
 
     const handleEdit = () => {
         on_change_datacontrol(DNAStatus.EDIT);
@@ -31,9 +25,9 @@ function AnaliseForm(props) {
 
     return (
         <objectContext.Provider value={{
-            object: atendimento,
-            setObject: setAtendimento,
-            emptyObject: emptyAtendimento
+            object: analise,
+            setObject: setAnalise,
+            emptyObject: emptyAnalise
         }}>
             <DNAFormDialog
                 id_value={id_value}
@@ -63,18 +57,16 @@ function AnaliseForm(props) {
                     <AnaliseSolicitacaoView />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
-                    {/* <AnaliseFormulario
-                        value={atendimento}
-                        onChange={onChange}
-                        disabled={disableComponents}
-                    /> */}
+                    <AnaliseFormulario
+                        disabled={datacontrol === DNAStatus.VIEW}
+                    />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
                     {/* <ItemAnaliseListagem
                         value={atendimento.atendimento}
                         unidadeAtendimento={atendimento.prontuario != null ? atendimento.prontuario.unidadeAtendimento : emptyUnidadeAtendimento}
                         callback={setItens}
-                        disabled={disableComponents} /> */}
+                        disabled={datacontrol === DNAStatus.VIEW} /> */}
                 </TabPanel>
             </DNAFormDialog>
         </objectContext.Provider>

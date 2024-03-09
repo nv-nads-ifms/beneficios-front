@@ -1,51 +1,46 @@
 import React from 'react';
 import {
-    Card, CardContent, CardHeader,
     FormControl, FormControlLabel, FormLabel,
-    Switch, makeStyles, Typography
-} from '@material-ui/core';
+    Grid,
+    Stack,
+    Switch, Typography
+} from '@mui/material';
 import { Status } from '../../api/utils/constants';
 import UploadButton from '../../components/CustomButtons/UploadButton';
-import CustomTextField from '../../components/CustomFields/CustomTextField';
-import { emptyAnalise } from '../../models/Analise';
 
-const useStyles = makeStyles((theme) => ({
-    large: {
-        width: theme.spacing(6),
-        height: theme.spacing(6),
-    },
-    lista: {
-        width: '100%',
-        minWidth: '48ch',
-        backgroundColor: theme.palette.background.paper,
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    file: {
-        display: 'none',
-    },
-    customFileUpload: {
-        border: '1px solid #ccc',
-        display: 'inline-block',
-        padding: '6px 12px',
-        cursor: 'pointer',
-    },
-    filePreview: {
-        margin: '0 10px',
-    },
-    inline: {
-        display: 'inline',
-    },
-}));
+import { emptyAnalise } from '../../models/Analise';
+import { objectContext } from '../../contexts/objectContext';
+import { handleChangeInputComponent, setFieldValue } from '../../api/utils/util';
+import { TextField } from '@material-ui/core';
 
 export default function AnaliseFormulario(props) {
-    const { value, onChange, disabled } = props;
-    const classes = useStyles();
+    const { disabled } = props;
+    /* Recuperação do atendimento que será manipulado */
+    const { object, setObject } = React.useContext(objectContext);
+
+    const [analise, setAnalise] = React.useState(emptyAnalise);
+
     const inputRefFile = React.useRef(null);
     const [filename, setFilename] = React.useState('');
 
-    let analise = value != null ? value : emptyAnalise;
+    const handleChange = (event, newValue) => {
+        handleChangeInputComponent(event, newValue, setAnalise, analise);
+        setObject({
+            ...object,
+            analise: analise
+        })
+    };
+
+    const handleAutorizacao = (event, newValue) => {
+        setFieldValue('autorizacao', newValue ? Status.AUTORIZADO : Status.NEGADO, setAnalise, analise);
+    };
+
+    // React.useEffect(() => {
+    //     setObject({
+    //         ...object,
+    //         analise: analise
+    //     });
+    // }, [analise, object, setObject]);
 
     const handleFileClick = (e) => {
         inputRefFile.current.click();
@@ -54,57 +49,69 @@ export default function AnaliseFormulario(props) {
     const handleUploadClick = event => {
         let file = event.target.files[0];
         setFilename(file.name);
-        onChange(event);
+        handleChange(event);
     };
-
+    
     return (
-        <Card>
-            <CardHeader subheader="Registro da Análise" />
-            <CardContent>
-                <CustomTextField
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                <Typography variant='h6'>
+                    Registro da Análise
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
                     id="parecer"
                     label="Descrição"
                     value={analise.parecer}
                     placeholder={"Digite seu parecer quanto a solicitação de benefício eventual."}
                     autoFocus={true}
-                    onChangeHandler={onChange}
-                    rows={4}
+                    onChange={handleChange}
+                    minRows={4}
                     multiline
+                    variant='outlined'
                     disabled={disabled}
+                    fullWidth
                 />
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Autorização</FormLabel>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={analise.autorizacao === Status.AUTORIZADO}
-                                onChange={onChange}
-                                name="autorizacao"
-                                color="primary"
-                                size="medium"
-                            />
-                        }
-                        label={analise.autorizacao === Status.AUTORIZADO ? "Autorizado" : "Negado"}
-                    />
-                </FormControl>
-                <FormControl component="fieldset">
-                    <FormLabel component="encaminhamento">Encaminhamento?</FormLabel>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={analise.encaminhamento}
-                                onChange={onChange}
-                                name="encaminhamento"
-                                id="encaminhamento"
-                                color="primary"
-                                size="medium"
-                            />
-                        }
-                        label={analise.encaminhamento ? "Sim" : "Não"}
-                    />
-                </FormControl>
-            </CardContent>
-            <CardContent>
+            </Grid>
+            <Grid item xs={12}>
+                <Stack spacing={1} direction={'row'}>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Autorização</FormLabel>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={analise.autorizacao === Status.AUTORIZADO}
+                                    onChange={handleAutorizacao}
+                                    name="autorizacao"
+                                    color="primary"
+                                    size="medium"
+                                    disabled={disabled}
+                                />
+                            }
+                            label={analise.autorizacao === Status.AUTORIZADO ? "Autorizado" : "Negado"}
+                        />
+                    </FormControl>
+                    <FormControl component="fieldset">
+                        <FormLabel component="encaminhamento">Encaminhamento?</FormLabel>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={analise.encaminhamento}
+                                    onChange={handleChange}
+                                    name="encaminhamento"
+                                    id="encaminhamento"
+                                    color="primary"
+                                    size="medium"
+                                    disabled={disabled}
+                                />
+                            }
+                            label={analise.encaminhamento ? "Sim" : "Não"}
+                        />
+                    </FormControl>
+                </Stack>
+            </Grid>
+            <Grid item xs={12}>
                 <FormControl component="div">
                     <input
                         accept="application/pdf"
@@ -121,10 +128,10 @@ export default function AnaliseFormulario(props) {
                             onClick={handleFileClick} />
                     </label>
                 </FormControl>
-                <Typography className={classes.finalText}>
+                <Typography>
                     {filename !== '' && "Arquivo: " + filename}
                 </Typography>
-            </CardContent>
-        </Card>
+            </Grid>
+        </Grid>
     );
 }

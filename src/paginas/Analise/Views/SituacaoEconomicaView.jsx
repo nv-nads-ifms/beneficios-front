@@ -1,12 +1,22 @@
 import React from 'react';
-import { Avatar, Card, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core';
+import { Avatar, Card, CardContent, CardHeader, Collapse, Typography } from '@mui/material';
 import ExpandMoreIconButton from '../../../components/CustomIconButtons/ExpandMoreIconButton';
-import GroupIcon from '@material-ui/icons/Group';
-import ProntuarioRendimentoListagemComponent from '../../Prontuario/SituacaoEconomica/ProntuarioRendimentoListagemComponent';
 
-export default function SituacaoEconomicaView(props) {
-    const { prontuario } = props;
+import ProntuarioRendimentoListagemComponent from '../../Prontuario/SituacaoEconomica/ProntuarioRendimentoListagemComponent';
+import { objectContext } from '../../../contexts/objectContext';
+import { emptyProntuario } from '../../../models/Prontuario';
+import { Group } from '@mui/icons-material';
+
+export default function SituacaoEconomicaView() {
+    /* Recuperação do object que será manipulado */
+    const { object } = React.useContext(objectContext);
     const [expanded, setExpanded] = React.useState(false);
+    const prontuario = React.useMemo(() => {
+        if (object != null) {
+            return object.prontuario;
+        }
+        return emptyProntuario;
+    }, [object]);
 
     return (
         <Card>
@@ -15,7 +25,7 @@ export default function SituacaoEconomicaView(props) {
                     <Avatar
                         alt="Situação Econômica"
                         aria-label="situação economica">
-                        <GroupIcon />
+                        <Group />
                     </Avatar>
                 }
                 disableTypography={false}

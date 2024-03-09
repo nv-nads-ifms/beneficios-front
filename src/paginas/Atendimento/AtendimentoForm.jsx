@@ -40,7 +40,7 @@ function AtendimentoForm(props) {
                 on_edit_func={handleEdit}
                 on_close_func={on_close_func}
                 fullWidth
-                maxWidth={"lg"}
+                maxWidth={"md"}
             >
                 <Grid container spacing={1} direction="column">
                     <Grid item xs={12}>

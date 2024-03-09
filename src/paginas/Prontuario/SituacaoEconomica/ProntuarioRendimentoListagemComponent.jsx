@@ -2,7 +2,7 @@ import React from "react";
 
 import { ccyFormat } from "../../../api/format";
 import { createListaAuxilios, createListaRendimentos } from "../../../models/Prontuario";
-import { objectContext } from "../../../contexts/objectContext";
+
 import { Box, Grid, ListItemText, Stack, Typography } from "@mui/material";
 import ChipStatus from "../../../components/CustomButtons/ChipStatus";
 import DNADataGrid from "../../../components/V1.0.0/DNADataGrid";
@@ -103,21 +103,21 @@ export function CustomFooterComponent(props) {
     );
 }
 
-export default function ProntuarioRendimentoListagemComponent() {
-    const { object } = React.useContext(objectContext);
+export default function ProntuarioRendimentoListagemComponent(props) {
+    const { prontuario } = props;
 
     const [rendimentos, setRendimentos] = React.useState([]);
     const [auxilios, setAuxilios] = React.useState([]);
 
     React.useEffect(() => {
-        if (object != null) {
-            setRendimentos(createListaRendimentos(object));
-            setAuxilios(createListaAuxilios(object));
+        if (prontuario != null) {
+            setRendimentos(createListaRendimentos(prontuario));
+            setAuxilios(createListaAuxilios(prontuario));
         } else {
             setRendimentos([]);
             setAuxilios([]);
         }
-    }, [object]);
+    }, [prontuario]);
 
     return (
         <Grid container spacing={1}>
@@ -132,7 +132,7 @@ export default function ProntuarioRendimentoListagemComponent() {
                         slotProps={{
                             footer: {
                                 label: 'Subtotal',
-                                valor: object.valorTotalRendimentos
+                                valor: prontuario.valorTotalRendimentos
                             },
                         }}
                     />
@@ -149,7 +149,7 @@ export default function ProntuarioRendimentoListagemComponent() {
                         slotProps={{
                             footer: {
                                 label: 'Subtotal',
-                                valor: object.valorTotalAuxilios
+                                valor: prontuario.valorTotalAuxilios
                             },
                         }}
                     />
@@ -158,7 +158,7 @@ export default function ProntuarioRendimentoListagemComponent() {
             <Grid item xs={12}>
                 <CustomFooterComponent
                     label={'Total'}
-                    valor={object.valorTotalRendimentos + object.valorTotalAuxilios}
+                    valor={prontuario.valorTotalRendimentos + prontuario.valorTotalAuxilios}
                 />
             </Grid>
         </Grid>

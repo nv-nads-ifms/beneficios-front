@@ -2,36 +2,31 @@ import React from 'react';
 import Moment from 'moment';
 import {
     Avatar, Grid, List, ListItem, ListItemAvatar, ListItemText,
-    makeStyles, Tooltip, Typography
-} from '@material-ui/core';
+    Tooltip, Typography
+} from '@mui/material';
 import { extractCapitalizeLetters } from '../../../api/utils/stringUtils';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        maxWidth: '72ch',
-        minWidth: '42ch',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ddd'
-    },
-    inline: {
-        display: 'inline',
-    },
-}));
+import { emptyBaseObject } from '../../../api/utils/constants';
 
 export default function ListDocumentoView(props) {
     const { documentoPessoa } = props;
-    const classes = useStyles();
-    const documento = documentoPessoa.documentoDto;
-    const orgao = documentoPessoa.orgaoExpedidorDto;
+    
+    const [documento, setDocumento] = React.useState(emptyBaseObject);
+    const [orgao, setOrgao] = React.useState(null);
+
+    React.useEffect(() => {
+        if (documentoPessoa != null) {
+            setDocumento(documentoPessoa.tipoDocumento);
+            setOrgao(documentoPessoa.orgaoExpedidor);
+        }
+    }, [documentoPessoa]);
 
     return (
-        <List className={classes.root} dense={true}>
+        <List dense={true}>
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
-                    <Tooltip title={documento.descricao}>
+                    <Tooltip title={documento.nome}>
                         <Avatar>
-                            {extractCapitalizeLetters(documento.descricao)}
+                            {extractCapitalizeLetters(documento.nome)}
                         </Avatar>
                     </Tooltip>
                 </ListItemAvatar>
@@ -53,7 +48,7 @@ export default function ListDocumentoView(props) {
                     {orgao != null && (
                         <Grid item>
                             <Typography variant="body2">
-                                {orgao.descricao}
+                                {orgao.nome}
                             </Typography>
                             <Typography variant="caption" color="textSecondary">
                                 Órgão Expedidor

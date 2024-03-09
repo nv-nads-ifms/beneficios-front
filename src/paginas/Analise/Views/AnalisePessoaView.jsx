@@ -1,31 +1,36 @@
 import React from 'react';
 import Moment from 'moment';
-import { List, ListItem, ListItemText, makeStyles, Typography } from "@material-ui/core";
+
 import { ccyFormat } from "../../../api/format";
 import { Sexo } from "../../../api/utils/constants";
 import ListPessoaView from '../Components/ListPessoaView';
+import { objectContext } from '../../../contexts/objectContext';
+import { emptyPessoa } from '../../../models/Pessoa';
+import { emptyProntuario } from '../../../models/Prontuario';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: '3px 3px 10px 3px #ddd',
-    },
-}));
+export default function AnalisePessoaView() {
+    /* Recuperação do object que será manipulado */
+    const { object } = React.useContext(objectContext);
+    const [pessoa, setPessoa] = React.useState(emptyPessoa);
+    const [prontuario, setProntuario] = React.useState(emptyProntuario);
+    const [moradia, setMoradia] = React.useState(null);
 
-export default function AnalisePessoaView(props) {
-    const { atendimento, moradia } = props;
-    const classes = useStyles();
-    const pessoa = atendimento.prontuario.titular;
-    const prontuario = atendimento.prontuario;
+    React.useEffect(() => {
+        if (object != null) {
+            setPessoa(object.prontuario.titular);
+            setProntuario(object.prontuario);
+            setMoradia(object.prontuario.titular.moradias.find(obj => obj.dataSaida == null));
+        }
+    }, [object]);
 
     return (
-        <List className={classes.root}>
+        <List>
             <ListItem>
                 <ListItemText
                     primary={
                         <Typography variant="h6" align="center" >
-                            Prontuario N.o {atendimento.prontuario.id}
+                            Prontuario N.o {object.prontuario.id}
                         </Typography>
                     }
                     secondary={
@@ -55,25 +60,23 @@ export default function AnalisePessoaView(props) {
             </ListItem>
             <ListItem>
                 {moradia != null && (
-                    <React.Fragment>
-                        <ListItemText
-                            primary="Dados da moradia"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="p" variant="caption">
-                                        Desde o dia {Moment(moradia.dataOcupacao).format('DD/MM/Y')}, {pessoa.sexo === Sexo.MASCULINO ? "ele" : "ela"} mora em
-                                        &nbsp;uma <b>{moradia.tipoMoradiaDto.descricao}</b>,
-                                        &nbsp;<b>{moradia.condicaoMoradiaDto.descricao}</b> no valor de <b>{ccyFormat(moradia.valor)}</b>.
-                                    </Typography>
-                                    <Typography variant="caption">
-                                        Seu endereço fica na <b>{moradia.enderecoDto.logradouroNome},
-                                            &nbsp;{moradia.enderecoDto.numero}, {moradia.enderecoDto.bairroNome}</b>, em
-                                        &nbsp;{moradia.enderecoDto.cidadeNome}/{moradia.enderecoDto.ufSigla}
-                                    </Typography>
-                                </React.Fragment>
-                            }
-                        />
-                    </React.Fragment>
+                    <ListItemText
+                        primary="Dados da moradia"
+                        secondary={
+                            <React.Fragment>
+                                <Typography component="p" variant="caption">
+                                    Desde o dia {Moment(moradia.dataOcupacao).format('DD/MM/Y')}, {pessoa.sexo === Sexo.MASCULINO ? "ele" : "ela"} mora em
+                                    &nbsp;uma <b>{moradia.tipoMoradia.descricao}</b>,
+                                    &nbsp;<b>{moradia.condicaoMoradia.descricao}</b> no valor de <b>{ccyFormat(moradia.valor)}</b>.
+                                </Typography>
+                                <Typography variant="caption">
+                                    Seu endereço fica na <b>{moradia.endereco.logradouroNome},
+                                        &nbsp;{moradia.endereco.numero}, {moradia.endereco.bairroNome}</b>, em
+                                    &nbsp;{moradia.endereco.cidadeNome}/{moradia.endereco.ufSigla}
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    />
                 )}
             </ListItem>
             <ListItem>

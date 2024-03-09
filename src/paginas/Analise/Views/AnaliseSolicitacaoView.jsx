@@ -5,41 +5,46 @@ import {
     Grid, Stack, Tab, Tabs, Typography
 } from '@mui/material';
 import CardPessoaComponent from '../../Prontuario/Components/CardPessoaComponent';
-import AtendimentoService from '../../../services/AtendimentoService';
 import AnaliseFicha from '../AnaliseFicha';
-import CustomTextField from '../../../components/CustomFields/CustomTextField';
 import ImportButton from '../../../components/CustomButtons/ImportButton';
 import { emptyProntuario } from '../../../models/Prontuario';
 import AnaliseHistoricoSolicitacoesView from './AnaliseHistoricoSolicitacoesView';
 import { importModalMessage } from '../../../api/utils/modalMessages';
-import NewButton from '../../../components/CustomButtons/NewButton';
-import { useHistory } from 'react-router-dom';
 import { objectContext } from '../../../contexts/objectContext';
 import { yellow } from '@mui/material/colors';
 import { Warning } from '@mui/icons-material';
 import TabPanel, { a11yProps } from '../../../components/V1.0.0/DNATabPanel';
+import DataService from '../../../api/services/DataServices';
+import { emptyAtendimento } from '../../../models/Atendimento';
+import { setFieldValue } from '../../../api/utils/util';
+import { TextField } from '@material-ui/core';
 
+const dsAtendimento = new DataService('/atendimentos');
 
-export default function AnaliseSolicitacaoView(props) {
-    // const { atendimento, callback } = props;
-
+export default function AnaliseSolicitacaoView() {
     /* Recuperação do atendimento que será manipulado */
     const { object, setObject } = React.useContext(objectContext);
+    
+    const atendimento = React.useMemo(() => {
+        if (object != null) {
+            return object.atendimento;
+        }
+        return emptyAtendimento;
+    }, [object]);
 
-    // const prontuario = atendimento.prontuario;
     const prontuario = React.useMemo(() => {
-        if (object != null && object.hasOwnProperty('prontuario')) {
-            return object.prontuario;
+        if (atendimento !== emptyAtendimento) {
+            return atendimento.prontuario;
         }
         return emptyProntuario;
-    }, [object]);
+    }, [atendimento]);
 
     const [tabIndex, setTabIndex] = React.useState(0);
 
     const handleImportarProntuario = () => {
         importModalMessage(
-            () => AtendimentoService.importarAtendimento(object.id),
-            (value) => setObject(value)
+            () => dsAtendimento.save(["importar", atendimento.id]),
+            (value) => setFieldValue('atendimento', value, setObject, object)
         );
     }
 
@@ -98,21 +103,22 @@ export default function AnaliseSolicitacaoView(props) {
                     </Tabs>
                 </AppBar>
                 <TabPanel value={tabIndex} index={0}>
-                    <CardPessoaComponent value={object.pessoa} />
-                    <CustomTextField
+                    <CardPessoaComponent value={atendimento.pessoa} />
+                    <TextField
                         id="descricao-solicitacao"
                         label="Descrição da solicitação"
-                        value={object.descricao}
-                        rows={4}
+                        value={atendimento.descricao}
+                        minRows={4}
+                        variant='outlined'
                         multiline
                         disabled
                     />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
-                    <AnaliseHistoricoSolicitacoesView atendimento={object} />
+                    <AnaliseHistoricoSolicitacoesView />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
-                    <AnaliseFicha atendimento={object} />
+                    <AnaliseFicha />
                 </TabPanel>
 
             </Grid>

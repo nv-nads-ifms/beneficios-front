@@ -11,6 +11,7 @@ import jwt_decode from "jwt-decode";
 import Moment, { utc } from 'moment';
 
 import DataService from '../../api/services/DataServices';
+import { swalWithBootstrapButtons } from '../../api/utils/modalMessages';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,6 +79,11 @@ export default function UserView(props) {
     const handleClick = () => {
         dataService.getBy('auth/logout')
             .then(response => {
+                logout();
+                history.push('/login');
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire('Ooops!', `Tempo de sessão expirado. Você será desconectado do sistema!`, 'warning');
                 logout();
                 history.push('/login');
             });

@@ -1,17 +1,28 @@
 import React from 'react';
 import Moment from 'moment';
-import {
-    Avatar, Card, CardContent, CardHeader, Collapse,
-    Paper, Typography
-} from "@material-ui/core";
-import HouseIcon from '@material-ui/icons/House';
+
 import { ccyFormat } from '../../../api/format';
 import { Sexo } from '../../../api/utils/constants';
 import ExpandMoreIconButton from '../../../components/CustomIconButtons/ExpandMoreIconButton';
+import { objectContext } from '../../../contexts/objectContext';
+import { Avatar, Card, CardContent, CardHeader, Collapse, Paper, Typography } from '@mui/material';
+import { House } from '@mui/icons-material';
+import { emptyPessoa } from '../../../models/Pessoa';
 
-export default function AnaliseHistoricoMoradiasView(props) {
-    const { pessoa, moradiasAnteriores } = props;
+export default function AnaliseHistoricoMoradiasView() {
     const [expanded, setExpanded] = React.useState(false);
+
+    /* Recuperação do object que será manipulado */
+    const { object } = React.useContext(objectContext);
+    const [pessoa, setPessoa] = React.useState(emptyPessoa);
+    const [moradiasAnteriores, setMoradiasAnteriores] = React.useState([]);
+
+    React.useEffect(() => {
+        if (object != null) {
+            setPessoa(object.pessoa);
+            setMoradiasAnteriores(object.prontuario.titular.moradias.filter(obj => obj.dataSaida != null));
+        }
+    }, [object]);
 
     return (
         <Card>
@@ -20,7 +31,7 @@ export default function AnaliseHistoricoMoradiasView(props) {
                     <Avatar
                         alt="Histórico de Moradias"
                         aria-label="moradias">
-                        <HouseIcon />
+                        <House />
                     </Avatar>
                 }
                 disableTypography={false}
@@ -45,15 +56,18 @@ export default function AnaliseHistoricoMoradiasView(props) {
                             </Typography>
                         )}
                         {moradiasAnteriores.map(obj => (
-                            <Typography variant="body2">
+                            <Typography
+                                key={obj.id} 
+                                variant="body2"
+                            >
                                 No período entre <b>{Moment(obj.dataOcpacao).format('DD/MM/Y')}</b> e
                                 &nbsp;<b>{Moment(obj.dataOcpacao).format('DD/MM/Y')}</b>,
                                 &nbsp;{pessoa.sexo === Sexo.MASCULINO ? "ele" : "ela"} morou
-                                &nbsp;no bairro <b>{obj.enderecoDto.bairroNome}</b>
-                                &nbsp;({obj.enderecoDto.cidadeNome}/{obj.enderecoDto.ufSigla}),
-                                &nbsp;<b>{obj.enderecoDto.logradouroNome}, {obj.enderecoDto.numero}</b>.
-                                &nbsp;Era uma <b>{obj.tipoMoradiaDto.descricao}</b>,
-                                &nbsp;{obj.condicaoMoradiaDto.descricao} no valor de <b>{ccyFormat(obj.valor)}</b>.
+                                &nbsp;no bairro <b>{obj.endereco.bairroNome}</b>
+                                &nbsp;({obj.endereco.cidadeNome}/{obj.endereco.ufSigla}),
+                                &nbsp;<b>{obj.endereco.logradouroNome}, {obj.endereco.numero}</b>.
+                                &nbsp;Era uma <b>{obj.tipoMoradia.descricao}</b>,
+                                &nbsp;{obj.condicaoMoradia.descricao} no valor de <b>{ccyFormat(obj.valor)}</b>.
                             </Typography>
                         ))}
                     </Paper>
