@@ -1,24 +1,14 @@
 import React from "react";
-import { Divider, Paper, InputBase, makeStyles, FormControl, FormHelperText } from "@material-ui/core";
-import { fichaStyles } from "../../../components/UI/GlobalStyle";
+import { Grid, TextField, InputAdornment } from "@mui/material";
 import SearchIconButton from "../../../components/CustomIconButtons/SearchIconButton";
 import ClearIconButton from "../../../components/CustomIconButtons/ClearIconButton";
 import BeneficioListagemModal from "./BeneficioListagemModal";
 import MessageDialogForm, { emptyMessage } from "../../../components/CustomForms/MessageDialogForm";
 import { Message } from "../../../api/utils/constants";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        padding: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-    },
-}));
 
 export default function FieldBeneficioComponent(props) {
-    const { beneficio, disabled, unidadeAtendimento, callback, error, onlySearch } = props;
-    const inputClasses = useStyles();
-    const classes = fichaStyles();
+    const { beneficio, disabled, unidadeAtendimento, callback, onlySearch } = props;
     const [openConsulta, setOpenConsulta] = React.useState(false);
 
     const [message, setMessage] = React.useState(emptyMessage);
@@ -48,39 +38,41 @@ export default function FieldBeneficioComponent(props) {
 
     return (
         <React.Fragment>
-            <Paper elevation={1} variant="outlined" square={true} component="form" className={inputClasses.root}>
-                <FormControl fullWidth>
-                    <InputBase
-                        fullWidth={true}
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
                         value={beneficio != null ? beneficio.nome : ""}
                         readOnly={true}
-                        className={classes.input}
-                        error={error != null ? !error.valido : false}
                         placeholder="Selecione um Benefício Eventual"
-                        inputProps={{ 'aria-label': 'busca por descrição' }}
-                    />
-                    <FormHelperText id="component-helper-text">{error != null ? error.texto : ''}</FormHelperText>
-                </FormControl>
+                        InputProps={{
+                            'aria-label': 'Busca por nome do benefício eventual',
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <React.Fragment>
+                                        {(onlySearch != null || beneficio == null) && (
+                                            <SearchIconButton
+                                                tooltip="Buscar por um Benefício Eventual"
+                                                onClick={handleShowConsulta}
+                                                disabled={disabled} />
+                                        )}
+                                        {onlySearch == null && beneficio != null && (
+                                            <ClearIconButton
+                                                tooltip="Limpar beneficio"
+                                                onClick={() => callback(null)}
+                                                disabled={disabled} />
+                                        )}
+                                    </React.Fragment>
+                                </InputAdornment>
+                            )
+                        }}
 
-                <Divider className={classes.divider} orientation="vertical" />
-                {(onlySearch != null || beneficio == null) && (
-                    <SearchIconButton
-                        tooltip="Buscar por um Benefício Eventual"
-                        onClick={handleShowConsulta}
-                        disabled={disabled} />
-                )}
-                {onlySearch == null && beneficio != null && (
-                    <React.Fragment>
-                        <ClearIconButton
-                            tooltip="Limpar beneficio"
-                            onClick={() => callback(null)}
-                            disabled={disabled} />
-                    </React.Fragment>
-                )}
-            </Paper>
+                    />
+                </Grid>
+            </Grid>
 
             <BeneficioListagemModal
-                unidadeAtendimento={unidadeAtendimento}
                 openModal={openConsulta}
                 onClose={handleCloseConsulta}
                 response={callback}

@@ -142,7 +142,7 @@ function AtendimentoConsulta() {
                     'Iniciar atendimento?', 'Iniciar',
                     () => dataService.save(['iniciar', params.id]),
                     (value) => {
-                        setFormId(value.id);
+                        setFormId(value.analiseId);
                         setOpenAnalise(true);
                         setDataControl(DNAStatus.EDIT);
                     }
@@ -159,7 +159,7 @@ function AtendimentoConsulta() {
                     'warning'
                 );
             } else {
-                setFormId(params.id);
+                setFormId(params.row.analiseId);
                 setOpenAnalise(true);
                 setDataControl(params.row.status === Status.INICIADO ? DNAStatus.EDIT : DNAStatus.VIEW);
             }

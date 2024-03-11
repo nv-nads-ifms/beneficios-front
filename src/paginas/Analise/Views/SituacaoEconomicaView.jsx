@@ -3,20 +3,19 @@ import { Avatar, Card, CardContent, CardHeader, Collapse, Typography } from '@mu
 import ExpandMoreIconButton from '../../../components/CustomIconButtons/ExpandMoreIconButton';
 
 import ProntuarioRendimentoListagemComponent from '../../Prontuario/SituacaoEconomica/ProntuarioRendimentoListagemComponent';
-import { objectContext } from '../../../contexts/objectContext';
 import { emptyProntuario } from '../../../models/Prontuario';
 import { Group } from '@mui/icons-material';
 
-export default function SituacaoEconomicaView() {
-    /* Recuperação do object que será manipulado */
-    const { object } = React.useContext(objectContext);
+export default function SituacaoEconomicaView(props) {
+    const { atendimento } = props;
+
     const [expanded, setExpanded] = React.useState(false);
     const prontuario = React.useMemo(() => {
-        if (object != null) {
-            return object.prontuario;
+        if (atendimento != null) {
+            return atendimento.prontuario;
         }
         return emptyProntuario;
-    }, [object]);
+    }, [atendimento]);
 
     return (
         <Card>

@@ -7,7 +7,6 @@ import Autenticacao from './paginas/Autenticacao/Autenticacao';
 import Home from './paginas/Home/Home';
 import Pagina404 from './paginas/Home/Pagina404';
 import Menus from './paginas/Home/Menus';
-import BeneficioCadastro from './paginas/Beneficio/BeneficioCadastro';
 import ContatoConsulta from './paginas/Contato/ContatoConsulta';
 import ParentescoListagem from './paginas/Parentesco/ParentescoListagem';
 import DocumentoConsulta from './paginas/Documento/DocumentoConsulta';
@@ -17,9 +16,6 @@ import AvisoSenha from './paginas/Autenticacao/AvisoSenha';
 import AlterarSenha from './paginas/ContaUsuario/AlterarSenha';
 import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida';
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
-import ProntuarioAnaliseListagem from './paginas/Prontuario/Analise/ProntuarioAnaliseListagem';
-import AnaliseListagem from './paginas/Analise/AnaliseListagem';
-import AnaliseCadastro from './paginas/Analise/AnaliseCadastro';
 import RetiradaBeneficioListagem from './paginas/RetiradaBeneficio/RetiradaBeneficioListagem';
 import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
 import FornecedorListagem from './paginas/Fornecedor/FornecedorListagem';
@@ -126,18 +122,14 @@ const Routes = () => {
 
                 {/* Telas do prontuario */}
                 <PrivateRoute path="/pessoas" component={PessoaConsulta} />
-                <PrivateRoute path="/analise-prontuario" component={ProntuarioAnaliseListagem} />
                 <PrivateRoute path='/prontuarios' component={ProntuarioConsulta} />
 
                 {/* Telas de atendimento */}
                 <PrivateRoute path='/atendimentos' component={AtendimentoConsulta} />
-                <PrivateRoute path='/analise-atendimento' component={AnaliseListagem} />
-                <PrivateRoute path='/analise-atendimento-ficha/:id/:status' component={AnaliseCadastro} />
 
 
                 {/* Controle do estoque */}
                 <PrivateRoute path="/beneficios-eventuais" component={BeneficioConsulta} />
-                <PrivateRoute path='/beneficios-eventuais-ficha/:id/:status' component={BeneficioCadastro} />
 
                 <PrivateRoute path='/retirada-de-beneficio' component={RetiradaBeneficioListagem} />
                 <PrivateRoute path='/retirada-de-beneficio-ficha/:itemId/:id/:status' component={RetiradaBeneficioView} />

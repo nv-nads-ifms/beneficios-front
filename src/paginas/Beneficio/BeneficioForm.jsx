@@ -69,6 +69,7 @@ export default function BeneficioForm(props) {
                     data_source_url={data_source_url}
                     on_edit_func={handleEdit}
                     on_close_func={on_close_func}
+                    maxWidth={'md'}
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={12}>

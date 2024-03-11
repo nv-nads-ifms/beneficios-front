@@ -24,7 +24,7 @@ const dsAtendimento = new DataService('/atendimentos');
 export default function AnaliseSolicitacaoView() {
     /* Recuperação do atendimento que será manipulado */
     const { object, setObject } = React.useContext(objectContext);
-    
+
     const atendimento = React.useMemo(() => {
         if (object != null) {
             return object.atendimento;
@@ -33,7 +33,7 @@ export default function AnaliseSolicitacaoView() {
     }, [object]);
 
     const prontuario = React.useMemo(() => {
-        if (atendimento !== emptyAtendimento) {
+        if (atendimento != null && atendimento !== emptyAtendimento) {
             return atendimento.prontuario;
         }
         return emptyProntuario;
@@ -50,7 +50,7 @@ export default function AnaliseSolicitacaoView() {
 
     return (
         <Grid container spacing={2} direction="column">
-            <Grid item>
+            <Grid item xs={12}>
                 {(prontuario == null || prontuario === emptyProntuario) && (
                     <Card raised>
                         <CardHeader
@@ -86,7 +86,7 @@ export default function AnaliseSolicitacaoView() {
                     </Card>
                 )}
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
                 <AppBar position="static" color="default">
                     <Tabs
                         value={tabIndex}
@@ -103,22 +103,29 @@ export default function AnaliseSolicitacaoView() {
                     </Tabs>
                 </AppBar>
                 <TabPanel value={tabIndex} index={0}>
-                    <CardPessoaComponent value={atendimento.pessoa} />
-                    <TextField
-                        id="descricao-solicitacao"
-                        label="Descrição da solicitação"
-                        value={atendimento.descricao}
-                        minRows={4}
-                        variant='outlined'
-                        multiline
-                        disabled
-                    />
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <CardPessoaComponent value={atendimento.pessoa} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="descricao-solicitacao"
+                                label="Descrição da solicitação"
+                                value={atendimento.descricao}
+                                minRows={4}
+                                variant='outlined'
+                                fullWidth
+                                multiline
+                                disabled
+                            />
+                        </Grid>
+                    </Grid>
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
-                    <AnaliseHistoricoSolicitacoesView />
+                    <AnaliseHistoricoSolicitacoesView atendimento={atendimento} />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
-                    <AnaliseFicha />
+                    <AnaliseFicha atendimento={atendimento} />
                 </TabPanel>
 
             </Grid>

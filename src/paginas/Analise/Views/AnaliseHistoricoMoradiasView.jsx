@@ -4,25 +4,23 @@ import Moment from 'moment';
 import { ccyFormat } from '../../../api/format';
 import { Sexo } from '../../../api/utils/constants';
 import ExpandMoreIconButton from '../../../components/CustomIconButtons/ExpandMoreIconButton';
-import { objectContext } from '../../../contexts/objectContext';
 import { Avatar, Card, CardContent, CardHeader, Collapse, Paper, Typography } from '@mui/material';
 import { House } from '@mui/icons-material';
 import { emptyPessoa } from '../../../models/Pessoa';
 
-export default function AnaliseHistoricoMoradiasView() {
+export default function AnaliseHistoricoMoradiasView(props) {
+    const { atendimento } = props;
     const [expanded, setExpanded] = React.useState(false);
 
-    /* Recuperação do object que será manipulado */
-    const { object } = React.useContext(objectContext);
     const [pessoa, setPessoa] = React.useState(emptyPessoa);
     const [moradiasAnteriores, setMoradiasAnteriores] = React.useState([]);
 
     React.useEffect(() => {
-        if (object != null) {
-            setPessoa(object.pessoa);
-            setMoradiasAnteriores(object.prontuario.titular.moradias.filter(obj => obj.dataSaida != null));
+        if (atendimento != null) {
+            setPessoa(atendimento.pessoa);
+            setMoradiasAnteriores(atendimento.prontuario.titular.moradias.filter(obj => obj.dataSaida != null));
         }
-    }, [object]);
+    }, [atendimento]);
 
     return (
         <Card>

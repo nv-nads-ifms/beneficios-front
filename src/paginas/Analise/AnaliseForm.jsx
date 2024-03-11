@@ -10,6 +10,7 @@ import TabPanel from '../../components/CustomTabs/TabPanel';
 import AnaliseSolicitacaoView from './Views/AnaliseSolicitacaoView';
 import AnaliseFormulario from './AnaliseFormulario';
 import { emptyAnalise } from '../../models/Analise';
+import ItemAnaliseListagem from './ItemAnalise/ItemAnaliseListagem';
 
 function AnaliseForm(props) {
     const { datacontrol, on_change_datacontrol, data_source_url,
@@ -39,6 +40,7 @@ function AnaliseForm(props) {
                 on_close_func={on_close_func}
                 fullWidth
                 maxWidth={"lg"}
+                objectfilefieldname={'arquivo'}
             >
                 <AppBar position="static" color="default">
                     <Tabs
@@ -62,11 +64,8 @@ function AnaliseForm(props) {
                     />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
-                    {/* <ItemAnaliseListagem
-                        value={atendimento.atendimento}
-                        unidadeAtendimento={atendimento.prontuario != null ? atendimento.prontuario.unidadeAtendimento : emptyUnidadeAtendimento}
-                        callback={setItens}
-                        disabled={datacontrol === DNAStatus.VIEW} /> */}
+                    <ItemAnaliseListagem
+                        disabled={datacontrol === DNAStatus.VIEW} />
                 </TabPanel>
             </DNAFormDialog>
         </objectContext.Provider>

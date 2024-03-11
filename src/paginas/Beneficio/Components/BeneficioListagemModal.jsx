@@ -1,81 +1,111 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import CustomTable from '../../../components/CustomTable/CustomTable';
+import { Grid, Box, TextField, InputAdornment } from '@mui/material';
 import DialogForms from '../../../components/CustomForms/DialogForms';
-import SearchIcon from '@material-ui/icons/Search';
-import { Paper, Divider, InputBase, makeStyles } from '@material-ui/core';
-import BeneficioService from '../../../services/BeneficioService';
-import BeneficioTableRow from './BeneficioTableRow';
 import { emptyData } from '../../../api/utils/constants';
+import DataService from '../../../api/services/DataServices';
+import DNADataGrid from '../../../components/V1.0.0/DNADataGrid';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+import { Check } from '@mui/icons-material';
+import { convertToParams } from '../../../api/utils/util';
+import { Search } from '@material-ui/icons';
 
-const columnsNames = [
-    { id: 'nome', label: 'Nome' },
-    { id: 'tipoConcessao', label: 'Tipo de Concessão' },
-    { id: 'quantidade', label: 'Disponível' },
-];
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        padding: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-    },
-    input: {
-        marginLeft: theme.spacing(1),
+const columns = [
+    { field: 'id', headerName: 'ID', width: 50 },
+    {
+        field: 'nome',
+        headerName: 'Benefício Eventual',
+        minWidth: 200,
         flex: 1,
     },
-    iconButton: {
-        padding: 10,
+    {
+        field: 'tipoConcessao',
+        headerName: 'Tipo de Concessão',
+        width: 200,
+        renderCell: ({ row }) => {
+            return row.outraConcessao === true ? "Outra Concessão" : "Benefício Eventual";
+        }
     },
-    divider: {
-        height: 28,
-        margin: 4,
-    },
-}));
+    {
+        field: 'quantidade',
+        headerName: 'Quantidade',
+        width: 100,
+    }
+];
 
-const getRequestParams = (nome, page, pageSize) => {
-    let params = {};
-    if (page) {
-        params["page"] = page;
-    }
-    if (pageSize) {
-        params["size"] = pageSize;
-    }
-    if (nome) {
-        params["nome"] = nome;
-    }
-    return params;
-};
-
+/* Criação do serviço para recuperação de dados */
+const dataService = new DataService('/beneficios-eventuais');
 
 export default function BeneficioListagemModal(props) {
-    const { unidadeAtendimento, openModal, onClose, response } = props;
-    const inputClasses = useStyles();
+    const { openModal, onClose, response } = props;
 
+    /* Atributos utilizados para realizar a filtragem da consulta */
     const [nome, setNome] = React.useState('');
+
+    /* Atributos de controle da tabela */
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [count, setCount] = React.useState(0);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [dataFetched, setDataFetched] = React.useState(false);
+    const [rows, setRows] = React.useState(emptyData);
 
-    const [data, setData] = React.useState(emptyData);
+    const handleSelect = React.useCallback(
+        (data) => {
+            dataService.getById(data.id)
+                .then((resp) => {
+                    response(resp.data);
+                    onClose();
+                });
+        }, [onClose, response]);
+
+    const getColumnActions = (params) => {
+        let columns = [];
+        columns.push(
+            <GridActionsCellItem
+                icon={<Check />}
+                label="Selecionar"
+                onClick={() => handleSelect(params)}
+            />);
+
+        return columns;
+    }
+
+    const actionColumn = {
+        field: "actions",
+        headerName: "Ações",
+        width: 140,
+        pinnable: false,
+        type: 'actions',
+        getActions: getColumnActions
+    };
+
+    const getParams = React.useCallback(() => {
+        return convertToParams({
+            nome: nome,
+            page: page,
+            size: rowsPerPage,
+        });
+    }, [nome, page, rowsPerPage]);
+
     React.useEffect(() => {
-        setDataFetched(false);
-        const params = getRequestParams(nome, page, rowsPerPage);
-        BeneficioService.getBeneficios(params)
-            .then((resp) => {
-                setDataFetched(true);
-                setData(resp.data)
-                setRowsPerPage(resp.data.pageable.pageSize);
-                setPage(resp.data.number);
-            });
-    }, [nome, setRowsPerPage, setPage, page, rowsPerPage]);
+        setIsLoading(true);
 
-    const handleSelect = (data) => {
-        BeneficioService.getBeneficiosById(data.id)
-            .then((resp) => {
-                response(resp.data);
-                onClose();
+        const params = getParams();
+
+        dataService.getDefaultData(params)
+            .then(response => {
+                setIsLoading(false);
+                setRows(response.data);
+                setPage(response.data.number);
+
+                setRowsPerPage(response.data.pageable.pageSize);
+                setCount(response.data.totalElements);
             });
+
+    }, [getParams, count]);
+
+    function handlePaginationModelChange(props) {
+        setPage(isNaN(props.page) || props.page === undefined ? 0 : props.page);
+        setRowsPerPage(props.pageSize);
     }
 
     return (
@@ -85,39 +115,45 @@ export default function BeneficioListagemModal(props) {
             maxWidth="md"
             onClose={onClose}
         >
-            <Grid container spacing={1}>
-                <Grid item xs={8}>
-                    <Paper elevation={3} component="form" className={inputClasses.root}>
-                        <InputBase
-                            className={inputClasses.input}
-                            placeholder="Buscar por nome"
-                            inputProps={{ 'aria-label': 'busca por nome' }}
-                            onChange={(event) => setNome(event.target.value)}
+            <Grid container spacing={1} sx={{mt: 1}}>
+                <Grid item xs={12}>
+                    <TextField
+                        id="nome"
+                        label="Nome do Benefício Eventual"
+                        placeholder="Buscar pelo nome do benefício eventual"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search />
+                                </InputAdornment>
+                            ),
+                        }}
+                        variant="outlined"
+                        fullWidth
+                        onChange={(event) => setNome(event.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Box sx={{
+                        height: 320,
+                    }}>
+                        <DNADataGrid
+                            rows={rows.content}
+                            rowCount={rows.totalElements}
+                            loading={isLoading}
+
+                            paginationModel={{ page: page, pageSize: rowsPerPage }}
+                            onPaginationModelChange={handlePaginationModelChange}
+                            paginationMode="server"
+
+                            columns={[...columns, actionColumn]}
+                            onRowClick={(params, event, details) => {
+                                handleSelect(params);
+                            }}
                         />
-                        <Divider className={inputClasses.divider} orientation="vertical" />
-                        <SearchIcon />
-                    </Paper>
+                    </Box>
                 </Grid>
             </Grid>
-            <CustomTable
-                data={data}
-                columns={columnsNames}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={rowsPerPage}
-                setRowsPerPage={setRowsPerPage}
-                dataFetched={dataFetched}
-            >
-                {data.content.map((row, key) => {
-                    return (
-                        <BeneficioTableRow
-                            key={"row-" + key}
-                            unidadeAtendimento={unidadeAtendimento}
-                            row={row}
-                            onSelectRow={handleSelect} />
-                    );
-                })}
-            </CustomTable>
 
         </DialogForms>
 

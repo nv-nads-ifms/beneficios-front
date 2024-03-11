@@ -1,7 +1,6 @@
 import React from 'react'
 import Moment from 'moment';
 import ChipStatus from '../../../components/CustomButtons/ChipStatus';
-import { objectContext } from '../../../contexts/objectContext';
 import { Box } from '@mui/material';
 import DNADataGrid from '../../../components/V1.0.0/DNADataGrid';
 
@@ -48,19 +47,18 @@ const columns = [
     },
 ];
 
-export default function AnaliseHistoricoSolicitacoesView() {
+export default function AnaliseHistoricoSolicitacoesView(props) {
+    const { atendimento } = props;
     
-    /* Recuperação do atendimento que será manipulado */
-    const { object } = React.useContext(objectContext);
     const [historicos, setHistoricos] = React.useState([]);
 
     React.useEffect(() => {
-        if (object != null) {
-            setHistoricos(object.historicos);
+        if (atendimento != null) {
+            setHistoricos(atendimento.historicos);
         } else {
             setHistoricos([]);
         }
-    }, [object]);
+    }, [atendimento]);
 
     return (
         <Box sx={{ height: 250 }}>

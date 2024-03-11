@@ -1,11 +1,12 @@
 import { Status } from "../api/utils/constants";
 import AnaliseService from "../services/AnaliseService";
 import { emptyArquivo } from "./Arquivo";
+import { emptyAtendimento } from "./Atendimento";
 import { emptyPessoa } from "./Pessoa";
 
 const emptyAnalise = {
     id: '',
-    atendimento: null,
+    atendimento: emptyAtendimento,
     tecnico: null,
     arquivo: emptyArquivo,
     emissao: new Date(),

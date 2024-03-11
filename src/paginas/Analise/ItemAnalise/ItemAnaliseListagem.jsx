@@ -1,89 +1,119 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, Grid } from "@material-ui/core";
-import CustomTextField from "../../../components/CustomFields/CustomTextField";
+import { Box, Card, CardContent, CardHeader, Grid, TextField } from "@mui/material";
+
 import { emptyItemAnalise, validarItemAnalise } from '../../../models/Analise';
 import CustomInteger from '../../../components/CustomFields/CustomInteger';
-import SimpleTable from '../../../components/CustomTable/SimpleTable';
-import ItemAnaliseListagemTableRow from './ItemAnaliseListagemTableRow';
 import AddButton from '../../../components/CustomButtons/AddButton';
 import FieldBeneficioComponent from '../../Beneficio/Components/FieldBeneficioComponent';
-import { emptyUnidadeAtendimento } from '../../../models/UnidadeAtendimento';
+
+import { objectContext } from '../../../contexts/objectContext';
+import { handleChangeInputComponent, setFieldValue } from '../../../api/utils/util';
 import { showErrorMessages } from '../../../api/utils/modalMessages';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+import { Delete } from '@mui/icons-material';
+import DNADataGrid from '../../../components/V1.0.0/DNADataGrid';
 
 const columns = [
-    { id: 'beneficio', label: 'Beneficio Eventual' },
-    { id: 'quantidade', label: 'Quantidade' },
+    { field: 'id', headerName: 'ID', width: 50 },
+    {
+        field: 'beneficioEventual',
+        headerName: 'Benefício Eventual',
+        minWidth: 200,
+        flex: 1,
+        valueGetter: ({ value }) => value.nome
+    },
+    {
+        field: 'quantidade',
+        headerName: 'Quantidade',
+        width: 150,
+    }
 ];
 
 export default function ItemAnaliseListagem(props) {
-    const { value, unidadeAtendimento, callback, disabled } = props;
+    const { disabled } = props;
+    /* Recuperação do objeto Analise que será manipulado */
+    const { object, setObject } = React.useContext(objectContext);
+
     const [itemAnalise, setItemAnalise] = React.useState(emptyItemAnalise);
     const [itens, setItens] = React.useState([]);
 
     React.useEffect(() => {
-        if (value == null) {
+        if (object == null) {
             setItens([]);
         } else {
-            setItens(value.itens);
+            setItens(object.itens);
         }
-    }, [value]);
+    }, [object]);
 
-    const validarCampos = (value) => {
-        showErrorMessages(value);
-    }
+    const handleChange = (event, newValue) => {
+        handleChangeInputComponent(event, newValue, setItemAnalise, itemAnalise);
+    };
 
-    const onChangeItem = (event, newValue) => {
-        let t = event.target;
-        let valor = newValue != null ? newValue : t.value;
-        const fieldname = t.id.split('-')[0];
-
-        setItemAnalise({
-            ...itemAnalise,
-            [fieldname]: valor,
-        });
-    }
-    
     const setBeneficio = (value) => {
         setItemAnalise({
             ...itemAnalise,
             beneficioEventual: value,
-            unidadeAtendimento: unidadeAtendimento,
+            unidadeAtendimento: object.atendimento.prontuario.unidadeAtendimento,
         });
     }
 
-    const handleDelete = (value) => {
-        const list = itens.filter(obj => {
-            if (obj.id === value.id &&
-                obj.beneficioEventual.id === value.beneficioEventual.id) {
-                obj.deleted = true;
-            }
-            return obj;
-        });
+    const handleDelete = (value) => () => {
+        const list = itens.filter(obj => !(
+            obj.id === value.id &&
+            obj.beneficioEventual.id === value.beneficioEventual.id
+        ));
 
         setItens(list);
-        callback(list);
+        setFieldValue('itens', list, setObject, object);
     }
 
     const handleSave = () => {
-        const data = validarItemAnalise(itemAnalise, itens, unidadeAtendimento);
+        const data = validarItemAnalise(itemAnalise, itens, object.atendimento.prontuario.unidadeAtendimento);
         if (data.length > 0) {
-            validarCampos(data);
+            showErrorMessages(data);
         } else {
-            const index = itens.findIndex(obj => (
-                obj.beneficioEventual.id === itemAnalise.beneficioEventual.id
-            ));
+            let list = [];
+            list = list.concat(itens);
 
-            if (index !== -1) {
-                itens[index] = itemAnalise;
+            if (itemAnalise.id === "") {
+                list.push(itemAnalise);
             } else {
-                itens.push(itemAnalise);
+                const index = list.findIndex(obj => (
+                    obj.id === itemAnalise.id &&
+                    obj.beneficioEventual.id === itemAnalise.beneficioEventual.id
+                ));
+
+                if (index !== -1) {
+                    list[index] = itemAnalise;
+                }
             }
-            setItens(itens);
-            callback(itens);
+
+            setItens(list);
+            setFieldValue('itens', list, setObject, object);
             setItemAnalise(emptyItemAnalise);
         }
     }
-    
+
+    const actionColumn = {
+        field: "actions",
+        headerName: "Ações",
+        width: 140,
+        pinnable: false,
+        type: 'actions',
+        getActions: (params) => {
+            let columns = [
+                <GridActionsCellItem
+                    disabled={disabled}
+                    icon={<Delete />}
+                    label="Excluir"
+                    onClick={handleDelete(params.row)}
+                />,
+            ];
+
+            return columns;
+        }
+    };
+
     return (
         <Card>
             <CardHeader subheader="Itens autorizados" />
@@ -92,19 +122,21 @@ export default function ItemAnaliseListagem(props) {
                     <Grid item xs={6}>
                         <FieldBeneficioComponent
                             beneficio={itemAnalise.beneficioEventual}
-                            unidadeAtendimento={unidadeAtendimento != null ? unidadeAtendimento : emptyUnidadeAtendimento}
+                            unidadeAtendimento={object.atendimento.prontuario.unidadeAtendimento}
                             callback={setBeneficio}
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <CustomTextField
+                        <TextField
                             id="quantidade"
                             label="Quantidade"
                             value={itemAnalise.quantidade}
                             InputProps={{
                                 inputComponent: CustomInteger,
                             }}
-                            onChangeHandler={onChangeItem}
+                            variant='outlined'
+                            fullWidth
+                            onChange={handleChange}
                             disabled={disabled} />
                     </Grid>
                     <Grid item xs={2}>
@@ -114,21 +146,19 @@ export default function ItemAnaliseListagem(props) {
                             disabled={disabled} />
                     </Grid>
                 </Grid>
-                <SimpleTable
-                    emptyRows={itens.length === 0}
-                    columns={columns}
-                >
-                    {itens.map((row, key) => (
-                        !row.deleted &&
-                        (
-                            <ItemAnaliseListagemTableRow
-                                key={"row-" + key}
-                                row={row}
-                                onRemoveRow={() => handleDelete(row)}
-                                disabled={disabled} />
-                        )
-                    ))}
-                </SimpleTable>
+                <Box sx={{
+                    height: 320,
+                    width: '100%',
+                    mt: 1
+                }}>
+                    <DNADataGrid
+                        getRowId={(row) => row.sequencia}
+                        rows={itens}
+                        rowCount={itens.length}
+
+                        columns={[...columns, actionColumn]}
+                    />
+                </Box>
             </CardContent>
         </Card>
     );

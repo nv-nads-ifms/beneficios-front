@@ -1,6 +1,6 @@
 import React from 'react'; 
-import { Button, Tooltip } from "@material-ui/core";
-import AddIcon from '@material-ui/icons/Add';
+import { Button, Tooltip } from "@mui/material";
+import { Add } from '@mui/icons-material';
 
 export default function AddButton(props) {
     const { tooltip, label, ...others } = props;
@@ -10,7 +10,7 @@ export default function AddButton(props) {
                 variant="contained"
                 color="primary"
                 name="btAdicionar"
-                startIcon={<AddIcon />}
+                startIcon={<Add />}
                 {...others} >
                 {label != null ? label : "Adicionar"}
             </Button>

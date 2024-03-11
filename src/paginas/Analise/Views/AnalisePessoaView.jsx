@@ -4,25 +4,24 @@ import Moment from 'moment';
 import { ccyFormat } from "../../../api/format";
 import { Sexo } from "../../../api/utils/constants";
 import ListPessoaView from '../Components/ListPessoaView';
-import { objectContext } from '../../../contexts/objectContext';
 import { emptyPessoa } from '../../../models/Pessoa';
 import { emptyProntuario } from '../../../models/Prontuario';
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
 
-export default function AnalisePessoaView() {
-    /* Recuperação do object que será manipulado */
-    const { object } = React.useContext(objectContext);
+export default function AnalisePessoaView(props) {
+    const { atendimento } = props;
+    
     const [pessoa, setPessoa] = React.useState(emptyPessoa);
     const [prontuario, setProntuario] = React.useState(emptyProntuario);
     const [moradia, setMoradia] = React.useState(null);
 
     React.useEffect(() => {
-        if (object != null) {
-            setPessoa(object.prontuario.titular);
-            setProntuario(object.prontuario);
-            setMoradia(object.prontuario.titular.moradias.find(obj => obj.dataSaida == null));
+        if (atendimento != null) {
+            setPessoa(atendimento.prontuario.titular);
+            setProntuario(atendimento.prontuario);
+            setMoradia(atendimento.prontuario.titular.moradias.find(obj => obj.dataSaida == null));
         }
-    }, [object]);
+    }, [atendimento]);
 
     return (
         <List>
@@ -30,7 +29,7 @@ export default function AnalisePessoaView() {
                 <ListItemText
                     primary={
                         <Typography variant="h6" align="center" >
-                            Prontuario N.o {object.prontuario.id}
+                            Prontuario N.o {atendimento.prontuario.id}
                         </Typography>
                     }
                     secondary={

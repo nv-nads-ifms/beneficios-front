@@ -6,20 +6,21 @@ import SituacaoEconomicaView from './Views/SituacaoEconomicaView';
 import AnaliseComposicaoFamiliaView from './Views/AnaliseComposicaoFamiliaView';
 import { Grid } from '@mui/material';
 
-export default function AnaliseFicha() {
+export default function AnaliseFicha(props) {
+    const { atendimento } = props;
     return (
         <Grid container spacing={2} direction="column">
             <Grid item xs={12}>
-                <AnalisePessoaView />
+                <AnalisePessoaView atendimento={atendimento} />
             </Grid>
             <Grid item xs={12}>
-                <AnaliseHistoricoMoradiasView />
+                <AnaliseHistoricoMoradiasView atendimento={atendimento} />
             </Grid>
             <Grid item xs={12}>
-                <AnaliseComposicaoFamiliaView />
+                <AnaliseComposicaoFamiliaView atendimento={atendimento} />
             </Grid>
             <Grid item xs={12}>
-                <SituacaoEconomicaView />
+                <SituacaoEconomicaView atendimento={atendimento} />
             </Grid>
         </Grid>
     );

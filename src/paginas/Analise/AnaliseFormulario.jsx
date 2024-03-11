@@ -8,39 +8,25 @@ import {
 import { Status } from '../../api/utils/constants';
 import UploadButton from '../../components/CustomButtons/UploadButton';
 
-import { emptyAnalise } from '../../models/Analise';
 import { objectContext } from '../../contexts/objectContext';
 import { handleChangeInputComponent, setFieldValue } from '../../api/utils/util';
 import { TextField } from '@material-ui/core';
 
 export default function AnaliseFormulario(props) {
     const { disabled } = props;
-    /* Recuperação do atendimento que será manipulado */
+    /* Recuperação do objeto Analise que será manipulado */
     const { object, setObject } = React.useContext(objectContext);
-
-    const [analise, setAnalise] = React.useState(emptyAnalise);
 
     const inputRefFile = React.useRef(null);
     const [filename, setFilename] = React.useState('');
 
     const handleChange = (event, newValue) => {
-        handleChangeInputComponent(event, newValue, setAnalise, analise);
-        setObject({
-            ...object,
-            analise: analise
-        })
+        handleChangeInputComponent(event, newValue, setObject, object);
     };
 
     const handleAutorizacao = (event, newValue) => {
-        setFieldValue('autorizacao', newValue ? Status.AUTORIZADO : Status.NEGADO, setAnalise, analise);
+        setFieldValue('autorizacao', newValue ? Status.AUTORIZADO : Status.NEGADO, setObject, object);
     };
-
-    // React.useEffect(() => {
-    //     setObject({
-    //         ...object,
-    //         analise: analise
-    //     });
-    // }, [analise, object, setObject]);
 
     const handleFileClick = (e) => {
         inputRefFile.current.click();
@@ -63,7 +49,7 @@ export default function AnaliseFormulario(props) {
                 <TextField
                     id="parecer"
                     label="Descrição"
-                    value={analise.parecer}
+                    value={object.parecer}
                     placeholder={"Digite seu parecer quanto a solicitação de benefício eventual."}
                     autoFocus={true}
                     onChange={handleChange}
@@ -81,7 +67,7 @@ export default function AnaliseFormulario(props) {
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={analise.autorizacao === Status.AUTORIZADO}
+                                    checked={object.autorizacao === Status.AUTORIZADO}
                                     onChange={handleAutorizacao}
                                     name="autorizacao"
                                     color="primary"
@@ -89,7 +75,7 @@ export default function AnaliseFormulario(props) {
                                     disabled={disabled}
                                 />
                             }
-                            label={analise.autorizacao === Status.AUTORIZADO ? "Autorizado" : "Negado"}
+                            label={object.autorizacao !== Status.AUTORIZADO ? "Negado" : "Autorizado" }
                         />
                     </FormControl>
                     <FormControl component="fieldset">
@@ -97,7 +83,7 @@ export default function AnaliseFormulario(props) {
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={analise.encaminhamento}
+                                    checked={object.encaminhamento}
                                     onChange={handleChange}
                                     name="encaminhamento"
                                     id="encaminhamento"
@@ -106,7 +92,7 @@ export default function AnaliseFormulario(props) {
                                     disabled={disabled}
                                 />
                             }
-                            label={analise.encaminhamento ? "Sim" : "Não"}
+                            label={object.encaminhamento ? "Sim" : "Não"}
                         />
                     </FormControl>
                 </Stack>

@@ -2,21 +2,20 @@ import React from 'react';
 
 import ExpandMoreIconButton from '../../../components/CustomIconButtons/ExpandMoreIconButton';
 import ListPessoaView from '../Components/ListPessoaView';
-import { objectContext } from '../../../contexts/objectContext';
+
 import { Avatar, Card, CardContent, CardHeader, Collapse, Grid, Typography } from '@mui/material';
 import { Group } from '@mui/icons-material';
 
-export default function AnaliseComposicaoFamiliaView() {
-    /* Recuperação do object que será manipulado */
-    const { object } = React.useContext(objectContext);
+export default function AnaliseComposicaoFamiliaView(props) {
+    const { atendimento } = props;
 
     const [expanded, setExpanded] = React.useState(false);
 
     const dependentes = React.useMemo(() => {
-        if (object != null)
-            return object.prontuario.dependentes;
+        if (atendimento != null)
+            return atendimento.prontuario.dependentes;
         return [];
-    }, [object]);
+    }, [atendimento]);
 
     return (
         <Card>
