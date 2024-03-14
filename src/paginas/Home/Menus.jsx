@@ -63,7 +63,7 @@ const getMenus = (tipo, usuario) => {
   if (value) {
     let lista = usuario.perfis.map(perfil => ({
       ...perfil,
-      menus: perfil.menus.filter(menu => menu.tipo === tipo)
+      menus: perfil.menus.filter(menu => menu.tipo === tipo && menu.ler)
     }));
     return lista[0].menus;
   }
