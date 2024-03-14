@@ -18,7 +18,7 @@ import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida'
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
 import RetiradaBeneficioListagem from './paginas/RetiradaBeneficio/RetiradaBeneficioListagem';
 import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
-import FornecedorListagem from './paginas/Fornecedor/FornecedorListagem';
+
 import FornecedorCadastro from './paginas/Fornecedor/FornecedorCadastro';
 import DocumentoEntradaListagem from './paginas/DocumentoEntrada/DocumentoEntradaListagem';
 import DocumentoEntradaCadastro from './paginas/DocumentoEntrada/DocumentoEntradaCadastro';
@@ -51,6 +51,7 @@ import GrupoSocioeducativoConsulta from './paginas/GrupoSocioeducativo/GrupoSoci
 import CondicaoDeMoradiaConsulta from './paginas/CondicaoDeMoradia/CondicaoDeMoradiaConsulta';
 import EscolaridadeConsulta from './paginas/Escolaridade/EscolaridadeConsulta';
 import CondicaoDeTrabalhoConsulta from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoConsulta';
+import FornecedorConsulta from './paginas/Fornecedor/FornecedorConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -133,7 +134,7 @@ const Routes = () => {
 
                 <PrivateRoute path='/retirada-de-beneficio' component={RetiradaBeneficioListagem} />
                 <PrivateRoute path='/retirada-de-beneficio-ficha/:itemId/:id/:status' component={RetiradaBeneficioView} />
-                <PrivateRoute path='/fornecedores' component={FornecedorListagem} />
+                <PrivateRoute path='/fornecedores' component={FornecedorConsulta} />
                 <PrivateRoute path='/fornecedores-ficha/:id/:status' component={FornecedorCadastro} />
 
                 <PrivateRoute path='/documento-entrada' component={DocumentoEntradaListagem} />
