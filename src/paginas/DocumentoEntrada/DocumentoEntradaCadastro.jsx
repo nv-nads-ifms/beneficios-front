@@ -7,8 +7,8 @@ import BaseForm from "../../components/CustomForms/BaseForm";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TabPanel, { a11yProps } from "../../components/CustomTabs/TabPanel";
-import DocumentoEntradaForm from "./DocumentoEntradaForm";
-import ItemDocumentoEntradaForm from "./ItemDocumentoEntradaForm";
+import DocumentoEntradaDadosForm from "./components/DocumentoEntradaDadosForm";
+import ItemDocumentoEntradaForm from "./components/ItemDocumentoEntradaForm";
 import { userContext } from "../../hooks/userContext";
 import { getMenuPerfilByUrl } from "../../api/utils/menuUtils";
 import { saveModalMessage } from "../../api/utils/modalMessages";
@@ -75,7 +75,7 @@ export default function DocumentoEntradaCadastro() {
                 </Tabs>
             </AppBar>
             <TabPanel value={tabIndex} index={0}>
-                <DocumentoEntradaForm
+                <DocumentoEntradaDadosForm
                     value={documentoEntrada}
                     disabled={!enabledFields}
                     callback={setDocumentoEntrada}

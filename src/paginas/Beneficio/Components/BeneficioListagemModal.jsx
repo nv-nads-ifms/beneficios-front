@@ -26,8 +26,8 @@ const columns = [
         }
     },
     {
-        field: 'quantidade',
-        headerName: 'Quantidade',
+        field: 'disponivel',
+        headerName: 'Qtde. Disponível',
         width: 100,
     }
 ];

@@ -20,7 +20,7 @@ import RetiradaBeneficioListagem from './paginas/RetiradaBeneficio/RetiradaBenef
 import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
 
 import FornecedorCadastro from './paginas/Fornecedor/FornecedorCadastro';
-import DocumentoEntradaListagem from './paginas/DocumentoEntrada/DocumentoEntradaListagem';
+
 import DocumentoEntradaCadastro from './paginas/DocumentoEntrada/DocumentoEntradaCadastro';
 import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEntradaConferencia';
 import DocumentoSaidaListagem from './paginas/DocumentoSaida/DocumentoSaidaListagem';
@@ -52,6 +52,7 @@ import CondicaoDeMoradiaConsulta from './paginas/CondicaoDeMoradia/CondicaoDeMor
 import EscolaridadeConsulta from './paginas/Escolaridade/EscolaridadeConsulta';
 import CondicaoDeTrabalhoConsulta from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoConsulta';
 import FornecedorConsulta from './paginas/Fornecedor/FornecedorConsulta';
+import DocumentoEntradaConsulta from './paginas/DocumentoEntrada/DocumentoEntradaConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -137,7 +138,7 @@ const Routes = () => {
                 <PrivateRoute path='/fornecedores' component={FornecedorConsulta} />
                 <PrivateRoute path='/fornecedores-ficha/:id/:status' component={FornecedorCadastro} />
 
-                <PrivateRoute path='/documento-entrada' component={DocumentoEntradaListagem} />
+                <PrivateRoute path='/documento-entrada' component={DocumentoEntradaConsulta} />
                 <PrivateRoute path='/documento-entrada-ficha/:id/:status' component={DocumentoEntradaCadastro} />
                 <PrivateRoute path='/documento-entrada-conferencia' component={DocumentoEntradaConferencia} />
 

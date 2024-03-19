@@ -1,17 +1,18 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import CustomCircularMonitor from '../../components/CustomFields/CustomCircularMonitor';
-import DocumentoEntradaService from '../../services/DocumentoEntradaService';
+import DataService from '../../api/services/DataServices';
+
+const dataService = new DataService('/documento-entrada');
 
 export default function DocumentoEntradaContagem(props) {
     const { rowCount } = props;
     const [data, setData] = React.useState([]);
 
     React.useEffect(() => {
-        DocumentoEntradaService.getDocumentoEntradaListarContagem()
-            .then(resp => resp.data)
-            .then(data => {
-                setData(data);
+        dataService.getBy('contagem')
+            .then(resp => {
+                setData(resp.data);
             })
     }, [rowCount]);
 

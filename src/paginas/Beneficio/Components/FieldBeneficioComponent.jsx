@@ -6,7 +6,6 @@ import BeneficioListagemModal from "./BeneficioListagemModal";
 import MessageDialogForm, { emptyMessage } from "../../../components/CustomForms/MessageDialogForm";
 import { Message } from "../../../api/utils/constants";
 
-
 export default function FieldBeneficioComponent(props) {
     const { beneficio, disabled, unidadeAtendimento, callback, onlySearch } = props;
     const [openConsulta, setOpenConsulta] = React.useState(false);

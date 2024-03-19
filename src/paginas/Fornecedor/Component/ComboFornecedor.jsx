@@ -1,7 +1,6 @@
 import React from 'react';
-import CustomAutoComplete from '../../../components/CustomFields/CustomAutoComplete';
 import FornecedorCadastroModal from './FornecedorCadastroModal';
-import FornecedorService from '../../../services/FornecedorService';
+import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 
 export default function ComboFornecedor(props) {
     const { id, value, disabled, callback } = props;
@@ -22,24 +21,25 @@ export default function ComboFornecedor(props) {
     }
 
     const updateList = (value) => {
-        setLength(length+1);
+        setLength(length + 1);
         setFornecedor(value);
     }
 
     return (
         <React.Fragment>
-            <CustomAutoComplete
+            <DNAAutocomplete
                 id={id}
-                length={length}
+                path="fornecedores"
+                input_label="Fornecedor"
+
                 value={fornecedor}
-                retrieveDataFunction={FornecedorService.getListaFornecedores}
-                label="Fornecedor"
                 placeholder="<< Selecione um Fornecedor >>"
                 disabled={disabled}
                 onChangeHandler={(event, newValue) => callback(newValue)}
-                getOptionSelected={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => option.nome}
-                onShowInputModal={onShowCadastro}
+                input_modal
+                input_handle_modal={onShowCadastro}
             />
 
             <FornecedorCadastroModal

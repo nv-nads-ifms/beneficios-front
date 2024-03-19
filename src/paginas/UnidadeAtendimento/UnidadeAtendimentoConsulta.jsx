@@ -92,7 +92,6 @@ function UnidadeAtendimentoConsulta() {
                 </Grid>
             </DNADefaultDialogListForm>
 
-
             <UnidadeAtendimentoForm
                 id_value={formId}
                 datacontrol={dataControl}
