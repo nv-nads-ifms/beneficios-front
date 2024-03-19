@@ -13,7 +13,7 @@ const autocompleteService = { current: null };
 
 export default function Logradouro(props) {
     const { erros, obj, callback, disabled } = props;
-    
+
     const [openModal, setOpenModal] = React.useState(false);
 
     const [endereco, setEndereco] = React.useState(emptyEndereco);
@@ -125,7 +125,7 @@ export default function Logradouro(props) {
             setEndereco(emptyEndereco);
             return;
         }
-        
+
         setEndereco(stringToEndereco(endereco, newValue));
 
         setOptions(newValue ? [newValue, ...options] : options);
@@ -142,13 +142,16 @@ export default function Logradouro(props) {
                         id="localizacao"
                         value={value}
                         disabled={disabled}
-                        getOptionLabel={(option) => (typeof option === 'string' ? option : option.logradouro)}
+                        getOptionLabel={(option) => {
+                            return (typeof option === 'string' ? option : option.logradouro)
+                        }}
                         filterOptions={(x) => x}
                         options={options}
                         autoComplete
                         fullWidth
                         includeInputInList
                         filterSelectedOptions
+                        noOptionsText="Sem localização informada"
                         onChange={(event, newValue) => onChangeLocalizacaoHandler(event, newValue)}
                         onInputChange={(event, newInputValue) => {
                             setInputValue(newInputValue);
@@ -165,21 +168,23 @@ export default function Logradouro(props) {
                                     shrink: true,
                                 }} />
                         )}
-                        renderOption={(option) => {
+                        renderOption={(props, option) => {
                             return (
-                                <Grid container alignItems="center">
-                                    <Grid item>
-                                        <LocationOn />
+                                <li {...props}>
+                                    <Grid container alignItems="center">
+                                        <Grid item sx={{display: 'flex', width: 44}}>
+                                            <LocationOn sx={{color: 'text.secondary'}} />
+                                        </Grid>
+                                        <Grid item sx={{width: 'calc(100% - 44px)', wordWrap: 'break-word'}}>
+                                            <span key='0' style={{ fontWeight: 400 }}>
+                                                {option.nome}
+                                            </span>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {option.bairroNome}, {option.cidadeNome} - {option.sigla}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs>
-                                        <span key='0' style={{ fontWeight: 400 }}>
-                                            {option.nome}
-                                        </span>
-                                        <Typography variant="body2" color="textSecondary">
-                                            {option.bairroNome}, {option.cidadeNome} - {option.sigla}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
+                                </li>
                             );
                         }}
                     />
