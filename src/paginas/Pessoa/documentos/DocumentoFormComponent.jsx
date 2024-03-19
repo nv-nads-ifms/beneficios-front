@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 
-import { Grid, ListItemText, TextField } from '@material-ui/core';
+import { Grid, ListItemText, TextField } from '@mui/material';
 import { getDocumentFormat } from '../../../api/utils/constants';
 
 import MaskedInput from '../../../components/CustomFields/MaskedInput';
@@ -59,7 +59,7 @@ export default function DocumentoFormComponent(props) {
             onClose={onClose}
             onSave={onSaveHandler}
         >
-            <Grid container spacing={1}>
+            <Grid container spacing={1} sx={{mt: 1}}>
                 <Grid item xs={12} md={7}>
                     <DNAAutocomplete
                         id="tipoDocumento"
