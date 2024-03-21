@@ -3,7 +3,6 @@ import { Status } from "../api/utils/constants";
 const emptyDocumentoEntrada = {
     id: '',
     unidadeAtendimento: null,
-    emissao: new Date(),
     status: '',
     observacao: '',
     fornecedor: null,

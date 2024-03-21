@@ -27,6 +27,7 @@ function DocumentoEntradaForm(props) {
     const handleEdit = () => {
         on_change_datacontrol(DNAStatus.EDIT);
     }
+    console.log(documentoEntrada);
     return (
         <objectContext.Provider value={{
             object: {
