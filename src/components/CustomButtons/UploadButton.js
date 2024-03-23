@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button } from "@material-ui/core";
-import PublishIcon from '@material-ui/icons/Publish';
-
+import { Button } from "@mui/material";
+import { Publish } from '@mui/icons-material';
 
 export default function UploadButton(props) {
     const { caption } = props;
@@ -9,7 +8,7 @@ export default function UploadButton(props) {
     return (
         <Button
             color="primary"
-            startIcon={<PublishIcon />}
+            startIcon={<Publish />}
             {...props}
         >
             {caption}

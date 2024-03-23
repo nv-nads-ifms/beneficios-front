@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { formContext } from '../../contexts/formContext';
+import { objectContext } from '../../contexts/objectContext';
+
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
-import { Grid, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
 import { emptyDocumentoEntrada } from '../../models/DocumentoEntrada';
-import { handleChangeInputComponent } from '../../api/utils/util';
-import DNAAutocomplete from '../../components/V1.0.0/DNAAutocomplete';
 import ChipStatus from '../../components/CustomButtons/ChipStatus';
-import { DNAStatus } from '../../api/utils/constants';
-import DocumentoEntradaContagem from './DocumentoEntradaContagem';
+import { DNAStatus, Status } from '../../api/utils/constants';
 import DocumentoEntradaForm from './DocumentoEntradaForm';
+import DocumentoEntradaDocumentoColumn from './components/DocumentoEntradaDocumentoColumn';
+import DocumentoEntradaConsultaFiltro from './components/DocumentoEntradaConsultaFiltro';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -35,47 +35,9 @@ const columns = [
         headerName: 'Documento',
         minWidth: 100,
         flex: 1,
-        renderCell: ({ row }) => {
+        renderCell: (params) => {
             return (
-                row.doacao == null || row.doacao === false ? (
-                    <List>
-                        <ListItem>
-                            <ListItemText
-                                primary={<Typography variant="body1" >{row.processo}</Typography>}
-                                secondary={<Typography variant="caption" color="textSecondary">Nº do Processo</Typography>}
-                            />
-                            <ListItemText
-                                primary={<Typography variant="body1" >{row.ata}</Typography>}
-                                secondary={<Typography variant="caption" color="textSecondary">Nº da Ata</Typography>}
-                            />
-                            <ListItemText
-                                primary={<Typography variant="body1" >{row.pregao}</Typography>}
-                                secondary={<Typography variant="caption" color="textSecondary">Nº do Pregão</Typography>}
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText
-                                primary={<Typography variant="body1" >{row.empenhoContabil}</Typography>}
-                                secondary={<Typography variant="caption" color="textSecondary">Nº do Empenho Contábil</Typography>}
-                            />
-                            <ListItemText
-                                primary={<Typography variant="body1" >{row.contrato}</Typography>}
-                                secondary={<Typography variant="caption" color="textSecondary">Nº do Contrato</Typography>}
-                            />
-                            <ListItemText
-                                primary={<Typography variant="body1" >{row.numeroNotaFiscal}</Typography>}
-                                secondary={<Typography variant="caption" color="textSecondary">Nº da Nota Fiscal</Typography>}
-                            />
-                        </ListItem>
-                    </List>
-                ) : (
-                    <List>
-                        <ListItemText
-                            primary={<Typography variant="body2" >Os itens foram Doados</Typography>}
-                            secondary={<Typography variant="caption" color="textSecondary">Doação</Typography>}
-                        />
-                    </List>
-                )
+                <DocumentoEntradaDocumentoColumn row={params.row} />
             );
         }
     },
@@ -114,10 +76,6 @@ function DocumentoEntradaConsulta() {
         decrement();
     };
 
-    const handleChange = (event, newValue) => {
-        handleChangeInputComponent(event, newValue, setDocumentoEntrada, documentoEntrada);
-    };
-
     return (
         <formContext.Provider value={{
             setFormId: setFormId,
@@ -127,72 +85,19 @@ function DocumentoEntradaConsulta() {
             <DNADefaultDialogListForm
                 datasourceUrl={path}
                 formtitle='Consultar Documentos de Entrada'
-                filterparams={documentoEntrada}
+                filterparams={{
+                    ...documentoEntrada,
+                    status: documentoEntrada.status !== Status.TODOS ? documentoEntrada.status : '',
+                }}
                 columns={columns}
             >
-                <DocumentoEntradaContagem rowCount={formId} />
-                <Grid container spacing={1}>
-                    <Grid item lg={2} md={4} sm={6} xs={12}>
-                        <TextField
-                            id="processo"
-                            label="Nº do Processo"
-                            onChange={handleChange}
-                            fullWidth
-                            variant='outlined' />
-                    </Grid>
-                    <Grid item lg={2} md={4} sm={6} xs={12}>
-                        <TextField
-                            id="ata"
-                            label="Nº da Ata"
-                            onChange={handleChange}
-                            fullWidth
-                            variant='outlined' />
-                    </Grid>
-                    <Grid item lg={2} md={4} sm={6} xs={12}>
-                        <TextField
-                            id="pregao"
-                            label="Nº do Pregão"
-                            onChange={handleChange}
-                            fullWidth
-                            variant='outlined' />
-                    </Grid>
-                    <Grid item lg={2} md={4} sm={6} xs={12}>
-                        <TextField
-                            id="empenhoContabil"
-                            label="Nº do Empenho Contábil"
-                            onChange={handleChange}
-                            fullWidth
-                            variant='outlined' />
-                    </Grid>
-                    <Grid item lg={2} md={4} sm={6} xs={12}>
-                        <TextField
-                            id="contrato"
-                            label="Nº do Contrato"
-                            onChange={handleChange}
-                            fullWidth
-                            variant='outlined' />
-                    </Grid>
-                    <Grid item lg={2} md={4} sm={6} xs={12}>
-                        <TextField
-                            id="numeroNotaFiscal"
-                            label="Nº da Nota Fiscal"
-                            onChange={handleChange}
-                            fullWidth
-                            variant='outlined' />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <DNAAutocomplete
-                            id="fornecedor"
-                            path="fornecedores"
-                            input_label="Fornecedor"
-
-                            onChange={handleChange}
-                            isOptionEqualToValue={(option, value) => option.id === value.id}
-                            getOptionLabel={(option) => option.nome}
-
-                        />
-                    </Grid>
-                </Grid>
+                <objectContext.Provider value={{
+                    object: documentoEntrada,
+                    setObject: setDocumentoEntrada,
+                    emptyObject: emptyDocumentoEntrada
+                }}>
+                    <DocumentoEntradaConsultaFiltro formId={formId} />
+                </objectContext.Provider>
             </DNADefaultDialogListForm>
 
             <DocumentoEntradaForm

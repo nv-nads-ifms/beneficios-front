@@ -52,7 +52,7 @@ export default function BeneficioForm(props) {
     const handleEdit = () => {
         on_change_datacontrol(DNAStatus.EDIT);
     }
-
+console.log(beneficio)
 
     return (
         <>
