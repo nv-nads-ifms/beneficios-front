@@ -48,7 +48,7 @@ function DNAFormDialog(props) {
     }, [datacontrol]);
 
     React.useEffect(() => {
-        if ((Array.isArray(id_value) && id_value.length === 0) || id_value <= 0) {
+        if ((Array.isArray(id_value) && (id_value.length === 0 || id_value[0] <= 0)) || id_value <= 0) {
             setObject(emptyObject);
         } else {
             dataService.getById(Array.isArray(id_value) ? id_value.join("/") : id_value)

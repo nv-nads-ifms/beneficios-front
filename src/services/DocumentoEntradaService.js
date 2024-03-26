@@ -37,7 +37,7 @@ class DocumentoEntradaService {
     }
 
     getItemEntradaById(documentoEntradaId, numero) {
-        return getData(DOCUMENTO_ENTRADA_API_BASE_URL + "/item/" + documentoEntradaId + "/" + numero);
+        return getData(DOCUMENTO_ENTRADA_API_BASE_URL + "/itens/" + documentoEntradaId + "/" + numero);
     }
 
     getListaMovimentosDeEntrada(documentoEntradaId, numero) {

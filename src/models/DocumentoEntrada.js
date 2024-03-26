@@ -3,7 +3,7 @@ import { Status } from "../api/utils/constants";
 const emptyDocumentoEntrada = {
     id: '',
     unidadeAtendimento: null,
-    status: '',
+    status: Status.PENDENTE,
     observacao: '',
     fornecedor: null,
     processo: '',
@@ -18,6 +18,7 @@ const emptyDocumentoEntrada = {
 
 const emptyItemDocumentoEntrada = {
     documentoEntradaId: '',
+    documentoEntrada: emptyDocumentoEntrada,
     numero: '',
     quantidade: '',
     quantidadeConferida: '',

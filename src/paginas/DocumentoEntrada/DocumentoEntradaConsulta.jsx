@@ -10,6 +10,7 @@ import { DNAStatus, Status } from '../../api/utils/constants';
 import DocumentoEntradaForm from './DocumentoEntradaForm';
 import DocumentoEntradaDocumentoColumn from './components/DocumentoEntradaDocumentoColumn';
 import DocumentoEntradaConsultaFiltro from './components/DocumentoEntradaConsultaFiltro';
+import DocumentoEntradaContagem from './DocumentoEntradaContagem';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -87,10 +88,12 @@ function DocumentoEntradaConsulta() {
                 formtitle='Consultar Documentos de Entrada'
                 filterparams={{
                     ...documentoEntrada,
+                    fornecedorId: documentoEntrada.fornecedor != null ? documentoEntrada.fornecedor.id : '',
                     status: documentoEntrada.status !== Status.TODOS ? documentoEntrada.status : '',
                 }}
                 columns={columns}
             >
+                <DocumentoEntradaContagem />
                 <objectContext.Provider value={{
                     object: documentoEntrada,
                     setObject: setDocumentoEntrada,

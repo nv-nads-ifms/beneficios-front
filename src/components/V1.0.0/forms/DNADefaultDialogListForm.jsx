@@ -91,65 +91,63 @@ function DNADefaultDialogListForm(props) {
         // ];
     }, [perfil, handleNew]);
 
-    const getColumnActions = (params) => {
-        let columns = [];
-        if (perfil !== undefined) {
-            if (perfil.ler) {
-                columns.push(
-                    <GridActionsCellItem
-                        icon={<VisibilityIcon />}
-                        label="Visualizar"
-                        onClick={handleView(params)}
-                    />);
-            }
-
-            if (perfil.remover) {
-                columns.push(
-                    <GridActionsCellItem
-                        icon={<DeleteIcon />}
-                        label="Excluir"
-                        onClick={handleDelete(params)}
-                    />
-                );
-            }
-
-            if (perfil.escrever) {
-                columns.push(
-                    <GridActionsCellItem
-                        icon={<EditIcon />}
-                        label="Alterar"
-                        onClick={handleEdit(params)}
-                    />
-                );
-            }
-        }
-
-        if (moreActions != null) {
-            moreActions.map((obj, index) => {
-                const { label, icon, handleClick } = obj;
-                columns.push(
-                    <GridActionsCellItem
-                        key={index}
-                        icon={icon}
-                        label={label}
-                        onClick={handleClick(params)}
-                        showInMenu
-                    />
-                );
-                return obj;
-            });
-        }
-
-        return columns;
-    }
-
     const actionColumn = {
         field: "actions",
         headerName: "Ações",
         width: 140 + (moreActions != null ? 35 : 0),
         pinnable: false,
         type: 'actions',
-        getActions: getColumnActions
+        getActions: (params) => {
+            let columns = [];
+            if (perfil !== undefined) {
+                if (perfil.ler) {
+                    columns.push(
+                        <GridActionsCellItem
+                            icon={<VisibilityIcon />}
+                            label="Visualizar"
+                            onClick={handleView(params)}
+                        />);
+                }
+
+                if (perfil.remover) {
+                    columns.push(
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Excluir"
+                            onClick={handleDelete(params)}
+                        />
+                    );
+                }
+
+                if (perfil.escrever) {
+                    columns.push(
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Alterar"
+                            onClick={handleEdit(params)}
+                        />
+                    );
+                }
+            }
+
+            if (moreActions != null) {
+                moreActions.map((obj, index) => {
+                    const { label, icon, handleClick } = obj;
+                    columns.push(
+                        <GridActionsCellItem
+                            key={index}
+                            icon={icon}
+                            label={label}
+                            onClick={handleClick(params)}
+                            showInMenu
+                        />
+                    );
+                    return obj;
+                });
+            }
+
+            return columns;
+        }
     };
 
     const getParams = React.useCallback(() => {
@@ -218,20 +216,22 @@ function DNADefaultDialogListForm(props) {
                 </Box>
             </Grid>
             <Grid item xs={12} sx={{ mt: 4 }}>
-                <SpeedDial
-                    ariaLabel="Acesso rápido ao menu"
-                    direction='left'
-                    icon={<SpeedDialIcon />}
-                >
-                    {actions.map((action) => (
-                        <SpeedDialAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            onClick={typeof action.action === "function" ? action.action : null}
-                        />
-                    ))}
-                </SpeedDial>
+                {actions.length > 0 && (
+                    <SpeedDial
+                        ariaLabel="Acesso rápido ao menu"
+                        direction='left'
+                        icon={<SpeedDialIcon />}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={typeof action.action === "function" ? action.action : null}
+                            />
+                        ))}
+                    </SpeedDial>
+                )}
             </Grid>
         </Grid>
     );

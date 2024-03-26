@@ -9,9 +9,12 @@ import DocumentoEntradaConferenciaForm from './DocumentoEntradaConferenciaForm';
 import DocumentoEntradaBeneficioColumn from './components/DocumentoEntradaBeneficioColumn';
 import ChipStatus from '../../components/CustomButtons/ChipStatus';
 import DocumentoEntradaDocumentoColumn from './components/DocumentoEntradaDocumentoColumn';
-import { handleChangeInputComponent } from '../../api/utils/util';
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
 import DocumentoEntradaConsultaFiltro from './components/DocumentoEntradaConsultaFiltro';
+import DocumentoEntradaNumeroColumn from './components/DocumentoEntradaNumeroColumn';
+import { Preview, Publish } from '@mui/icons-material';
+import { userContext } from '../../hooks/userContext';
+import { emptyPerfilMenu, getMenuPerfilByUrl } from '../../api/utils/menuUtils';
 
 const columns = [
     {
@@ -27,47 +30,55 @@ const columns = [
     {
         field: 'unidadeAtendimento',
         headerName: 'Unidade de atendimento',
-        minWidth: 100,
-        flex: 1,
-        valueGetter: ({ row }) => row.unidadeAtendimento.nome,
+        width: 180,
+        valueGetter: ({ row }) => row.documentoEntrada.unidadeAtendimento.numeroDaUnidade,
     },
     {
         field: 'fornecedor',
         headerName: 'Fornecedor',
         minWidth: 100,
         flex: 1,
-        valueGetter: ({ row }) => row.fornecedor.nome
+        valueGetter: ({ row }) => row.documentoEntrada.fornecedor.nome
     },
     {
         field: 'documento',
-        headerName: 'Documento',
-        minWidth: 100,
+        headerName: 'Documento Fiscal',
+        minWidth: 180,
         flex: 1,
         renderCell: (params) => {
             return (
-                <DocumentoEntradaDocumentoColumn row={params.row} />
+                <DocumentoEntradaDocumentoColumn row={params.row.documentoEntrada} />
             );
         }
     },
     {
         field: 'numero',
         headerName: 'Número',
-        valueGetter: ({ value, row }) => `${row.documentoEntrada.id}/${value}`
+        width: 180,
+        renderCell: ({ value, row }) => <DocumentoEntradaNumeroColumn value={value} row={row} />
     },
     {
-        field: 'beneficio',
+        field: 'beneficioEventual',
         headerName: 'Benefício Eventual',
+        minWidth: 150,
+        flex: 1,
         renderCell: (params) => {
             return (
-                <DocumentoEntradaBeneficioColumn row={params.row} />
+                <DocumentoEntradaBeneficioColumn value={params.value} row={params.row} />
             );
         }
     }
 ];
 
-const emptyItem = { documentoEntradaId: '', itemNumero: '' };
-
 export default function DocumentoEntradaConferencia() {
+    const usuario = React.useContext(userContext);
+    /* Perfil de analise dos atendimentos */
+    const perfilConferencia = React.useMemo(() => {
+        if (usuario != null && usuario.hasOwnProperty('perfis'))
+            return getMenuPerfilByUrl(usuario.perfis, `/documento-entrada-conferencia`);
+        return emptyPerfilMenu;
+    }, [usuario]);
+
     /* Classe de controle para acesso aos serviços do BACKEND */
     const path = "documento-entrada/itens";
 
@@ -78,13 +89,15 @@ export default function DocumentoEntradaConferencia() {
     const [open, setOpen] = React.useState(false);
     const [dataControl, setDataControl] = React.useState(DNAStatus.VIEW);
     /* Atributo de controle do ID do objeto de negócio a ser manipulado */
-    const [formId, setFormId] = React.useState();
+    const [formId, setFormId] = React.useState(null);
 
     const decrement = React.useCallback(() => {
-        if (formId >= 0) {
-            setFormId(formId - 1);
+        if (formId != null) {
+            var l = formId;
+            l[0]--;
+            setFormId(l);
         } else {
-            setFormId(-1);
+            setFormId(null);
         }
     }, [formId]);
 
@@ -93,23 +106,33 @@ export default function DocumentoEntradaConferencia() {
         decrement();
     };
 
-    const [item, setItem] = React.useState(emptyItem);
-    const [openModal, setOpenModal] = React.useState(false);
-    const [enabled, setEnabled] = React.useState(true);
+    const handleConferencia = React.useCallback(
+        (row) => () => {
+            setFormId(row.id);
+            setDataControl(DNAStatus.EDIT);
+            setOpen(true);
+        }, [setFormId, setDataControl, setOpen]);
 
-    const handleOnClose = () => {
-        setItem(emptyItem);
-        setOpenModal(false);
-    }
+    const handleViewItem = React.useCallback(
+        (row) => () => {
+            setFormId(row.id);
+            setDataControl(DNAStatus.VIEW);
+            setOpen(true);
+        }, [setFormId, setDataControl, setOpen]);
 
-    const handleConferencia = (value, activate) => {
-        setItem({
-            documentoEntradaId: value.documentoEntrada.id,
-            itemNumero: value.numero
-        });
-        setEnabled(activate);
-        setOpenModal(true);
-    }
+    const buttonMoreActions = React.useMemo(() => {
+        let columns = [];
+        if (perfilConferencia !== undefined) {
+            if (perfilConferencia.ler) {
+                columns.push({ label: 'Ver Item', icon: <Preview />, handleClick: handleViewItem });
+            }
+
+            if (perfilConferencia.escrever) {
+                columns.push({ label: 'Conferência', icon: <Publish />, handleClick: handleConferencia });
+            }
+        }
+        return columns;
+    }, [perfilConferencia, handleViewItem, handleConferencia]);
 
     return (
         <formContext.Provider value={{
@@ -119,31 +142,34 @@ export default function DocumentoEntradaConferencia() {
         }}>
             <DNADefaultDialogListForm
                 datasourceUrl={path}
-                formtitle='Conferência de Entrada no Estoqu'
+                getRowId={(row) => [row.documentoEntrada.id, row.numero]}
+                formtitle='Conferência de Entrada no Estoque'
                 filterparams={{
                     ...documentoEntrada,
+                    fornecedorId: documentoEntrada.fornecedor != null ? documentoEntrada.fornecedor.id : '',
                     status: documentoEntrada.status !== Status.TODOS ? documentoEntrada.status : '',
                 }}
                 columns={columns}
-                getRowId={(row) => `${row.documentoEntrada.id}/${row.numero}`}
+                moreActions={buttonMoreActions}
             >
                 <objectContext.Provider value={{
                     object: documentoEntrada,
                     setObject: setDocumentoEntrada,
                     emptyObject: emptyDocumentoEntrada
                 }}>
-                    <DocumentoEntradaConsultaFiltro formId={formId} />
+                    <DocumentoEntradaConsultaFiltro />
                 </objectContext.Provider>
-
-                <DocumentoEntradaConferenciaForm
-                    documentoEntradaId={item.documentoEntradaId}
-                    itemNumero={item.itemNumero}
-                    openModal={openModal}
-                    enabled={enabled}
-                    onClose={handleOnClose}
-                    // callback={atualizaLista}
-                />
             </DNADefaultDialogListForm>
+
+
+            <DocumentoEntradaConferenciaForm
+                id_value={formId}
+                datacontrol={dataControl}
+                on_change_datacontrol={setDataControl}
+                open={open}
+                on_close_func={handleClose}
+                data_source_url={path}
+            />
         </formContext.Provider>
     );
 }
