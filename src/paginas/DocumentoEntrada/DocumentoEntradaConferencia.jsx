@@ -83,7 +83,10 @@ export default function DocumentoEntradaConferencia() {
     const path = "documento-entrada/itens";
 
     /* Atributos utilizados para realizar a filtragem da consulta */
-    const [documentoEntrada, setDocumentoEntrada] = React.useState(emptyDocumentoEntrada);
+    const [documentoEntrada, setDocumentoEntrada] = React.useState({
+        ...emptyDocumentoEntrada,
+        status: Status.TODOS
+    });
 
     /* Atributos de controle do formulário modal */
     const [open, setOpen] = React.useState(false);
@@ -160,7 +163,6 @@ export default function DocumentoEntradaConferencia() {
                     <DocumentoEntradaConsultaFiltro />
                 </objectContext.Provider>
             </DNADefaultDialogListForm>
-
 
             <DocumentoEntradaConferenciaForm
                 id_value={formId}

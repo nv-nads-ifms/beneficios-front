@@ -45,7 +45,8 @@ const columns = [
         field: 'emissao',
         headerName: 'Emissão',
         width: 150,
-        renderCell: ({ value }) => {
+        renderCell: (params) => {
+            const { value } = params;
             return (
                 Moment(value).format('DD/MM/Y H:mm:ss')
             );
@@ -221,6 +222,7 @@ export default function DocumentoEntradaConferenciaForm(props) {
                 <TabPanel value={tabIndex} index={1}>
                     <Box sx={{ height: 250 }}>
                         <DNADataGrid
+                            getRowId={(row) => row.unidadeAtendimento.id}
                             rows={itemEntrada.movimentos}
                             columns={columns}
                         />

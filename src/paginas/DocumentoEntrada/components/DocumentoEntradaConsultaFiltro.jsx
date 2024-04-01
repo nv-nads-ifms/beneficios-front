@@ -88,7 +88,7 @@ function DocumentoEntradaConsultaFiltro() {
                         <FormControlLabel value={Status.TODOS} control={<Radio color="primary" />} label="Todos" />
                         <FormControlLabel value={Status.PENDENTE} control={<Radio color="primary" />} label="Pendente" />
                         <FormControlLabel value={Status.PARCIAL} control={<Radio color="primary" />} label="Parcial" />
-                        <FormControlLabel value={Status.FINALIZADO} control={<Radio color="primary" />} label="Finalizado" />
+                        <FormControlLabel value={Status.RECEBIDO} control={<Radio color="primary" />} label="Recebido" />
                         <FormControlLabel value={Status.CANCELADO} control={<Radio color="primary" />} label="Cancelado" />
                     </RadioGroup>
                 </FormControl>

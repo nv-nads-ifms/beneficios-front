@@ -20,10 +20,7 @@ import RetiradaBeneficioListagem from './paginas/RetiradaBeneficio/RetiradaBenef
 import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
 
 import FornecedorCadastro from './paginas/Fornecedor/FornecedorCadastro';
-
-import DocumentoEntradaCadastro from './paginas/DocumentoEntrada/DocumentoEntradaCadastro';
 import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEntradaConferencia';
-import DocumentoSaidaListagem from './paginas/DocumentoSaida/DocumentoSaidaListagem';
 import DocumentoSaidaCadastro from './paginas/DocumentoSaida/DocumentoSaidaCadastro';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
 import CidadeConsulta from './paginas/Cidade/CidadeConsulta';
@@ -53,6 +50,7 @@ import EscolaridadeConsulta from './paginas/Escolaridade/EscolaridadeConsulta';
 import CondicaoDeTrabalhoConsulta from './paginas/CondicaoDeTrabalho/CondicaoDeTrabalhoConsulta';
 import FornecedorConsulta from './paginas/Fornecedor/FornecedorConsulta';
 import DocumentoEntradaConsulta from './paginas/DocumentoEntrada/DocumentoEntradaConsulta';
+import DocumentoSaidaConsulta from './paginas/DocumentoSaida/DocumentoSaidaConsulta';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -139,10 +137,9 @@ const Routes = () => {
                 <PrivateRoute path='/fornecedores-ficha/:id/:status' component={FornecedorCadastro} />
 
                 <PrivateRoute path='/documento-entrada' component={DocumentoEntradaConsulta} />
-                <PrivateRoute path='/documento-entrada-ficha/:id/:status' component={DocumentoEntradaCadastro} />
                 <PrivateRoute path='/documento-entrada-conferencia' component={DocumentoEntradaConferencia} />
 
-                <PrivateRoute path='/documento-saida' component={DocumentoSaidaListagem} />
+                <PrivateRoute path='/documento-saida' component={DocumentoSaidaConsulta} />
                 <PrivateRoute path='/documento-saida-ficha/:id/:status' component={DocumentoSaidaCadastro} />
                 <PrivateRoute path='/documento-saida-conferencia' component={DocumentoSaidaConferencia} />
 

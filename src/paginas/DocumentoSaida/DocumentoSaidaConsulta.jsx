@@ -1,16 +1,12 @@
 import React from 'react';
 
 import { formContext } from '../../contexts/formContext';
-import { objectContext } from '../../contexts/objectContext';
-
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
-import { emptyDocumentoEntrada } from '../../models/DocumentoEntrada';
 import ChipStatus from '../../components/CustomButtons/ChipStatus';
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup } from '@mui/material';
 import { DNAStatus, Status } from '../../api/utils/constants';
-import DocumentoEntradaForm from './DocumentoEntradaForm';
-import DocumentoEntradaDocumentoColumn from './components/DocumentoEntradaDocumentoColumn';
-import DocumentoEntradaConsultaFiltro from './components/DocumentoEntradaConsultaFiltro';
-import DocumentoEntradaContagem from './DocumentoEntradaContagem';
+import DocumentoSaidaContagem from './DocumentoSaidaContagem';
+import DocumentoSaidaForm from './DocumentoSaidaForm';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -32,34 +28,19 @@ const columns = [
         valueGetter: ({ value }) => value.nome,
     },
     {
-        field: 'documento',
-        headerName: 'Documento',
+        field: 'observacao',
+        headerName: 'Observação',
         minWidth: 100,
         flex: 1,
-        renderCell: (params) => {
-            return (
-                <DocumentoEntradaDocumentoColumn row={params.row} />
-            );
-        }
     },
-    {
-        field: 'fornecedor',
-        headerName: 'Fornecedor',
-        minWidth: 100,
-        flex: 1,
-        valueGetter: ({ value }) => value.nome
-    }
 ];
 
-function DocumentoEntradaConsulta() {
+function DocumentoSaidaConsulta() {
     /* Classe de controle para acesso aos serviços do BACKEND */
-    const path = "documento-entrada";
+    const path = "documento-saida";
 
     /* Atributos utilizados para realizar a filtragem da consulta */
-    const [documentoEntrada, setDocumentoEntrada] = React.useState({
-        ...emptyDocumentoEntrada,
-        status: Status.TODOS
-    });
+    const [status, setStatus] = React.useState("");
 
     /* Atributos de controle do formulário modal */
     const [open, setOpen] = React.useState(false);
@@ -88,25 +69,36 @@ function DocumentoEntradaConsulta() {
         }}>
             <DNADefaultDialogListForm
                 datasourceUrl={path}
-                formtitle='Consultar Documentos de Entrada'
+                formtitle='Consultar Documentos de Saída'
                 filterparams={{
-                    ...documentoEntrada,
-                    fornecedorId: documentoEntrada.fornecedor != null ? documentoEntrada.fornecedor.id : '',
-                    status: documentoEntrada.status !== Status.TODOS ? documentoEntrada.status : '',
+                    status: status === Status.TODOS ? '' : status,
                 }}
                 columns={columns}
             >
-                <DocumentoEntradaContagem rowCount={formId} />
-                <objectContext.Provider value={{
-                    object: documentoEntrada,
-                    setObject: setDocumentoEntrada,
-                    emptyObject: emptyDocumentoEntrada
-                }}>
-                    <DocumentoEntradaConsultaFiltro formId={formId} />
-                </objectContext.Provider>
+                <DocumentoSaidaContagem rowCount={formId} />
+
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">Status do Documento de Saída</FormLabel>
+                            <RadioGroup
+                                row
+                                defaultValue={Status.TODOS}
+                                aria-label="status"
+                                name="status"
+                                onChange={(e) => setStatus(e.target.value)}>
+                                <FormControlLabel value={Status.TODOS} control={<Radio color="primary" />} label="Todos" />
+                                <FormControlLabel value={Status.PENDENTE} control={<Radio color="primary" />} label="Pendente" />
+                                <FormControlLabel value={Status.PARCIAL} control={<Radio color="primary" />} label="Parcial" />
+                                <FormControlLabel value={Status.FINALIZADO} control={<Radio color="primary" />} label="Finalizado" />
+                                <FormControlLabel value={Status.CANCELADO} control={<Radio color="primary" />} label="Cancelado" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                </Grid>
             </DNADefaultDialogListForm>
 
-            <DocumentoEntradaForm
+            <DocumentoSaidaForm
                 id_value={formId}
                 datacontrol={dataControl}
                 on_change_datacontrol={setDataControl}
@@ -118,4 +110,4 @@ function DocumentoEntradaConsulta() {
     );
 }
 
-export default DocumentoEntradaConsulta;
+export default DocumentoSaidaConsulta;

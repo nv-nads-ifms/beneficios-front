@@ -1,17 +1,18 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import CustomCircularMonitor from '../../components/CustomFields/CustomCircularMonitor';
-import DocumentoSaidaService from '../../services/DocumentoSaidaService';
+import DataService from '../../api/services/DataServices';
 
-export default function DocumentoSaidaContagem(props) {
+const dataService = new DataService('/documento-saida');
+
+function DocumentoSaidaContagem(props) {
     const { rowCount } = props;
     const [data, setData] = React.useState([]);
 
     React.useEffect(() => {
-        DocumentoSaidaService.getDocumentoSaidaListarContagem()
-            .then(resp => resp.data)
-            .then(data => {
-                setData(data);
+        dataService.getBy('contagem')
+            .then(resp => {
+                setData(resp.data);
             })
     }, [rowCount]);
 
@@ -33,3 +34,5 @@ export default function DocumentoSaidaContagem(props) {
         </React.Fragment>
     );
 }
+
+export default DocumentoSaidaContagem;

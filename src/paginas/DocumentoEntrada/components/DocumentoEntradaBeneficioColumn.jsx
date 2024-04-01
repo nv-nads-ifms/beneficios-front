@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItemText } from '@material-ui/core';
+import { ListItemText } from '@mui/material';
 
 function DocumentoEntradaBeneficioColumn(params) {
     const { value, row } = params;

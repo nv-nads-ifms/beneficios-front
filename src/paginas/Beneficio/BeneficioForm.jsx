@@ -21,21 +21,15 @@ const columns = [
         headerName: 'Unidade de Atendimento',
         minWidth: 100,
         flex: 1,
-        renderCell: (value) => value.nome ? value.nome : "UA não Encontrado"
+        renderCell: (params) => {
+            const { value } = params;
+            return `${value.nome + " - " + value.numeroDaUnidade}`;
+        }
     },
     {
-        field: 'bairro',
-        headerName: 'Bairro',
-        minWidth: 100,
-        flex: 1,
-        renderCell: (value) => value.nome ? value.nome : "Bairro não Encontrado",
-    },
-    {
-        field: 'cidade',
-        headerName: 'Cidade',
-        minWidth: 100,
-        flex: 1,
-        renderCell: (value) => value.nome ? value.nome : "Cidade não Encontrado",
+        field: 'quantidade',
+        headerName: 'Quantidade',
+        width: 100,
     },
 ];
 
@@ -105,6 +99,7 @@ export default function BeneficioForm(props) {
                         <Grid item xs={12}>
                             <Box sx={{ height: 410 }}>
                                 <DNADataGrid
+                                    getRowId={(row) => row.unidadeAtendimento.id}
                                     rows={beneficio.estoque}
                                     columns={columns}
                                 />

@@ -4,14 +4,15 @@ const emptyDocumentoSaida = {
     id: '',
     unidadeAtendimento: null,
     emissao: new Date(),
-    status: '',
+    status: Status.PENDENTE,
     observacao: '',
     itens: [],
 };
 
 const emptyItemDocumentoSaida = {
     documentoSaidaId: '',
-    numero: 0,
+    documentoSaida: emptyDocumentoSaida,
+    numero: '',
     quantidade: '',
     quantidadeConferida: '',
     quantidadePendente: '',
