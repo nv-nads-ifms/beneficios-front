@@ -147,7 +147,7 @@ export default function DocumentoSaidaConferenciaForm(props) {
                         </ListItem>
                         <ListItem>
                             <ListItemText
-                                primary={<Typography variant="body1" >{itemSaida.beneficioEventual != null ? itemSaida.beneficioEventual.descricao : ''}</Typography>}
+                                primary={<Typography variant="body1" >{itemSaida.beneficioEventual != null ? itemSaida.beneficioEventual.nome : ''}</Typography>}
                                 secondary={<Typography variant="caption" color="textSecondary">Benefício a ser conferido</Typography>}
                             />
                             <ListItemText
@@ -191,7 +191,7 @@ export default function DocumentoSaidaConferenciaForm(props) {
                 <TabPanel value={tabIndex} index={1}>
                     <Box sx={{ height: 250 }}>
                         <DNADataGrid
-                            getRowId={(row) => row.unidadeAtendimento.id}
+                            getRowId={(row) => row.numero}
                             rows={itemSaida.movimentos}
                             columns={columns}
                         />

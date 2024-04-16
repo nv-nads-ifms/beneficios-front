@@ -171,7 +171,7 @@ function ItemDocumentoSaidaForm(props) {
                     mt: 1
                 }}>
                     <DNADataGrid
-                        getRowId={(row) => row.beneficioEventual.id}
+                        getRowId={(row) => row.numero}
                         rows={itens}
                         rowCount={itens.length}
 
