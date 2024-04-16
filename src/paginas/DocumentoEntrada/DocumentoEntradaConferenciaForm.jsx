@@ -222,7 +222,7 @@ export default function DocumentoEntradaConferenciaForm(props) {
                 <TabPanel value={tabIndex} index={1}>
                     <Box sx={{ height: 250 }}>
                         <DNADataGrid
-                            getRowId={(row) => row.unidadeAtendimento.id}
+                            getRowId={(row) => row.numero}
                             rows={itemEntrada.movimentos}
                             columns={columns}
                         />
