@@ -152,7 +152,6 @@ export default function ItemAnaliseListagem(props) {
                     mt: 1
                 }}>
                     <DNADataGrid
-                        getRowId={(row) => row.sequencia}
                         rows={itens}
                         rowCount={itens.length}
 
