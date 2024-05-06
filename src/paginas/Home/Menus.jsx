@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -74,7 +74,7 @@ const dataService = new DataService('/usuarios');
 
 function Menus(props) {
   const { window, children } = props;
-  let history = useHistory();
+  const navigate = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -90,13 +90,13 @@ function Menus(props) {
         })
         .catch(error => {
           logout();
-          history.push('/login');
+          navigate('/login');
         });
     } else {
       dataService.getBy('auth/logout')
         .then(response => logout());
     }
-  }, [localUserData, history]);
+  }, [localUserData, navigate]);
   
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

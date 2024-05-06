@@ -1,6 +1,6 @@
 import React from 'react';
 import { CircularProgress, Container, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CustomTextField from "../../components/CustomFields/CustomTextField";
 import { useParams } from 'react-router-dom';
 import { validarCampo } from '../../models/validaCampos';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AlterarSenhaEsquecida() {
     const { token } = useParams();
-    let history = useHistory();
+    const navigate = useNavigate();
     const classes = useStyles();
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
@@ -94,7 +94,7 @@ export default function AlterarSenhaEsquecida() {
                     setOpen(true);
                 } else {
                     setSuccess(true);
-                    history.push('/aviso-senha-alterada');
+                    navigate('/aviso-senha-alterada');
                 }
             })
             .catch(error => {

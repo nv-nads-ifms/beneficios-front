@@ -4,15 +4,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import 'dayjs/locale/pt-br';
 import './App.css';
-
-import Routes from './routes';
+import Rotas from './routes';
 
 function App() {
   return (
     <div>
       <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
-        <Routes />
+        <Rotas />
       </LocalizationProvider>
     </div>
   );

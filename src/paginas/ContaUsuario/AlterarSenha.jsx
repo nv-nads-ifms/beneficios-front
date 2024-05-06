@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Container, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CustomTextField from "../../components/CustomFields/CustomTextField";
 import { validarCampo } from '../../models/validaCampos';
 import useErros from '../../hooks/useErros';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AlterarSenhaEsquecida() {
     const usuario = useContext(userContext);
-    let history = useHistory();
+    const navigate = useNavigate();
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [severity, setSeverity] = React.useState("warning");
@@ -77,7 +77,7 @@ export default function AlterarSenhaEsquecida() {
                     setSeverity("warning");
                     setOpen(true);
                 } else {
-                    history.push('/conta-usuario');
+                    navigate('/conta-usuario');
                 }
             })
             .catch(error => {

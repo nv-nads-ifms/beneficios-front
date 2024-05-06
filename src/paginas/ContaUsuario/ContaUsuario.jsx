@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Moment from "moment";
 import { Card, CardActionArea, CardActions, CardMedia, Grid, List, ListItem, ListItemText, Typography } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { dataURLtoFile } from "../../api/format";
 import { emptyMessageAlert, sendMessageAlert } from "../../api/utils/customMessages";
 
@@ -17,7 +17,7 @@ import noImageAvailable from "../../img/noImageAvailable.png";
 import { Message } from "../../api/utils/constants";
 
 export default function ContaUsuario() {
-    let history = useHistory();
+    const navigate = useNavigate();
     const [messageAlert, setMessageAlert] = React.useState(emptyMessageAlert);
     const [usuario, setUsuario] = React.useState(useContext(userContext));
     const [imagePreview, setImagePreview] = React.useState(null);
@@ -62,7 +62,7 @@ export default function ContaUsuario() {
     }
 
     const onEditClickHandler = () => {
-        history.push(`/alterar-senha`);
+        navigate(`/alterar-senha`);
     }
 
     const handleUploadClick = event => {

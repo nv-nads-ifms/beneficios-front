@@ -1,6 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, } from '@material-ui/core';
+import { Navigate } from 'react-router-dom';
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, } from '@mui/material';
 import CustomTable from '../../components/CustomTable/CustomTable';
 import RetiradaBeneficioTableRow from './RetiradaBeneficioTableRow';
 import BaseForm from '../../components/CustomForms/BaseForm';
@@ -39,7 +39,6 @@ const getRequestParams = (pessoa, status, page, pageSize) => {
 };
 
 export default function RetiradaBeneficioListagem() {
-    let history = useHistory();
     const usuario = React.useContext(userContext);
     const perfil = getMenuPerfilByUrl(usuario.perfis, '/retirada-de-beneficio');
 
@@ -65,7 +64,7 @@ export default function RetiradaBeneficioListagem() {
     }, [pessoa, status, setRowsPerPage, setPage, page, rowsPerPage]);
     
     const handleAction = (id, itemId, action) => {
-        history.push(`/retirada-de-beneficio-ficha/${id}/${itemId}/${action}`);
+        <Navigate to={`/retirada-de-beneficio-ficha/${id}/${itemId}/${action}`} />;
     }
 
     return (

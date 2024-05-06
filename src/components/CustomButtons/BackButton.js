@@ -1,13 +1,12 @@
 import React from 'react';
-import { Button } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Button } from "@mui/material";
+import { Navigate } from 'react-router-dom';
+import { ArrowBack } from '@mui/icons-material';
 
 export default function BackButton(props) {
-    const { className } = props;
-    let history = useHistory();
+
     const handleClick = (event) => {
-        history.go(-1);
+        <Navigate to={-1} />
     };
 
     return (
@@ -17,8 +16,7 @@ export default function BackButton(props) {
             variant="contained"
             color="secondary"
             name="btVoltar"
-            className={className}
-            startIcon={<ArrowBackIcon />}
+            startIcon={<ArrowBack />}
             onClick={(event) => handleClick(event)}
         >
             Voltar

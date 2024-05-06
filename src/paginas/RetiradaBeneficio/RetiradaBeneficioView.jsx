@@ -1,9 +1,9 @@
 import React from 'react';
 import Moment from 'moment';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
-    Typography, Avatar, makeStyles,
-    List, ListItem, ListItemText, ListItemAvatar, Grid,
+    Typography, Avatar, makeStyles, 
+    List, ListItem, ListItemText, ListItemAvatar, Grid
 } from '@material-ui/core';
 import { emptyAnalise, emptyItemAnalise } from '../../models/Analise';
 import ListDocumentoView from '../Analise/Components/ListDocumentoView';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RetiradaBeneficioView() {
-    let history = useHistory();
+    const navigate = useNavigate();
     const { itemId, id, status } = useParams();
     const usuario = React.useContext(userContext);
     const returnURL = "/retirada-de-beneficio";
@@ -89,7 +89,7 @@ export default function RetiradaBeneficioView() {
 
                 return ItemAnaliseService.retirar(params)
                     .then(data => {
-                        history.push('/retirada-de-beneficio');
+                        navigate('/retirada-de-beneficio');
                     })
                     .catch(error => {
                         Swal.showValidationMessage(
@@ -105,7 +105,7 @@ export default function RetiradaBeneficioView() {
                     `O Benefício Eventual foi retirado.`,
                     'success'
                 );
-                history.push('/retirada-de-beneficio');
+                navigate('/retirada-de-beneficio');
             }
         });
     }
@@ -224,7 +224,6 @@ export default function RetiradaBeneficioView() {
                             className={classes.button}
                             onClick={handlePost} />
                     )}
-
                     <BackButton className={classes.button} />
                 </Grid>
             </Grid>

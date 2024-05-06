@@ -1,158 +1,102 @@
 import React from 'react';
-import { useState } from 'react';
-import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { CircularProgress, Container, Grid, Paper, Typography } from "@material-ui/core";
-import AutenticacaoService from '../../services/AutenticacaoService';
-import CustomTextField from '../../components/CustomFields/CustomTextField';
-import CustomAlert from '../../components/CustomAlert/CustomAlert';
-import useErros from '../../hooks/useErros';
-import { validarCampo } from '../../models/validaCampos';
-import BackButton from '../../components/CustomButtons/BackButton';
-import SendButton from '../../components/CustomButtons/SendButton';
+import { Backdrop, Box, Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
 import { green } from '@material-ui/core/colors';
-
-const useStyles = makeStyles((theme) => ({
-    messages: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(15),
-    },
-    paper: {
-        margin: theme.spacing(2),
-        padding: theme.spacing(5),
-    },
-    button: {
-        margin: theme.spacing(1),
-    }
-}));
+import { postData } from '../../api/api';
+import { swalWithBootstrapButtons } from '../../api/utils/modalMessages';
+import LogoHeaderComponent from './LoginHeaderComponent';
+import DNALink from '../../components/V1.0.0/DNALink';
 
 export default function EsqueceuSenha() {
-    let history = useHistory();
-    const classes = useStyles();
+    const navigate = useNavigate();
+
+    const [email, setEmail] = React.useState('');
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
 
-    const [open, setOpen] = useState(false);
-    const [severity, setSeverity] = useState("warning");
-    const [requestMessage, setRequestMessage] = useState("");
-    const [erros, validarCampos] = useErros({
-        email: validarCampo,
-    });
-
-    const [email, setEmail] = useState("");
-    const buttonSx = {
-        ...(success && {
-            bgcolor: green[500],
-            '&:hover': {
-                bgcolor: green[700],
-            },
-        }),
-    };
-
-    const handlePost = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
+
         if (!loading) {
             setLoading(true);
             setSuccess(false);
         }
 
-        AutenticacaoService.forgotPassword(email)
-            .then(r => r.json())
-            .then(resp => {
-                setLoading(false);
-                if (resp.status !== undefined && resp.status === 400) {
-                    setRequestMessage(resp.message);
-                    setSeverity("warning");
-                    setOpen(true);
-                    return;
-                }
-                if (Array.isArray(resp)) {
-                    validarCampos(resp);
-
-                    setRequestMessage("O campo de E-mail não foi informado!");
-                    setSeverity("warning");
-                    setOpen(true);
-                } else {
+        postData('/auth/forgot-password', { email: email })
+            .then((response) => {
+                if (response.status === 200) {
+                    setLoading(false);
                     setSuccess(true);
-                    history.push('/aviso-senha');
+                    navigate('/beneficios/aviso-senha');
+                } else {
+                    setLoading(false);
+                    setSuccess(false);
+                    swalWithBootstrapButtons.fire(
+                        'Ooops!',
+                        "Não foi possível solicitar o código de recuperação da senha!",
+                        'error'
+                    );
                 }
-            })
-            .catch(error => {
-                setRequestMessage("O sistema está indisponível no momento!");
-                setSeverity("error");
-                setOpen(true);
             });
     }
 
     return (
-        <main className={classes.content}>
-            <Container component="article" maxWidth="sm">
-                <Paper className={classes.paper} elevation={3}>
-                    <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '10vh' }}>
-                        <Grid item xs>
-                            <Typography gutterBottom paragraph variant="h4" component="h3" align="center">
-                                Recuperação de Senha
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={0} direction="column" alignItems="center" justify="center">
-                        <Grid item xs>
-                            <Typography variant="body2" align="left" color="textPrimary">
-                                Para redefinir sua senha, informe seu e-mail abaixo e clique em Enviar.
-                            </Typography>
-                        </Grid>
-                    </Grid>
+        <LogoHeaderComponent>
+            <Typography gutterBottom paragraph variant="h4" component="h3" align="center">
+                Recuperação de Senha
+            </Typography>
+            <Typography variant="subtitle1">
+                Se seu Email corresponder a um cadastro existente, nós enviaremos um Link de recuperação de senha para você.
+            </Typography>
 
-                    <form onSubmit={(event) => handlePost(event)}>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12}>
-                                <CustomTextField
-                                    id="email"
-                                    label="Endereço de E-mail"
-                                    value={email}
-                                    placeholder="Digite seu de E-mail"
-                                    autoFocus={true}
-                                    error={erros.email}
-                                    onChangeHandler={(event) => setEmail(event.target.value)}
-                                />
-                            </Grid>
-                            <Grid container spacing={0} direction="column" alignItems="flex-end">
-                                <Grid item xs={12}>
-                                    <BackButton
-                                        disabled={loading}
-                                        className={classes.button} />
-                                    <SendButton
-                                        sx={buttonSx}
-                                        disabled={loading}
-                                        className={classes.button} />
-                                    {loading && (
-                                        <CircularProgress
-                                            size={24}
-                                            sx={{
-                                                color: green[500],
-                                                position: 'absolute',
-                                                top: '50%',
-                                                left: '50%',
-                                                marginTop: '-12px',
-                                                marginLeft: '-12px',
-                                            }}
-                                        />
-                                    )}
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Paper>
-            </Container>
-            <CustomAlert open={open} setOpen={setOpen}
-                requestMessage={requestMessage} messageType={severity} />
-        </main>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label={"Endereço de Email"}
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={6} container direction={'row'} justifyContent={'flex-start'} alignItems={'center'}>
+                        <DNALink href={"/beneficios/login"}>
+                            Retornar para o Login.
+                        </DNALink>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{
+                                ...(success && {
+                                    bgcolor: green[500],
+                                    '&:hover': {
+                                        bgcolor: green[700],
+                                    },
+                                })
+                            }}
+                        >
+                            Solicitar alteração
+                        </Button>
+                        <Backdrop
+                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                            open={loading}
+                            onClick={() => setLoading(false)}
+                        >
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
+                    </Grid>
+                </Grid>
+            </Box>
+        </LogoHeaderComponent>
     );
 }

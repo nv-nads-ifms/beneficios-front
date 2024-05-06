@@ -1,6 +1,7 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Avatar, Button, Card, CardActions, List, ListItem, ListItemAvatar, ListItemText, makeStyles, Typography } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, Button, Card, CardActions, List, ListItem, 
+    ListItemAvatar, ListItemText, makeStyles, Typography } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { blue } from '@material-ui/core/colors';
@@ -41,7 +42,7 @@ const dataService = new DataService('/usuarios');
 export default function UserView(props) {
     const { usuario } = props;
     const classes = useStyles();
-    let history = useHistory();
+    const navigate = useNavigate();
 
     const [funcionario, setFuncionario] = React.useState("");
     const [unidadeAtendimento, setUnidadeAtendimento] = React.useState("");
@@ -80,17 +81,17 @@ export default function UserView(props) {
         dataService.getBy('auth/logout')
             .then(response => {
                 logout();
-                history.push('/login');
+                navigate('/login');
             })
             .catch(error => {
                 swalWithBootstrapButtons.fire('Ooops!', `Tempo de sessão expirado. Você será desconectado do sistema!`, 'warning');
                 logout();
-                history.push('/login');
+                navigate('/login');
             });
     }
 
     const accountHandlerClick = () => {
-        history.push('/conta-usuario');
+        navigate('/conta-usuario');
     }
 
     return (

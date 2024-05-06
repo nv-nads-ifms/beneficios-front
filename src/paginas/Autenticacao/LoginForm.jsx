@@ -1,25 +1,26 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 
+import { handleChangeInputComponent } from '../../api/utils/util';
+import { getData, postData } from '../../api/api';
+import { login, logout } from '../../api/services/auth';
+
+import { showErrorMessages, swalWithBootstrapButtons } from '../../api/utils/modalMessages';
+
+import DNALink from '../../components/DNALink';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogoHeaderComponent from './LoginHeaderComponent';
 import { Box, Button, TextField } from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
-
-import { useLocation, useNavigate } from 'react-router-dom';
-import { handleChangeInputComponent } from '../../api/utils/util';
-import DNALink from '../../components/V1.0.0/DNALink';
-import { getData, postData } from '../../api/api';
-import { showErrorMessages, swalWithBootstrapButtons } from '../../api/utils/modalMessages';
-import { login, logout } from '../../api/services/auth';
-import TextFieldPasswordComponent from '../../components/V1.0.0/TextFieldPasswordComponent';
+import TextFieldPasswordComponent from '../../components/TextFieldPasswordComponent';
 
 const emptyUsuario = {
     email: '',
     senha: '',
 };
 
-export default function Autenticacao() {
+export default function SignIn() {
     const [usuario, setUsuario] = React.useState(emptyUsuario);
     const navigate = useNavigate();
     const location = useLocation();
@@ -86,11 +87,11 @@ export default function Autenticacao() {
 
                 if (!showErrorMessages(resp)) {
                     login(resp.data.token);
-                    // if (location.state?.from) {
-                    //     navigate(location.state.from.pathname);
-                    // } else {
+                    if (location.state?.from) {
+                        navigate(location.state.from.pathname);
+                    } else {
                         navigate('/');
-                    // }
+                    }
                 }
             })
             .catch((error) => {
@@ -139,8 +140,13 @@ export default function Autenticacao() {
                             Entrar
                         </Button>
                     </Grid>
-                    <Grid item xs={12}>
-                        {getLink("/beneficios/esqueceu-senha", "Esqueci minha senha!")}
+                    <Grid item spacing={2} container>
+                        <Grid item xs={12} md={6} container justifyContent={'center'}>
+                            {getLink("/pass-recover", "Esqueci minha senha!")}
+                        </Grid>
+                        <Grid item xs={12} md={6} container justifyContent={'center'}>
+                            {getLink("/signup", "Cadastre-se Gratuitamente")}
+                        </Grid>
                     </Grid>
                 </Grid>
             </Box>

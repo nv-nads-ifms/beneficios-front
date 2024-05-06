@@ -1,7 +1,7 @@
 import React from 'react';
 import { isAuthenticated } from './api/services/auth';
 
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, Navigate, Outlet } from 'react-router-dom';
 
 import Autenticacao from './paginas/Autenticacao/Autenticacao';
 import Home from './paginas/Home/Home';
@@ -18,10 +18,7 @@ import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida'
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
 import RetiradaBeneficioListagem from './paginas/RetiradaBeneficio/RetiradaBeneficioListagem';
 import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
-
-import FornecedorCadastro from './paginas/Fornecedor/FornecedorCadastro';
 import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEntradaConferencia';
-import DocumentoSaidaCadastro from './paginas/DocumentoSaida/DocumentoSaidaCadastro';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
 import CidadeConsulta from './paginas/Cidade/CidadeConsulta';
 import PaisConsulta from './paginas/Pais/PaisConsulta';
@@ -52,103 +49,103 @@ import FornecedorConsulta from './paginas/Fornecedor/FornecedorConsulta';
 import DocumentoEntradaConsulta from './paginas/DocumentoEntrada/DocumentoEntradaConsulta';
 import DocumentoSaidaConsulta from './paginas/DocumentoSaida/DocumentoSaidaConsulta';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route
-        {...rest}
-        render={props =>
-            isAuthenticated() ? (
-                <React.Fragment>
-                    <Menus>
-                        <Component {...props} />
-                    </Menus>
-                </React.Fragment>
-            ) : (
-                <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
-            )
-        }
-    />
-)
+const ProtectedRoute = ({ isAllowed, redirectPath = "/login", children }) => {
+    const location = useLocation();
 
-const Routes = () => {    
+    if (!isAllowed) {
+        return <Navigate to={redirectPath} replace state={{ from: location }} />;
+    }
+
+    if (children) {
+        return children;
+    }
+
     return (
-        <BrowserRouter>
-            <Switch>
-                {/* <Route exact path="/" component={Autenticacao} /> */}
-                <Route path="/login" component={Autenticacao} />
-                <Route path="/esqueceu-senha" component={EsqueceuSenha} />
-                <Route path="/aviso-senha" component={AvisoSenha} />
-                <Route path='/alterar-senha-esquecida/:token' component={AlterarSenhaEsquecida} />
-                <Route path='/aviso-senha-alterada' component={AvisoSenhaAlterada} />
+        <Menus><Outlet /></Menus>
+    );
+};
 
-                <PrivateRoute exact path="/" component={Home} />
-                <PrivateRoute path="/home" component={Home} />
-                <PrivateRoute path='/condicoes-de-trabalho' component={CondicaoDeTrabalhoConsulta} />
-                <PrivateRoute path='/programas-de-governo' component={ProgramaDeGovernoConsulta} />
-                <PrivateRoute path='/contatos' component={ContatoConsulta} />
-                <PrivateRoute path='/orgaos-expedidores' component={OrgaoExpedidorConsulta} />
-                <PrivateRoute path='/parentescos' component={ParentescoListagem} />
+const Rotas = () => {
+    return (
+        <BrowserRouter basename="/beneficios">
+            <Routes>
+                {/* <Route exact path="/" element={<Autenticacao /> } /> */}
+                <Route path="/login" element={<Autenticacao />} />
+                <Route path="/esqueceu-senha" element={<EsqueceuSenha />} />
+                <Route path="/aviso-senha" element={<AvisoSenha />} />
+                <Route path='/alterar-senha-esquecida/:token' element={<AlterarSenhaEsquecida />} />
+                <Route path='/aviso-senha-alterada' element={<AvisoSenhaAlterada />} />
                 
-                <PrivateRoute path='/documentos' component={DocumentoConsulta} />
-                <PrivateRoute path='/escolaridades' component={EscolaridadeConsulta} />
-                <PrivateRoute path='/condicoes-de-moradia' component={CondicaoDeMoradiaConsulta} />
-                
-                <PrivateRoute path='/tipos-de-moradia' component={TipoMoradiaConsulta} />
-                <PrivateRoute path='/grupo-socioeducativo' component={GrupoSocioeducativoConsulta} />
+                {/* Rotas que exigem autenticação */}
+                <Route element={<ProtectedRoute isAllowed={isAuthenticated()} />}>
+                    <Route exact path="/" element={<Home />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path='/condicoes-de-trabalho' element={<CondicaoDeTrabalhoConsulta />} />
+                    <Route path='/programas-de-governo' element={<ProgramaDeGovernoConsulta />} />
+                    <Route path='/contatos' element={<ContatoConsulta />} />
+                    <Route path='/orgaos-expedidores' element={<OrgaoExpedidorConsulta />} />
+                    <Route path='/parentescos' element={<ParentescoListagem />} />
 
-                {/* Localização */}
-                <PrivateRoute path='/cidades' component={CidadeConsulta} />
-                
-                <PrivateRoute path='/pais' component={PaisConsulta} />
-                <PrivateRoute path='/ufs' component={UfConsulta} />
-                <PrivateRoute path='/bairros' component={BairroConsulta} />
-                <PrivateRoute path='/logradouros' component={LogradouroConsulta} />
-                <PrivateRoute path='/tipos-de-logradouros' component={TipoLogradouroConsulta} />
-                
+                    <Route path='/documentos' element={<DocumentoConsulta />} />
+                    <Route path='/escolaridades' element={<EscolaridadeConsulta />} />
+                    <Route path='/condicoes-de-moradia' element={<CondicaoDeMoradiaConsulta />} />
 
-                {/* Telas de Administração */}
-                <PrivateRoute path='/funcoes' component={FuncaoConsulta} />
-                <PrivateRoute path='/tipos-de-unidades-atendimento' component={TipoUnidadeDeAtendimentoConsulta} />
-                <PrivateRoute path='/funcionarios' component={FuncionarioConsulta} />
-                
-                <PrivateRoute path='/unidades-de-atendimento' component={UnidadeAtendimentoConsulta} />
-                <PrivateRoute path='/menus' component={MenuSistemaConsulta} />
+                    <Route path='/tipos-de-moradia' element={<TipoMoradiaConsulta />} />
+                    <Route path='/grupo-socioeducativo' element={<GrupoSocioeducativoConsulta />} />
 
-                <PrivateRoute path="/usuarios" component={UsuarioConsulta} />
-        
-                <PrivateRoute path='/conta-usuario' component={ContaUsuario} />
+                    {/* Localização */}
+                    <Route path='/cidades' element={<CidadeConsulta />} />
 
-                <PrivateRoute path="/perfis" component={PerfilConsulta} />
-                <PrivateRoute path='/alterar-senha' component={AlterarSenha} />
-
-                {/* Telas do prontuario */}
-                <PrivateRoute path="/pessoas" component={PessoaConsulta} />
-                <PrivateRoute path='/prontuarios' component={ProntuarioConsulta} />
-
-                {/* Telas de atendimento */}
-                <PrivateRoute path='/atendimentos' component={AtendimentoConsulta} />
+                    <Route path='/pais' element={<PaisConsulta />} />
+                    <Route path='/ufs' element={<UfConsulta />} />
+                    <Route path='/bairros' element={<BairroConsulta />} />
+                    <Route path='/logradouros' element={<LogradouroConsulta />} />
+                    <Route path='/tipos-de-logradouros' element={<TipoLogradouroConsulta />} />
 
 
-                {/* Controle do estoque */}
-                <PrivateRoute path="/beneficios-eventuais" component={BeneficioConsulta} />
+                    {/* Telas de Administração */}
+                    <Route path='/funcoes' element={<FuncaoConsulta />} />
+                    <Route path='/tipos-de-unidades-atendimento' element={<TipoUnidadeDeAtendimentoConsulta />} />
+                    <Route path='/funcionarios' element={<FuncionarioConsulta />} />
 
-                <PrivateRoute path='/retirada-de-beneficio' component={RetiradaBeneficioListagem} />
-                <PrivateRoute path='/retirada-de-beneficio-ficha/:itemId/:id/:status' component={RetiradaBeneficioView} />
-                <PrivateRoute path='/fornecedores' component={FornecedorConsulta} />
-                <PrivateRoute path='/fornecedores-ficha/:id/:status' component={FornecedorCadastro} />
+                    <Route path='/unidades-de-atendimento' element={<UnidadeAtendimentoConsulta />} />
+                    <Route path='/menus' element={<MenuSistemaConsulta />} />
 
-                <PrivateRoute path='/documento-entrada' component={DocumentoEntradaConsulta} />
-                <PrivateRoute path='/documento-entrada-conferencia' component={DocumentoEntradaConferencia} />
+                    <Route path="/usuarios" element={<UsuarioConsulta />} />
 
-                <PrivateRoute path='/documento-saida' component={DocumentoSaidaConsulta} />
-                <PrivateRoute path='/documento-saida-ficha/:id/:status' component={DocumentoSaidaCadastro} />
-                <PrivateRoute path='/documento-saida-conferencia' component={DocumentoSaidaConferencia} />
+                    <Route path='/conta-usuario' element={<ContaUsuario />} />
 
-                <Route path="*" component={Pagina404} />
+                    <Route path="/perfis" element={<PerfilConsulta />} />
+                    <Route path='/alterar-senha' element={<AlterarSenha />} />
 
-            </Switch>
+                    {/* Telas do prontuario */}
+                    <Route path="/pessoas" element={<PessoaConsulta />} />
+                    <Route path='/prontuarios' element={<ProntuarioConsulta />} />
+
+                    {/* Telas de atendimento */}
+                    <Route path='/atendimentos' element={<AtendimentoConsulta />} />
+
+
+                    {/* Controle do estoque */}
+                    <Route path="/beneficios-eventuais" element={<BeneficioConsulta />} />
+
+                    <Route path='/retirada-de-beneficio' element={<RetiradaBeneficioListagem />} />
+                    <Route path='/retirada-de-beneficio-ficha/:itemId/:id/:status' element={<RetiradaBeneficioView />} />
+                    <Route path='/fornecedores' element={<FornecedorConsulta />} />
+
+                    <Route path='/documento-entrada' element={<DocumentoEntradaConsulta />} />
+                    <Route path='/documento-entrada-conferencia' element={<DocumentoEntradaConferencia />} />
+
+                    <Route path='/documento-saida' element={<DocumentoSaidaConsulta />} />
+                    <Route path='/documento-saida-conferencia' element={<DocumentoSaidaConferencia />} />
+                </Route>
+
+                <Route path="*" element={<Pagina404 />} />
+
+            </Routes>
             {/* </div>} */}
         </BrowserRouter>
     );
 }
 
-export default Routes;
+export default Rotas;
