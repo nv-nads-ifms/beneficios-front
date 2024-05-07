@@ -28,7 +28,7 @@ export default function EsqueceuSenha() {
                 if (response.status === 200) {
                     setLoading(false);
                     setSuccess(true);
-                    navigate('/beneficios/aviso-senha');
+                    navigate('/verifica-pass');
                 } else {
                     setLoading(false);
                     setSuccess(false);

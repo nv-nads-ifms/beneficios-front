@@ -6,7 +6,7 @@ import { Box, Button, TextField } from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { handleChangeInputComponent } from '../../api/utils/util';
 import DNALink from '../../components/V1.0.0/DNALink';
 import { getData, postData } from '../../api/api';
@@ -22,7 +22,6 @@ const emptyUsuario = {
 export default function Autenticacao() {
     const [usuario, setUsuario] = React.useState(emptyUsuario);
     const navigate = useNavigate();
-    const location = useLocation();
 
     const handleChange = (e, newValue) => {
         handleChangeInputComponent(e, newValue, setUsuario, usuario);
@@ -86,11 +85,7 @@ export default function Autenticacao() {
 
                 if (!showErrorMessages(resp)) {
                     login(resp.data.token);
-                    // if (location.state?.from) {
-                    //     navigate(location.state.from.pathname);
-                    // } else {
-                        navigate('/');
-                    // }
+                    navigate('/');
                 }
             })
             .catch((error) => {

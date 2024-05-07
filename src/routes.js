@@ -48,6 +48,7 @@ import CondicaoDeTrabalhoConsulta from './paginas/CondicaoDeTrabalho/CondicaoDeT
 import FornecedorConsulta from './paginas/Fornecedor/FornecedorConsulta';
 import DocumentoEntradaConsulta from './paginas/DocumentoEntrada/DocumentoEntradaConsulta';
 import DocumentoSaidaConsulta from './paginas/DocumentoSaida/DocumentoSaidaConsulta';
+import VerificaPass from './paginas/Autenticacao/VerificaPass';
 
 const ProtectedRoute = ({ isAllowed, redirectPath = "/login", children }) => {
     const location = useLocation();
@@ -75,6 +76,7 @@ const Rotas = () => {
                 <Route path="/aviso-senha" element={<AvisoSenha />} />
                 <Route path='/alterar-senha-esquecida/:token' element={<AlterarSenhaEsquecida />} />
                 <Route path='/aviso-senha-alterada' element={<AvisoSenhaAlterada />} />
+                <Route path="/verifica-pass" element={<VerificaPass />} />
                 
                 {/* Rotas que exigem autenticação */}
                 <Route element={<ProtectedRoute isAllowed={isAuthenticated()} />}>
