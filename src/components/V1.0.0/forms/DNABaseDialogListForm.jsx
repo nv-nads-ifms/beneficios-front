@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, TextField, Typography } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import DNAStatusComponent from "../DNAStatusComponent";
 import { formContext } from "../../../contexts/formContext";
 import DNABaseDialogForm from "./DNABaseDialogForm";

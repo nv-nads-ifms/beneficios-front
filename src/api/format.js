@@ -1,11 +1,7 @@
 import React from 'react';
 import NumberFormat from "react-number-format";
 
-import MailIcon from '@material-ui/icons/Mail';
-import PhoneIcon from '@material-ui/icons/Phone';
-import PermDeviceInformationIcon from '@material-ui/icons/PermDeviceInformation';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import { Facebook, LinkedIn, Mail, PermDeviceInformation, Phone } from '@mui/icons-material';
 
 const normalizeInput = (value, previousValue) => {
     const onlyNums = value.replace(/[^0-9]/g, '');
@@ -81,15 +77,15 @@ function convertImgToBase64URL(url, callback, outputFormat) {
 const ChipIcon = (type) => {
     const text = type.toLowerCase();
     if (text.indexOf('mail') !== -1) {
-        return <MailIcon />;
+        return <Mail />;
     } else if (text.indexOf('fone') !== -1) {
-        return <PhoneIcon />
+        return <Phone />
     } else if (text.indexOf('celular') !== -1) {
-        return <PermDeviceInformationIcon />
+        return <PermDeviceInformation />
     } else if (text.indexOf('linked') !== -1) {
-        return <LinkedInIcon />
+        return <LinkedIn />
     } else if (text.indexOf('face') !== -1) {
-        return <FacebookIcon />
+        return <Facebook />
     }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "beneficios-front",
-  "homepage": "/beneficios",
+  "homepage": "http://localhost:3000/beneficios",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

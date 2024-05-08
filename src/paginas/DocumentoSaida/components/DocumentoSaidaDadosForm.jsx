@@ -7,7 +7,7 @@ import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 export default function DocumentoSaidaDadosForm(props) {
     const { disabled } = props;
     /* Recuperação do objeto Analise que será manipulado */
-    const { object, setObject, emptyObject } = React.useContext(objectContext);
+    const { object, setObject } = React.useContext(objectContext);
 
     const handleChange = (event, newValue) => {
         handleChangeInputComponent(event, newValue, setObject, object);

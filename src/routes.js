@@ -16,7 +16,6 @@ import AvisoSenha from './paginas/Autenticacao/AvisoSenha';
 import AlterarSenha from './paginas/ContaUsuario/AlterarSenha';
 import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida';
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
-import RetiradaBeneficioListagem from './paginas/RetiradaBeneficio/RetiradaBeneficioListagem';
 import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
 import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEntradaConferencia';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
@@ -49,6 +48,7 @@ import FornecedorConsulta from './paginas/Fornecedor/FornecedorConsulta';
 import DocumentoEntradaConsulta from './paginas/DocumentoEntrada/DocumentoEntradaConsulta';
 import DocumentoSaidaConsulta from './paginas/DocumentoSaida/DocumentoSaidaConsulta';
 import VerificaPass from './paginas/Autenticacao/VerificaPass';
+import RetiradaBeneficioConsulta from './paginas/RetiradaBeneficio/RetiradaBeneficioConsulta';
 
 const ProtectedRoute = ({ isAllowed, redirectPath = "/login", children }) => {
     const location = useLocation();
@@ -131,7 +131,7 @@ const Rotas = () => {
                     {/* Controle do estoque */}
                     <Route path="/beneficios-eventuais" element={<BeneficioConsulta />} />
 
-                    <Route path='/retirada-de-beneficio' element={<RetiradaBeneficioListagem />} />
+                    <Route path='/retirada-de-beneficio' element={<RetiradaBeneficioConsulta />} />
                     <Route path='/retirada-de-beneficio-ficha/:itemId/:id/:status' element={<RetiradaBeneficioView />} />
                     <Route path='/fornecedores' element={<FornecedorConsulta />} />
 

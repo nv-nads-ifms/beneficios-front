@@ -1,13 +1,11 @@
 import React from 'react'
-import { fichaStyles } from '../../components/UI/GlobalStyle';
-import { Checkbox, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core';
+import { Checkbox, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
 import DataService from '../../api/services/DataServices';
 
 const dataService = new DataService('/perfis');
 
 export default function CheckboxPerfil(props) {
     const { values, callback, read } = props;
-    const classes = fichaStyles();
     const [perfis, setPerfis] = React.useState([]);
 
     React.useEffect(() => {
@@ -29,7 +27,6 @@ export default function CheckboxPerfil(props) {
 
     return (
         <List
-            className={classes.list}
             dense
             component="div"
             role="list"
@@ -43,7 +40,7 @@ export default function CheckboxPerfil(props) {
                 const labelId = `transfer-list-all-item-${value.id}-label`;
 
                 return (
-                    <ListItem key={value.id} role="listitem" button onClick={handleToggle(value)}>
+                    <ListItem key={value.id} role="listitem" onClick={handleToggle(value)}>
                         <ListItemIcon>
                             <Checkbox
                                 checked={values.map(obj => obj.id).indexOf(value.id) !== -1}
@@ -60,6 +57,4 @@ export default function CheckboxPerfil(props) {
             <ListItem />
         </List>
     )
-
-
 }
