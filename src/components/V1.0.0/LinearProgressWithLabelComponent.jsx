@@ -30,7 +30,7 @@ function LinearProgressWithLabelComponent(props) {
             </Box>
             <Box
                 sx={{
-                    width: '250px',
+                    width: 'inherit',
                     position: 'absolute',
                     display: 'flex',
                     alignItems: 'center',

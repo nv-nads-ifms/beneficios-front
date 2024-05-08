@@ -1,8 +1,9 @@
-import { Grid } from "@material-ui/core";
+import React from "react";
+import { Grid } from "@mui/material";
 import MoradiasComponent from "../../Pessoa/moradia/MoradiasComponent";
 import DocumentosComponent from "../../Pessoa/documentos/DocumentosComponent";
 import ContatosComponent from "../../Pessoa/contatos/ContatosComponent";
-import React from "react";
+
 import { emptyPessoa } from "../../../models/Pessoa";
 
 export default function DadosTitularComponent(props) {

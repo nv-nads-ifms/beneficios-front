@@ -1,7 +1,7 @@
 import React from "react";
 import Moment from 'moment';
 import RendimentoFormComponent from './RendimentoFormComponent';
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import AddButton from "../../../components/CustomButtons/AddButton";
 import { fichaStyles } from "../../../components/UI/GlobalStyle";
 import RendimentoStatusColumn from "./components/RendimentoStatusColumn";

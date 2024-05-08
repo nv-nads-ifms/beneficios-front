@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Grid, TextField } from "@mui/material";
-import DNAStatusComponent from "../DNAStatusComponent";
 import { formContext } from "../../../contexts/formContext";
 import DNABaseDialogForm from "./DNABaseDialogForm";
 import DNADefaultDialogListForm from "./DNADefaultDialogListForm";
+import { DNAStatus } from "../../../api/utils/constants";
 
 const columns = [
   {
@@ -30,7 +30,7 @@ function DNABaseDialogListForm(props) {
 
   /* Atributos de controle do formulário modal */
   const [open, setOpen] = React.useState(false);
-  const [dataControl, setDataControl] = React.useState(DNAStatusComponent.VIEW);
+  const [dataControl, setDataControl] = React.useState(DNAStatus.VIEW);
   /* Atributo de controle do ID do objeto de negócio a ser manipulado */
   const [formId, setFormId] = React.useState(0);
 

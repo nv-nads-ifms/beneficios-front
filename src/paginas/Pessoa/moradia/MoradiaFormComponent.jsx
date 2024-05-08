@@ -3,13 +3,12 @@ import DialogForms from '../../../components/CustomForms/DialogForms';
 import CustomTextField from '../../../components/CustomFields/CustomTextField';
 import Logradouro from '../../../components/Endereco/Logradouro';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { emptyMoradia, validarMoradia } from '../../../models/Moradia';
 import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 import { handleChangeInputComponent } from '../../../api/utils/util';
 import { showErrorMessages } from '../../../api/utils/modalMessages';
 import { Avatar, Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
-import { House } from '@mui/icons-material';
+import { House, LocationOn } from '@mui/icons-material';
 
 export default function MoradiaFormComponent(props) {
     const { value, callback, openModal, onClose } = props;
@@ -130,7 +129,7 @@ export default function MoradiaFormComponent(props) {
                         <CardHeader
                             avatar={
                                 <Avatar>
-                                    <LocationOnIcon />
+                                    <LocationOn />
                                 </Avatar>
                             }
                             title={

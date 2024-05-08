@@ -1,10 +1,9 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Grid, Avatar, TextField, Typography } from '@mui/material';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
 import DialogForms from '../../../components/CustomForms/DialogForms';
 import { handleChangeInputComponent, setFieldValue } from '../../../api/utils/util';
 import { showErrorMessages } from '../../../api/utils/modalMessages';
-import { Avatar, TextField, Typography } from '@mui/material';
 import { Work } from '@mui/icons-material';
 import DNAAutocomplete from '../../../components/V1.0.0/DNAAutocomplete';
 import { DatePicker } from '@mui/x-date-pickers';

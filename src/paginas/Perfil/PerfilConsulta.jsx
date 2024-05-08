@@ -4,12 +4,13 @@ import { formContext } from '../../contexts/formContext';
 import { DNAStatus, StatusType } from '../../api/utils/constants';
 import DNADefaultDialogListForm from '../../components/V1.0.0/forms/DNADefaultDialogListForm';
 import { Avatar, Grid, TextField } from '@mui/material';
-import { Block, Check } from '@material-ui/icons';
+
 import DataService from '../../api/services/DataServices';
 import PerfilForm from './PerfilForm';
 import { ativacaoModalMessage } from '../../api/utils/modalMessages';
-import { green, pink, yellow } from '@material-ui/core/colors';
-import { DoNotDisturbOn } from '@mui/icons-material';
+
+import { Block, Check, DoNotDisturbOn } from '@mui/icons-material';
+import { green, pink, yellow } from '@mui/material/colors';
 
 const AvatarComponent = (params) => {
     const { status } = params;

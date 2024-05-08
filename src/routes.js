@@ -16,7 +16,6 @@ import AvisoSenha from './paginas/Autenticacao/AvisoSenha';
 import AlterarSenha from './paginas/ContaUsuario/AlterarSenha';
 import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida';
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
-import RetiradaBeneficioView from './paginas/RetiradaBeneficio/RetiradaBeneficioView';
 import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEntradaConferencia';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
 import CidadeConsulta from './paginas/Cidade/CidadeConsulta';
@@ -132,7 +131,6 @@ const Rotas = () => {
                     <Route path="/beneficios-eventuais" element={<BeneficioConsulta />} />
 
                     <Route path='/retirada-de-beneficio' element={<RetiradaBeneficioConsulta />} />
-                    <Route path='/retirada-de-beneficio-ficha/:itemId/:id/:status' element={<RetiradaBeneficioView />} />
                     <Route path='/fornecedores' element={<FornecedorConsulta />} />
 
                     <Route path='/documento-entrada' element={<DocumentoEntradaConsulta />} />

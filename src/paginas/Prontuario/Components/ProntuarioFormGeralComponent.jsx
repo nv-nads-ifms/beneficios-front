@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import { FormControlLabel, Grid, Switch, Typography } from "@material-ui/core";
+import { FormControlLabel, Grid, Switch, Typography } from "@mui/material";
 import CardPessoaComponent from "./CardPessoaComponent";
 import DadosTitularComponent from "./DadosTitularComponent";
 import DNAAutocomplete from "../../../components/V1.0.0/DNAAutocomplete";

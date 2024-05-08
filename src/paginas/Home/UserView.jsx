@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Button, Card, CardActions, List, ListItem, 
-    ListItemAvatar, ListItemText, makeStyles, Typography } from '@material-ui/core';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import { blue } from '@material-ui/core/colors';
+import {
+    Avatar, Button, Card, CardActions, List, ListItem,
+    ListItemAvatar, ListItemText, Stack, Typography
+} from '@mui/material';
+import Countdown from 'react-countdown';
+
 import { getToken, logout } from '../../api/services/auth';
 import { firstName } from '../../api/utils/stringUtils';
 import noImageAvailable from "../../img/noImageAvailable.png";
@@ -13,35 +14,17 @@ import Moment, { utc } from 'moment';
 
 import DataService from '../../api/services/DataServices';
 import { swalWithBootstrapButtons } from '../../api/utils/modalMessages';
+import { AccountBox, ExitToApp } from '@mui/icons-material';
+import LinearProgressWithLabelComponent from '../../components/V1.0.0/LinearProgressWithLabelComponent';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: 345,
-    },
-    avatar: {
-        color: theme.palette.getContrastText(blue[500]),
-        backgroundColor: blue[500],
-        width: theme.spacing(7),
-        height: theme.spacing(7),
-    },
-    lista: {
-        width: '100%',
-        minWidth: '12ch',
-        backgroundColor: theme.palette.background.paper,
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    item: {
-        marginRight: theme.spacing(2),
-    }
-}));
+const mensagemTempoExpiracao = () => {
+    swalWithBootstrapButtons.fire('Ooops!', `Tempo de sessão expirado. Você foi desconectado do sistema!`, 'warning');
+}
 
 const dataService = new DataService('/usuarios');
 
 export default function UserView(props) {
     const { usuario } = props;
-    const classes = useStyles();
     const navigate = useNavigate();
 
     const [funcionario, setFuncionario] = React.useState("");
@@ -49,7 +32,32 @@ export default function UserView(props) {
     const [imagePreview, setImagePreview] = React.useState(null);
     const sToken = getToken();
     const [token, setToken] = React.useState({});
+    const [percentual, setPercentual] = React.useState(0);
 
+    const tempoExpiracao = React.useMemo(() => {
+        return (token.exp - token.iat) * 1000;
+    }, [token]);
+
+    const renderer = (props) => {
+        const { total, formatted, completed } = props;
+        setPercentual((tempoExpiracao - total) / tempoExpiracao * 100);
+
+        if (completed) {
+            mensagemTempoExpiracao();
+            handleClick();
+            return <span>You are good to go!</span>;
+        } else {
+            // Render a countdown
+            return (
+                <React.Fragment>
+                    <Typography variant="caption" align='center'>
+                        {formatted.hours}:{formatted.minutes}:{formatted.seconds}
+                    </Typography>
+                </React.Fragment>
+            );
+        }
+    };
+    console.log(percentual)
     React.useEffect(() => {
         if (sToken !== "") {
             setToken(jwt_decode(sToken));
@@ -84,7 +92,7 @@ export default function UserView(props) {
                 navigate('/login');
             })
             .catch(error => {
-                swalWithBootstrapButtons.fire('Ooops!', `Tempo de sessão expirado. Você será desconectado do sistema!`, 'warning');
+                mensagemTempoExpiracao();
                 logout();
                 navigate('/login');
             });
@@ -96,13 +104,13 @@ export default function UserView(props) {
 
     return (
         <React.Fragment>
-            <List className={classes.lista} dense={true}>
+            <List dense={true}>
                 <ListItem alignItems="flex-start">
-                    <ListItemAvatar className={classes.item}>
+                    <ListItemAvatar>
                         <Avatar
                             aria-label="usuario"
-                            className={classes.avatar}
-                            src={imagePreview} />
+                            src={imagePreview}
+                            sx={{ width: 50, height: 50 }} />
                     </ListItemAvatar>
                     <ListItemText
                         primary={
@@ -119,16 +127,19 @@ export default function UserView(props) {
                         }
                     />
                 </ListItem>
-                <ListItem onClick={handleClick}>
+                <ListItem>
                     <ListItemText
                         primary={
-                            <Typography variant="caption">
-                                {Moment(utc(token.exp * 1000).toDate()).format('DD/MM/Y hh:mm:ss a')}
-                            </Typography>
+                            <Stack spacing={1}>
+                                <LinearProgressWithLabelComponent value={percentual} />
+                                <Countdown
+                                    date={utc(token.exp * 1000).toDate()}
+                                    renderer={renderer} />
+                            </Stack>
                         }
                         secondary={
-                            <Typography variant="caption" color="textSecondary" component="p">
-                                Expiração da sessão
+                            <Typography variant="caption" color="textSecondary" component="p" align='center'>
+                                Tempo de expiração da sessão
                             </Typography>
                         }
                     />
@@ -136,22 +147,22 @@ export default function UserView(props) {
                 </ListItem>
             </List >
 
-            <Card className={classes.root}>
+            <Card>
                 <CardActions>
                     <Button
                         size="small"
                         color="primary"
-                        className={classes.button}
+
                         onClick={accountHandlerClick}
-                        startIcon={<AccountBoxIcon />}
+                        startIcon={<AccountBox />}
                     >
                         Conta
                     </Button>
                     <Button
                         size="small"
                         color="primary"
-                        className={classes.button}
-                        startIcon={<ExitToAppIcon />}
+
+                        startIcon={<ExitToApp />}
                         onClick={handleClick}
                     >
                         Sair

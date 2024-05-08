@@ -3,31 +3,14 @@ import React from 'react';
 import {
     Box,
     Card, CardHeader, Checkbox, Divider, Grid, List, ListItem, ListItemIcon,
-    ListItemText, makeStyles, Typography
-} from '@material-ui/core';
+    ListItemText, Typography
+} from '@mui/material';
 import ArrowForwardButton from '../../components/CustomButtons/ArrowForwardButton';
 import ArrowBackButton from '../../components/CustomButtons/ArrowBackButton';
 import PerfilSwitchPermissionComponent from './PerfilSwitchPermissionComponent';
 import DNADataGrid from '../../components/V1.0.0/DNADataGrid';
 import { useGridApiRef } from '@mui/x-data-grid';
 import { intersection, not, union } from '../../api/utils/util';
-
-const useStyles = makeStyles((theme) => ({
-    cardHeader: {
-        padding: theme.spacing(1, 2),
-    },
-    list: {
-        width: 320,
-        height: 350,
-        backgroundColor: theme.palette.background.paper,
-        overflow: 'auto',
-    },
-    paper: {
-        width: "100%",
-        margin: theme.spacing(1),
-        padding: theme.spacing(1),
-    },
-}));
 
 function getColumns(changeStatusFunction) {
     return [
@@ -100,7 +83,7 @@ function toPerfilMenu(menu) {
 
 export default function PerfilMenuComponent(props) {
     const { rows, setRows, menus } = props;
-    const classes = useStyles();
+
     const [checked, setChecked] = React.useState([]);
     const [menuItens, setMenuItens] = React.useState([]);
 
@@ -211,18 +194,17 @@ export default function PerfilMenuComponent(props) {
             <Grid item xs={12} md={4}>
                 <Card>
                     <CardHeader
-                        className={classes.cardHeader}
                         avatar={<CheckComponent items={menuItens} />}
                         title="Opções de Menus"
                         subheader={`${numberOfChecked(menuItens)}/${menuItens.length} selecionados`}
                     />
                     <Divider />
-                    <List className={classes.list} dense component="div" role="list">
+                    <List dense component="div" role="list">
                         {menuItens.map((value) => {
                             const labelId = `transfer-list-all-item-${value.id}-label`;
 
                             return (
-                                <ListItem key={value.id} role="listitem" button onClick={() => handleToggle(value)}>
+                                <ListItem key={value.id} role="listitem" onClick={() => handleToggle(value)}>
                                     <ListItemIcon>
                                         <Checkbox
                                             checked={checked.indexOf(value) !== -1}

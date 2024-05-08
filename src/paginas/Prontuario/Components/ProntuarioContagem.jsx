@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import CustomCircularMonitor from '../../../components/CustomFields/CustomCircularMonitor';
 import DataService from '../../../api/services/DataServices';
 

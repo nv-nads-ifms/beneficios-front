@@ -1,8 +1,7 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
 import DialogForms from '../../components/CustomForms/DialogForms';
 import { emptyData } from '../../api/utils/constants';
-import { Box, InputAdornment, TextField } from '@mui/material';
+import { Box, InputAdornment, TextField, Grid } from '@mui/material';
 import { Check, Search } from '@mui/icons-material';
 import DNADataGrid from '../../components/V1.0.0/DNADataGrid';
 import DataService from '../../api/services/DataServices';

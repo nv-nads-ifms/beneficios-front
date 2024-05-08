@@ -5,16 +5,13 @@ import { objectContext } from '../../contexts/objectContext';
 import DNAFormDialog from '../../components/V1.0.0/dialog/DNAFormDialog';
 import { AppBar, Tab, Tabs } from '@mui/material';
 
-import DescriptionIcon from '@material-ui/icons/Description';
-import HouseIcon from '@material-ui/icons/House';
-import WorkIcon from '@material-ui/icons/Work';
-import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 import TabPanel, { a11yProps } from "../../components/CustomTabs/TabPanel";
 import PessoaFromGeral from './PessoaFormGeral';
 import MoradiasComponent from './moradia/MoradiasComponent';
 import RendimentosComponent from './rendimentos/RendimentosComponent';
 import AuxilioComponent from './auxilios/AuxilioComponent';
 import { setFieldValue } from '../../api/utils/util';
+import { Description, House, LocalPharmacy, Work } from '@mui/icons-material';
 
 
 function PessoaForm(props) {
@@ -59,10 +56,10 @@ function PessoaForm(props) {
                         indicatorColor="primary"
                         textColor="primary"
                         aria-label="tab para controle do prontuário">
-                        <Tab label="Geral" icon={<DescriptionIcon />} {...a11yProps(0)} />
-                        <Tab label="Moradia" icon={<HouseIcon />} {...a11yProps(1)} />
-                        <Tab label="Trabalho/Emprego" icon={<WorkIcon />} {...a11yProps(2)} />
-                        <Tab label="Auxílios/Programas de Governo" icon={<LocalPharmacyIcon />} {...a11yProps(3)} />
+                        <Tab label="Geral" icon={<Description />} {...a11yProps(0)} />
+                        <Tab label="Moradia" icon={<House />} {...a11yProps(1)} />
+                        <Tab label="Trabalho/Emprego" icon={<Work />} {...a11yProps(2)} />
+                        <Tab label="Auxílios/Programas de Governo" icon={<LocalPharmacy />} {...a11yProps(3)} />
                     </Tabs>
                 </AppBar>
                 <TabPanel value={tabIndex} index={0}>

@@ -1,5 +1,4 @@
 import { Status } from "../api/utils/constants";
-import ProntuarioService from "../services/ProntuarioService";
 import { emptyPessoa } from "./Pessoa";
 import { emptyUnidadeAtendimento } from "./UnidadeAtendimento";
 
@@ -82,22 +81,4 @@ function createListaAuxilios(prontuario) {
     return lista.filter((obj) => obj.status === Status.ATIVO);
 }
 
-function initProntuario(id, usuario, callback, history) {
-    if (id > 0) {
-        ProntuarioService.getProntuarioById(id)
-            .then(r => {
-                callback(r.data);
-            })
-            .catch(() => {
-                history.push('/404');
-            });
-    } else {
-        callback({
-            ...emptyProntuario,
-            id: id,
-            unidadeAtendimento: usuario.funcionario.unidadeAtendimento,
-        })
-    }
-}
-
-export { emptyProntuario, initProntuario, createListaRendimentos, createListaAuxilios };
+export { emptyProntuario, createListaRendimentos, createListaAuxilios };

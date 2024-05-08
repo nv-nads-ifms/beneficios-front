@@ -1,7 +1,7 @@
 import React from 'react';
-import { Chip } from "@material-ui/core";
-import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import { extractCapitalizeLetters } from '../../../api/utils/stringUtils';
+import { RecentActors } from '@mui/icons-material';
+import { Chip } from '@mui/material';
 
 export default function ChipDocumentoComponent(props) {
     const { documento, color, onEdit, onDelete, ...others } = props;
@@ -12,7 +12,7 @@ export default function ChipDocumentoComponent(props) {
             {...others}
             
             clickable={true}
-            icon={<RecentActorsIcon />}
+            icon={<RecentActors />}
             label={extractCapitalizeLetters(nome) + ": " + documento.numero}
             onDelete={onDelete}
             onClick={onEdit}

@@ -4,7 +4,7 @@ import Moment from 'moment';
 
 import FieldPessoaComponent from "../../Pessoa/FieldPessoaComponent";
 import AddButton from "../../../components/CustomButtons/AddButton";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 
 import DNAAutocomplete from "../../../components/V1.0.0/DNAAutocomplete";
 import { objectContext } from "../../../contexts/objectContext";

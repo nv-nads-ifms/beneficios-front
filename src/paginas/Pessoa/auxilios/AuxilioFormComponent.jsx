@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, FormControlLabel, Grid, Switch } from '@material-ui/core';
+import { Card, CardContent, FormControlLabel, Grid, Switch } from '@mui/material';
 import CustomCurrency from '../../../components/CustomFields/CustomCurrency';
 import DialogForms from '../../../components/CustomForms/DialogForms';
 import { emptyAuxilio } from '../../../models/Auxilio';
