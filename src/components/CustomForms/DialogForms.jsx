@@ -6,7 +6,7 @@ import CloseButton from "../CustomButtons/CloseButton";
 import { fichaStyles } from "../UI/GlobalStyle";
 import CustomAlert from '../CustomAlert/CustomAlert';
 import { closeMessageAlert, emptyMessageAlert } from '../../api/utils/customMessages';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -40,7 +40,9 @@ export default function DialogForms(props) {
             <DialogTitle id="form-dialog-title">{title}</DialogTitle>
             {children != null && (
                 <DialogContent>
-                    {children}
+                    <Box sx={{pt: 2}}>
+                        {children}
+                    </Box>
                 </DialogContent>
             )}
             <DialogActions>

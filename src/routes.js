@@ -14,7 +14,6 @@ import ContaUsuario from './paginas/ContaUsuario/ContaUsuario';
 import EsqueceuSenha from './paginas/Autenticacao/EsqueceuSenha';
 import AvisoSenha from './paginas/Autenticacao/AvisoSenha';
 import AlterarSenha from './paginas/ContaUsuario/AlterarSenha';
-import AlterarSenhaEsquecida from './paginas/Autenticacao/AlterarSenhaEsquecida';
 import AvisoSenhaAlterada from './paginas/Autenticacao/AvisoSenhaAlterada';
 import DocumentoEntradaConferencia from './paginas/DocumentoEntrada/DocumentoEntradaConferencia';
 import DocumentoSaidaConferencia from './paginas/DocumentoSaida/DocumentoSaidaConferencia';
@@ -73,7 +72,6 @@ const Rotas = () => {
                 <Route path="/login" element={<Autenticacao />} />
                 <Route path="/esqueceu-senha" element={<EsqueceuSenha />} />
                 <Route path="/aviso-senha" element={<AvisoSenha />} />
-                <Route path='/alterar-senha-esquecida/:token' element={<AlterarSenhaEsquecida />} />
                 <Route path='/aviso-senha-alterada' element={<AvisoSenhaAlterada />} />
                 <Route path="/verifica-pass" element={<VerificaPass />} />
                 

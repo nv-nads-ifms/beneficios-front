@@ -5,23 +5,28 @@ import {
     ListItemAvatar, ListItemText, Stack, Typography
 } from '@mui/material';
 import Countdown from 'react-countdown';
+import GaugeChart from 'react-gauge-chart';
 
 import { getToken, logout } from '../../api/services/auth';
 import { firstName } from '../../api/utils/stringUtils';
 import noImageAvailable from "../../img/noImageAvailable.png";
 import jwt_decode from "jwt-decode";
-import Moment, { utc } from 'moment';
+import { utc } from 'moment';
 
 import DataService from '../../api/services/DataServices';
 import { swalWithBootstrapButtons } from '../../api/utils/modalMessages';
 import { AccountBox, ExitToApp } from '@mui/icons-material';
-import LinearProgressWithLabelComponent from '../../components/V1.0.0/LinearProgressWithLabelComponent';
 
 const mensagemTempoExpiracao = () => {
     swalWithBootstrapButtons.fire('Ooops!', `Tempo de sessão expirado. Você foi desconectado do sistema!`, 'warning');
 }
 
 const dataService = new DataService('/usuarios');
+const chartStyle = {
+    height: 90,
+    backgroundColor: 'rgb(2,0,36)',
+    borderRadius: '25px',
+}
 
 export default function UserView(props) {
     const { usuario } = props;
@@ -131,7 +136,18 @@ export default function UserView(props) {
                     <ListItemText
                         primary={
                             <Stack spacing={1}>
-                                <LinearProgressWithLabelComponent value={percentual} />
+                                <GaugeChart
+                                    id="tempo-de-sessao"
+                                    style={chartStyle}
+                                    
+                                    animate={false} 
+                                    nrOfLevels={420}
+                                    arcsLength={[0.5, 0.3, 0.2]}
+                                    colors={['#5BE12C', '#F5CD19', '#EA4228']}
+                                    percent={percentual/100}
+                                    arcPadding={0.02}
+                                     />
+                                
                                 <Countdown
                                     date={utc(token.exp * 1000).toDate()}
                                     renderer={renderer} />

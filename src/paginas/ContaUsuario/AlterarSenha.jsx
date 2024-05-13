@@ -1,141 +1,91 @@
 import React, { useContext } from 'react';
-import { Container, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Container, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-import CustomTextField from "../../components/CustomFields/CustomTextField";
-import { validarCampo } from '../../models/validaCampos';
-import useErros from '../../hooks/useErros';
-import CustomAlert from '../../components/CustomAlert/CustomAlert';
 import SendButton from '../../components/CustomButtons/SendButton';
 import { userContext } from '../../hooks/userContext';
-import UsuarioService from '../../services/UsuarioService';
 import BackButton from '../../components/CustomButtons/BackButton';
+import { handleChangeInputComponent } from '../../api/utils/util';
+import DataService from '../../api/services/DataServices';
+import { saveModalMessageProps } from '../../api/utils/modalMessages';
 
-const useStyles = makeStyles((theme) => ({
-    messages: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(15),
-    },
-    paper: {
-        margin: theme.spacing(2),
-        padding: theme.spacing(5),
-    },
-    button: {
-        margin: theme.spacing(1),
-    }
-}));
+const emptySenha = {
+    password: '',
+    passwordConfirm: '',
+};
 
-export default function AlterarSenhaEsquecida() {
+const dataService = new DataService('/usuarios');
+
+export default function AlterarSenha() {
     const usuario = useContext(userContext);
     const navigate = useNavigate();
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const [severity, setSeverity] = React.useState("warning");
-    const [requestMessage, setRequestMessage] = React.useState("");
 
-    const [senhas, setSenhas] = React.useState({
-        senha: '',
-        confirmaSenha: '',
-    });
+    const [senhas, setSenhas] = React.useState(emptySenha);
 
-    const [erros, validarCampos] = useErros({
-        senha: validarCampo,
-        confirmaSenha: validarCampo,
-    });
-
-    const onChange = (event) => {
-        let t = event.target;
-        let value = t.value;
-        const fieldname = t.name;
-        setSenhas({
-            ...senhas,
-            [fieldname]: value
-        });
-    }
+    const handleChange = (event, newValue) => {
+        handleChangeInputComponent(event, newValue, setSenhas, senhas);
+    };
 
     const handlePost = (event) => {
         event.preventDefault();
 
-        UsuarioService.resetPassword(usuario.email, senhas)
-            .then(r => r.json())
-            .then(resp => {
-                if (resp.status !== undefined && resp.status === 400) {
-                    setRequestMessage(resp.message);
-                    setSeverity("warning");
-                    setOpen(true);
-                    return;
-                }
-                if (Array.isArray(resp)) {
-                    validarCampos(resp);
-
-                    setRequestMessage(resp.message);
-                    setSeverity("warning");
-                    setOpen(true);
-                } else {
-                    navigate('/conta-usuario');
-                }
-            })
-            .catch(error => {
-                setRequestMessage("O sistema está indisponível no momento!");
-                setSeverity("error");
-                setOpen(true);
-            });
+        const props = {
+            title: 'Confirma a alteração da senha?',
+            confirmText: 'Alterar',
+            denyText: 'Não alterar',
+            successResponseText: 'As alterações foram salvas!',
+            denyResponseText: 'As informações não foram salvas',
+            errorResponseText: `Não foi possível fazer as alterações. Entre em contato com o administrador do sistema informando a seguinte mensagem: `,
+        };
+        saveModalMessageProps(
+            props,
+            () => dataService.save(['reset-password', usuario.email], senhas),
+            () => navigate('/conta-usuario'));
     }
 
     return (
-        <main className={classes.content}>
-            <Container component="article" maxWidth="sm">
-                <Paper className={classes.paper} elevation={3}>
-                    <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '10vh' }}>
-                        <Grid item xs>
-                            <Typography gutterBottom paragraph variant="h4" component="h3" align="center">
-                                Alteração de Senha
-                            </Typography>
+        <Container component="article" maxWidth="sm">
+            <Paper elevation={0}>
+                <Grid container spacing={1} direction="column" alignItems="center" justify="center" style={{ minHeight: '10vh' }}>
+                    <Grid item xs={12}>
+                        <Typography gutterBottom paragraph variant="h4" component="h3" align="center">
+                            Alteração de Senha
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <form onSubmit={(event) => handlePost(event)}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="password"
+                                label="Nova Senha"
+                                value={senhas.password}
+                                variant='outlined'
+                                fullWidth
+                                type="password"
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="passwordConfirm"
+                                label="Confirmar Senha"
+                                value={senhas.passwordConfirm}
+                                variant='outlined'
+                                fullWidth
+                                type="password"
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} container direction="column" alignItems="flex-end">
+                            <Stack spacing={1} direction={'row'}>
+                                <BackButton />
+                                <SendButton />
+                            </Stack>
                         </Grid>
                     </Grid>
-                    <form onSubmit={(event) => handlePost(event)}>
-                        <Grid container spacing={0}>
-                            <Grid item xs>
-                                <CustomTextField
-                                    id="senha"
-                                    label="Nova Senha"
-                                    value={senhas.senha}
-                                    error={erros.senha}
-                                    type="password"
-                                    onChangeHandler={onChange}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={0}>
-                            <Grid item xs>
-                                <CustomTextField
-                                    id="confirmaSenha"
-                                    label="Confirmar Senha"
-                                    value={senhas.confirmaSenha}
-                                    error={erros.confirmaSenha}
-                                    type="password"
-                                    onChangeHandler={onChange}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={1}>
-                            <Grid container spacing={0} direction="column" alignItems="flex-end">
-                                <Grid item xs>
-                                    <BackButton className={classes.button} />
-                                    <SendButton className={classes.button} />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Paper>
-            </Container>
-            <CustomAlert open={open} setOpen={setOpen}
-                requestMessage={requestMessage} messageType={severity} />
-        </main>
+
+                </form>
+            </Paper>
+        </Container>
     );
 }

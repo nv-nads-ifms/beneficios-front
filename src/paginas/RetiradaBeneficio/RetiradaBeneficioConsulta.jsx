@@ -128,7 +128,7 @@ function RetiradaBeneficioConsulta() {
                 getRowId={(row) => [row.analiseId, row.id]}
                 formtitle='Consultar registro da retirada de benefício eventual'
                 filterparams={{
-                    pessoaId: pessoa != null && pessoa != emptyPessoa ? pessoa.id : "",
+                    pessoaId: pessoa != null && pessoa !== emptyPessoa ? pessoa.id : "",
                     status: status !== Status.TODOS ? status : '',
                 }}
                 columns={columns}

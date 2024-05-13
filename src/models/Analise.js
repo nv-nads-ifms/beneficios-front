@@ -1,5 +1,4 @@
 import { Status } from "../api/utils/constants";
-import AnaliseService from "../services/AnaliseService";
 import { emptyArquivo } from "./Arquivo";
 import { emptyAtendimento } from "./Atendimento";
 import { emptyPessoa } from "./Pessoa";
@@ -61,35 +60,5 @@ function validarItemAnalise(item, itens, unidadeAtendimento) {
     return campos;
 }
 
-function loadAnaliseData(id, callback) {
-    if (id > 0) {
-        AnaliseService.getAnaliseById(id)
-            .then(r => r.json())
-            .then(data => {
-                callback(data);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    } else {
-        callback(emptyAnalise);
-    }
-}
-
-function initAnalise(id, callback, history) {
-    if (id > 0) {
-        AnaliseService.getAnaliseById(id)
-            .then(r => r.json())
-            .then(data => {
-                callback(data);
-            })
-            .catch(() => {
-                history.push('/404');
-            });
-    } else {
-        callback(emptyAnalise);
-    }
-}
-
 export { emptyAnalise, emptyItemAnalise, 
-    loadAnaliseData, validarItemAnalise, initAnalise };
+    validarItemAnalise };
