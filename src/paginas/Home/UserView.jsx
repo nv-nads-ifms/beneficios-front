@@ -21,7 +21,7 @@ const mensagemTempoExpiracao = () => {
     swalWithBootstrapButtons.fire('Ooops!', `Tempo de sessão expirado. Você foi desconectado do sistema!`, 'warning');
 }
 
-const dataService = new DataService('/usuarios');
+const dataService = new DataService('/auth');
 const chartStyle = {
     height: 90,
     backgroundColor: 'rgb(2,0,36)',
@@ -91,7 +91,7 @@ export default function UserView(props) {
     }, [usuario.funcionario]);
 
     const handleClick = () => {
-        dataService.getBy('auth/logout')
+        dataService.getBy('logout')
             .then(response => {
                 logout();
                 navigate('/login');
